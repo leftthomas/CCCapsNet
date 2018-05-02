@@ -2,35 +2,16 @@ from torch import nn
 
 
 class Model(nn.Module):
-    def __init__(self):
+    def __init__(self, hidden_dim, emb_dim=300, recurrent_dropout=0.1):
         super(Model, self).__init__()
-        self.features = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=32, kernel_size=7, stride=1, padding=3),
-            nn.BatchNorm2d(num_features=32),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(in_channels=32, out_channels=32, kernel_size=5, stride=2, padding=2),
-            nn.BatchNorm2d(num_features=32),
-            nn.ReLU(inplace=True),
+        self.embedding = nn.Embedding(784, emb_dim)
+        self.encoder = nn.LSTM(emb_dim, hidden_dim, num_layers=1, dropout=recurrent_dropout)
+        self.linear_layers = nn.Linear(hidden_dim, hidden_dim)
+        self.predictor = nn.Linear(hidden_dim, 6)
 
-            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(num_features=64),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=2, padding=1),
-            nn.BatchNorm2d(num_features=64),
-            nn.ReLU(inplace=True),
-
-            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(num_features=128),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=2, padding=1),
-            nn.BatchNorm2d(num_features=128),
-            nn.ReLU(inplace=True)
-
-        )
-        self.classifier = nn.Linear(in_features=4 * 4 * 128, out_features=10)
-
-    def forward(self, x):
-        out = self.features(x)
-        out = out.view(out.size(0), -1)
-        classes = self.classifier(out)
-        return classes
+    def forward(self, seq):
+        hdn, _ = self.encoder(self.embedding(seq))
+        feature = hdn[-1, :, :]
+        feature = self.linear_layers(feature)
+        preds = self.predictor(feature)
+        return preds
