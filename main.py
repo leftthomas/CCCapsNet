@@ -3,7 +3,6 @@ import argparse
 import torch
 import torch.nn as nn
 import torchnet as tnt
-from torch.autograd import Variable
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchnet.engine import Engine
@@ -20,8 +19,6 @@ def processor(sample):
     if torch.cuda.is_available():
         data = data.cuda()
         labels = labels.cuda()
-    data = Variable(data)
-    labels = Variable(labels)
 
     model.train(training)
 
