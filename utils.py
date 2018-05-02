@@ -1,8 +1,8 @@
-import torchvision.transforms as transforms
-from torch.utils.data import DataLoader
-from torchvision.datasets import MNIST
+from torchtext.datasets import TREC
 
 
-def get_iterator(mode, batch_size=64):
-    data = MNIST(root='data/', train=mode, transform=transforms.ToTensor(), download=True)
-    return DataLoader(dataset=data, batch_size=batch_size, shuffle=mode, num_workers=4)
+def get_iterator(data_type, batch_size=64):
+    if data_type == 'TREC':
+        return TREC.iters(batch_size=batch_size, device=-1, root='data')
+    else:
+        raise NotImplementedError()

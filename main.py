@@ -85,11 +85,12 @@ def on_end_epoch(state):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train Classfication')
+    parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC'], help='dataset type')
     parser.add_argument('--batch_size', default=100, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
     opt = parser.parse_args()
-
+    DATA_TYPE = opt.data_type
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
