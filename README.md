@@ -29,7 +29,8 @@ optional arguments:
 --batch_size             train batch size [default value is 100]
 --num_epochs             train epochs number [default value is 100]
 ```
-Visdom now can be accessed by going to `127.0.0.1:8097` in your browser.
+Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, 
+`$data_type` means the dataset type which you are training.
 
 ## Results
 The train loss、accuracy, test loss、accuracy, and confusion matrix are showed with visdom,
