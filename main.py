@@ -1,27 +1,25 @@
 import argparse
 
 import torch
-import torch.nn as nn
 import torchnet as tnt
+from torch.autograd import Variable
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchnet.engine import Engine
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
-from torchsummary import summary
 from tqdm import tqdm
 
 from model import Model
-from utils import load_data
+from utils import load_data, MarginLoss
 
 
 def processor(sample):
-    inputs, training = sample
-    data = inputs.text
-    label = inputs.label
-
+    data, label, training = sample
+    label = torch.eye(num_class).index_select(dim=0, index=label.data)
     if torch.cuda.is_available():
         data = data.cuda()
         label = label.cuda()
+    label = Variable(label)
 
     model.train(training)
 
@@ -41,8 +39,8 @@ def reset_meters():
 
 
 def on_forward(state):
-    meter_accuracy.add(state['output'].data, state['sample'][1])
-    confusion_meter.add(state['output'].data, state['sample'][1])
+    meter_accuracy.add(state['output'].data, state['sample'][1].data)
+    confusion_meter.add(state['output'].data, state['sample'][1].data)
     meter_loss.add(state['loss'].data[0])
 
 
@@ -95,15 +93,14 @@ if __name__ == '__main__':
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
 
     model = Model(text, num_class=num_class)
-    loss_criterion = nn.CrossEntropyLoss()
+    loss_criterion = MarginLoss()
     if torch.cuda.is_available():
         model.cuda()
         loss_criterion.cuda()
 
     optimizer = Adam(filter(lambda p: p.requires_grad, model.parameters()))
     scheduler = ReduceLROnPlateau(optimizer, verbose=True)
-
-    summary(model, input_size=(text.vocab.vectors.size(0), text.vocab.vectors.size(1)))
+    print("# trainable parameters:", sum(param.numel() if param.requires_grad else 0 for param in model.parameters()))
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
