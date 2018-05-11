@@ -1,26 +1,22 @@
-from torchtext.datasets import TREC
+import torchtext.data as data
+import torchtext.datasets as datasets
 
 
-class BatchWrapper:
-    def __init__(self, dl, x_var, y_var):
-        self.dl, self.x_var, self.y_var = dl, x_var, y_var
+def _iters(data_type, batch_size, fine_grained):
+    text = data.Field(sequential=True)
+    label = data.LabelField()
 
-    def __iter__(self):
-        for batch in self.dl:
-            x = getattr(batch, self.x_var)
-            y = getattr(batch, self.y_var)
-            yield [x, y]
+    train, val, test = datasets.SST.splits(text, label, root='data', fine_grained=fine_grained)
 
-    def __len__(self):
-        return len(self.dl)
+    text.build_vocab(train, vectors='glove.6B.300d')
+    label.build_vocab(train)
+
+    return text, label, data.BucketIterator.splits((train, val, test), batch_size=batch_size, repeat=False)
 
 
-def get_iterator(data_type, mode, batch_size=100):
-    if data_type == 'TREC':
-        train_iter, test_iter = TREC.iters(batch_size=batch_size, device=-1, root='data')
-        if mode:
-            return BatchWrapper(train_iter, x_var='text', y_var='label')
-        else:
-            return BatchWrapper(test_iter, x_var='text', y_var='label')
-    else:
-        raise NotImplementedError()
+def load_data(data_type, batch_size, fine_grained=True):
+    text, label, (train_iter, val_iter, test_iter) = _iters(data_type, batch_size, fine_grained)
+
+    data_info = {'vocab_size': len(text.vocab), 'num_class': 5 if fine_grained else 3, 'text': text}
+
+    return train_iter, val_iter, test_iter, data_info

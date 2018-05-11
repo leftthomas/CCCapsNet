@@ -7,23 +7,26 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchnet.engine import Engine
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
+from torchsummary import summary
 from tqdm import tqdm
 
 from model import Model
-from utils import get_iterator
+from utils import load_data
 
 
 def processor(sample):
-    data, labels, training = sample
+    inputs, training = sample
+    data = inputs.text
+    label = inputs.label
 
     if torch.cuda.is_available():
         data = data.cuda()
-        labels = labels.cuda()
+        label = label.cuda()
 
     model.train(training)
 
     classes = model(data)
-    loss = loss_criterion(classes, labels)
+    loss = loss_criterion(classes, label)
     return loss, classes
 
 
@@ -60,7 +63,7 @@ def on_end_epoch(state):
 
     reset_meters()
 
-    engine.test(processor, get_iterator('TREC', False, BATCH_SIZE))
+    engine.test(processor, test_iter)
 
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
@@ -71,15 +74,11 @@ def on_end_epoch(state):
 
     torch.save(model.state_dict(), 'epochs/%d.pth' % (state['epoch']))
 
-    # visualization
-    # test_image, _ = next(iter(get_iterator('TREC', False, 25)))
-    # test_image_logger.log(make_grid(test_image, nrow=5, normalize=True).numpy())
-
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='Train Classfication')
-    parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC'], help='dataset type')
+    parser = argparse.ArgumentParser(description='Train Text Classfication')
+    parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC', 'SST'], help='dataset type')
     parser.add_argument('--batch_size', default=100, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
@@ -88,32 +87,38 @@ if __name__ == '__main__':
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
-    model = Model()
-    loss_criterion = nn.BCEWithLogitsLoss()
+    # prepare dataset
+    train_iter, val_iter, test_iter, data_info = load_data(DATA_TYPE, BATCH_SIZE)
+    vocab_size = data_info['vocab_size']
+    num_class = data_info['num_class']
+    text = data_info['text']
+    print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
+
+    model = Model(text, num_class=num_class)
+    loss_criterion = nn.CrossEntropyLoss()
     if torch.cuda.is_available():
         model.cuda()
         loss_criterion.cuda()
 
-    print("# parameters:", sum(param.numel() for param in model.parameters()))
-
-    optimizer = Adam(model.parameters())
+    optimizer = Adam(filter(lambda p: p.requires_grad, model.parameters()))
     scheduler = ReduceLROnPlateau(optimizer, verbose=True)
+
+    summary(model, input_size=(text.vocab.vectors.size(0), text.vocab.vectors.size(1)))
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
     meter_accuracy = tnt.meter.ClassErrorMeter(accuracy=True)
-    confusion_meter = tnt.meter.ConfusionMeter(6, normalized=True)
+    confusion_meter = tnt.meter.ConfusionMeter(num_class, normalized=True)
 
     train_loss_logger = VisdomPlotLogger('line', opts={'title': 'Train Loss'})
     train_accuracy_logger = VisdomPlotLogger('line', opts={'title': 'Train Accuracy'})
     test_loss_logger = VisdomPlotLogger('line', opts={'title': 'Test Loss'})
     test_accuracy_logger = VisdomPlotLogger('line', opts={'title': 'Test Accuracy'})
     confusion_logger = VisdomLogger('heatmap', opts={'title': 'Confusion Matrix'})
-    # test_image_logger = VisdomLogger('image', opts={'title': 'Test Image', 'width': 371, 'height': 335})
 
     engine.hooks['on_sample'] = on_sample
     engine.hooks['on_forward'] = on_forward
     engine.hooks['on_start_epoch'] = on_start_epoch
     engine.hooks['on_end_epoch'] = on_end_epoch
 
-    engine.train(processor, get_iterator('TREC', True, BATCH_SIZE), maxepoch=NUM_EPOCHS, optimizer=optimizer)
+    engine.train(processor, train_iter, maxepoch=NUM_EPOCHS, optimizer=optimizer)

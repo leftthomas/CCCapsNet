@@ -2,16 +2,23 @@ from torch import nn
 
 
 class Model(nn.Module):
-    def __init__(self):
-        super(Model, self).__init__()
-        self.embedding = nn.Embedding(9449, 100)
-        self.encoder = nn.LSTM(100, 500, num_layers=1, dropout=0.1)
-        self.linear_layers = nn.Linear(500, 500)
-        self.predictor = nn.Linear(500, 6)
+    def __init__(self, text, hidden_dim=512, num_layers=2, num_class=5):
+        super().__init__()
 
-    def forward(self, seq):
-        hdn, _ = self.encoder(self.embedding(seq))
-        feature = hdn[-1, :, :]
-        feature = self.linear_layers(feature)
-        preds = self.predictor(feature)
-        return preds
+        vocab_size = text.vocab.vectors.size(0)
+        embed_dim = text.vocab.vectors.size(1)
+
+        self.embedding = nn.Embedding(vocab_size, embed_dim)
+        self.encoder = nn.GRU(embed_dim, hidden_dim, num_layers=num_layers, dropout=0.5, bidirectional=True)
+
+        self.embedding.weight.data.copy_(text.vocab.vectors)
+        self.embedding.weight.requires_grad = False
+
+        self.linear = nn.Sequential(nn.Dropout(0.5), nn.Linear(hidden_dim * 2, num_class))
+
+    def forward(self, x):
+        embed = self.embedding(x)
+        out, _ = self.encoder(embed)
+
+        out = self.linear(out[-1])
+        return out

@@ -19,6 +19,10 @@ pip install torchtext
 ```
 conda install tqdm
 ```
+* torchsummary
+```
+pip install torchsummary
+```
 
 ## Usage
 ```
