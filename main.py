@@ -4,7 +4,6 @@ import torch
 import torchnet as tnt
 from torch.autograd import Variable
 from torch.optim import Adam
-from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchnet.engine import Engine
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from tqdm import tqdm
@@ -56,9 +55,6 @@ def on_end_epoch(state):
     train_loss_logger.log(state['epoch'], meter_loss.value()[0])
     train_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
 
-    # learning rate scheduler
-    scheduler.step(meter_loss.value()[0], epoch=state['epoch'])
-
     reset_meters()
 
     engine.test(processor, test_iter)
@@ -70,23 +66,26 @@ def on_end_epoch(state):
     print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%%' % (
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0]))
 
-    torch.save(model.state_dict(), 'epochs/%d.pth' % (state['epoch']))
+    torch.save(model.state_dict(), 'epochs/%s_%d.pth' % (DATA_TYPE, state['epoch']))
 
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train Text Classfication')
-    parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC', 'SST'], help='dataset type')
+    parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC', 'SST', 'IMDB'], help='dataset type')
+    parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, '
+                                                                    'it only work for TREC and SST')
     parser.add_argument('--batch_size', default=100, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
     opt = parser.parse_args()
     DATA_TYPE = opt.data_type
+    FINE_GRAINED = opt.fine_grained
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
     # prepare dataset
-    train_iter, val_iter, test_iter, data_info = load_data(DATA_TYPE, BATCH_SIZE)
+    train_iter, test_iter, data_info = load_data(DATA_TYPE, BATCH_SIZE, FINE_GRAINED)
     vocab_size = data_info['vocab_size']
     num_class = data_info['num_class']
     text = data_info['text']
@@ -99,7 +98,6 @@ if __name__ == '__main__':
         loss_criterion.cuda()
 
     optimizer = Adam(filter(lambda p: p.requires_grad, model.parameters()))
-    scheduler = ReduceLROnPlateau(optimizer, verbose=True)
     print("# trainable parameters:", sum(param.numel() if param.requires_grad else 0 for param in model.parameters()))
 
     engine = Engine()
