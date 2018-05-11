@@ -30,7 +30,7 @@ class BatchWrapper:
 
 
 def load_data(data_type, batch_size, fine_grained):
-    text = data.Field(sequential=True)
+    text = data.Field(sequential=True, lower=True)
     label = data.LabelField()
 
     if data_type == 'TREC':
