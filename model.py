@@ -10,7 +10,7 @@ class Model(nn.Module):
         hidden_dim = 512
 
         self.embedding = nn.Embedding(vocab_size, embed_dim)
-        self.encoder = nn.GRU(embed_dim, hidden_dim, num_layers=4, dropout=0.2, bidirectional=True)
+        self.encoder = nn.GRU(embed_dim, hidden_dim, num_layers=2, dropout=0.2, bidirectional=True)
 
         self.embedding.weight.data.copy_(text.vocab.vectors)
         self.embedding.weight.requires_grad = False
