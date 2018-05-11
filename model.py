@@ -2,7 +2,7 @@ from torch import nn
 
 
 class Model(nn.Module):
-    def __init__(self, text, num_class=5):
+    def __init__(self, text, num_class):
         super().__init__()
 
         vocab_size = text.vocab.vectors.size(0)
