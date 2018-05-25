@@ -1,4 +1,5 @@
 import torch
+from capsule_layer import CapsuleLinear
 from torch import nn
 from torch.nn.parameter import Parameter
 
@@ -54,24 +55,24 @@ class CompositionalEmbedding(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, text, num_class):
+    def __init__(self, text, num_class, num_iterations):
         super().__init__()
 
         vocab_size = text.vocab.vectors.size(0)
         embed_dim = text.vocab.vectors.size(1)
-        hidden_dim = 512
+        hidden_dim = 150
 
-        self.embedding = nn.Embedding(vocab_size, embed_dim)
-        self.encoder = nn.GRU(embed_dim, hidden_dim, num_layers=2, dropout=0.2, bidirectional=True)
+        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, num_codebook=16, num_codeword=32,
+                                                embedding_dim=embed_dim)
+        self.features = nn.GRU(embed_dim, hidden_dim, num_layers=2, dropout=0.2, bidirectional=True)
 
-        self.embedding.weight.data.copy_(text.vocab.vectors)
-        self.embedding.weight.requires_grad = False
-
-        self.linear = nn.Sequential(nn.Dropout(0.2), nn.Linear(hidden_dim * 2, num_class))
+        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=hidden_dim * 2, out_length=8,
+                                        num_iterations=num_iterations)
 
     def forward(self, x):
         embed = self.embedding(x)
-        out, _ = self.encoder(embed)
+        out, _ = self.features(embed)
+        out = self.classifier(out[-1])
+        classes = out.norm(dim=-1)
 
-        out = self.linear(out[-1])
-        return out
+        return classes
