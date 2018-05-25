@@ -55,24 +55,21 @@ class CompositionalEmbedding(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, text, num_class, num_iterations):
+    def __init__(self, vocab_size, num_class, num_iterations):
         super().__init__()
 
-        vocab_size = text.vocab.vectors.size(0)
-        embed_dim = text.vocab.vectors.size(1)
-        hidden_dim = 150
-
         self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, num_codebook=16, num_codeword=32,
-                                                embedding_dim=embed_dim)
-        self.features = nn.GRU(embed_dim, hidden_dim, num_layers=2, dropout=0.2, bidirectional=True)
+                                                embedding_dim=128)
+        self.features = nn.GRU(128, 512, num_layers=2, dropout=0.2, batch_first=True, bidirectional=True)
 
-        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=hidden_dim * 2, out_length=8,
+        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=32, out_length=8,
                                         num_iterations=num_iterations)
 
     def forward(self, x):
         embed = self.embedding(x)
         out, _ = self.features(embed)
-        out = self.classifier(out[-1])
-        classes = out.norm(dim=-1)
 
+        out = out[:, -1, :].contiguous().view(out.size(0), -1, 32)
+        out = self.classifier(out)
+        classes = out.norm(dim=-1)
         return classes

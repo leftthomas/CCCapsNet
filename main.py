@@ -34,12 +34,12 @@ def on_sample(state):
 def reset_meters():
     meter_accuracy.reset()
     meter_loss.reset()
-    confusion_meter.reset()
+    meter_confusion.reset()
 
 
 def on_forward(state):
     meter_accuracy.add(state['output'].data, state['sample'][1].data)
-    confusion_meter.add(state['output'].data, state['sample'][1].data)
+    meter_confusion.add(state['output'].data, state['sample'][1].data)
     meter_loss.add(state['loss'].data[0])
 
 
@@ -61,7 +61,7 @@ def on_end_epoch(state):
 
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
-    confusion_logger.log(confusion_meter.value())
+    confusion_logger.log(meter_confusion.value())
 
     print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%%' % (
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0]))
@@ -75,12 +75,14 @@ if __name__ == '__main__':
     parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC', 'SST', 'IMDB'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, '
                                                                     'it only work for TREC and SST')
+    parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
     parser.add_argument('--batch_size', default=100, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
     opt = parser.parse_args()
     DATA_TYPE = opt.data_type
     FINE_GRAINED = opt.fine_grained
+    NUM_ITERATIONS = opt.num_iterations
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
@@ -88,22 +90,21 @@ if __name__ == '__main__':
     train_iter, test_iter, data_info = load_data(DATA_TYPE, BATCH_SIZE, FINE_GRAINED)
     vocab_size = data_info['vocab_size']
     num_class = data_info['num_class']
-    text = data_info['text']
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
 
-    model = Model(text, num_class=num_class)
+    model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
     loss_criterion = MarginLoss()
     if torch.cuda.is_available():
         model.cuda()
         loss_criterion.cuda()
 
-    optimizer = Adam(filter(lambda p: p.requires_grad, model.parameters()))
-    print("# trainable parameters:", sum(param.numel() if param.requires_grad else 0 for param in model.parameters()))
+    optimizer = Adam(model.parameters())
+    print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
     meter_accuracy = tnt.meter.ClassErrorMeter(accuracy=True)
-    confusion_meter = tnt.meter.ConfusionMeter(num_class, normalized=True)
+    meter_confusion = tnt.meter.ConfusionMeter(num_class, normalized=True)
 
     train_loss_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Train Loss'})
     train_accuracy_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Train Accuracy'})

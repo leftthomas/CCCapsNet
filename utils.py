@@ -30,8 +30,8 @@ class BatchWrapper:
 
 
 def load_data(data_type, batch_size, fine_grained):
-    text = data.Field(sequential=True, lower=True)
-    label = data.LabelField()
+    text = data.Field(sequential=True, lower=True, batch_first=True)
+    label = data.LabelField(batch_first=True)
 
     if data_type == 'TREC':
         train, test = TREC.splits(text, label, root='data', fine_grained=fine_grained)
@@ -41,10 +41,10 @@ def load_data(data_type, batch_size, fine_grained):
         # IMDB
         train, test = IMDB.splits(text, label, root='data')
 
-    text.build_vocab(train, vectors='glove.6B.300d', max_size=15000)
+    text.build_vocab(train)
     label.build_vocab(train)
 
     train_iter, test_iter = data.BucketIterator.splits((train, test), batch_size=batch_size, repeat=False, device=-1)
-    data_info = {'vocab_size': len(text.vocab), 'num_class': len(label.vocab), 'text': text}
+    data_info = {'vocab_size': len(text.vocab), 'num_class': len(label.vocab)}
 
     return BatchWrapper(train_iter), BatchWrapper(test_iter), data_info
