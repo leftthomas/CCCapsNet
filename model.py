@@ -42,7 +42,12 @@ class CompositionalEmbedding(nn.Module):
         nn.init.xavier_uniform(self.codebook)
 
     def forward(self, input):
-        return None
+        batch_size = input.size(0)
+        index = input.view(-1)
+        code = self.code.index_select(dim=0, index=index)
+        out = (code[:, :, None, :] @ self.codebook[None, :, :, :]).squeeze(dim=-2).sum(dim=1)
+        out = out.view(batch_size, -1, self.embedding_dim)
+        return out
 
     def __repr__(self):
         return self.__class__.__name__ + ' (' + str(self.num_embeddings) + ', ' + str(self.embedding_dim) + ')'
