@@ -2,6 +2,7 @@ import argparse
 
 import torch
 import torchnet as tnt
+from capsule_layer.optim import MultiStepRI
 from torch.autograd import Variable
 from torch.optim import Adam
 from torchnet.engine import Engine
@@ -66,6 +67,8 @@ def on_end_epoch(state):
     print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%%' % (
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0]))
 
+    # scheduler routing iterations
+    scheduler.step()
     torch.save(model.state_dict(), 'epochs/%s_%d.pth' % (DATA_TYPE, state['epoch']))
 
 
@@ -75,7 +78,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC', 'SST', 'IMDB'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, '
                                                                     'it only work for TREC and SST')
-    parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
+    parser.add_argument('--num_iterations', default=1, type=int, help='initial routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
@@ -98,6 +101,7 @@ if __name__ == '__main__':
         model.cuda()
         loss_criterion.cuda()
 
+    scheduler = MultiStepRI(model, milestones=[10, 30, 70], verbose=True)
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
 
