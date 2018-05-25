@@ -1,5 +1,5 @@
-# CapsuleNLP
-Capsule NLP
+# CCCapsNet
+A PyTorch implementation of Compositional coding Capsule Network based on AAAI 2018 paper [Compositional coding capsule with random sample consensus]().
 
 ## Requirements
 * [Anaconda](https://www.anaconda.com/download/)
