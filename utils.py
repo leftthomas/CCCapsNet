@@ -41,7 +41,7 @@ def load_data(data_type, batch_size, fine_grained):
         # IMDB
         train, test = IMDB.splits(text, label, root='data')
 
-    text.build_vocab(train)
+    text.build_vocab(train, max_size=15000)
     label.build_vocab(train)
 
     train_iter, test_iter = data.BucketIterator.splits((train, test), batch_size=batch_size, repeat=False, device=-1)
