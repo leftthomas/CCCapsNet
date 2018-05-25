@@ -60,7 +60,7 @@ class Model(nn.Module):
 
         self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, num_codebook=16, num_codeword=32,
                                                 embedding_dim=128)
-        self.features = nn.GRU(128, 512, num_layers=2, dropout=0.2, batch_first=True, bidirectional=True)
+        self.features = nn.LSTM(128, 512, num_layers=2, dropout=0.2, batch_first=True, bidirectional=True)
 
         self.classifier = CapsuleLinear(out_capsules=num_class, in_length=32, out_length=8,
                                         num_iterations=num_iterations)
