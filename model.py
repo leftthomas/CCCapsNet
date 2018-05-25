@@ -62,8 +62,8 @@ class Model(nn.Module):
                                                 embedding_dim=128)
         self.features = nn.LSTM(128, 512, num_layers=2, dropout=0.2, batch_first=True, bidirectional=True)
 
-        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=32, out_length=8,
-                                        num_iterations=num_iterations)
+        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=32, out_length=8, in_capsules=32,
+                                        share_weight=False, num_iterations=num_iterations)
 
     def forward(self, x):
         embed = self.embedding(x)
