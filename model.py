@@ -59,17 +59,17 @@ class Model(nn.Module):
         super().__init__()
 
         self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, num_codebook=16, num_codeword=32,
-                                                embedding_dim=128)
-        self.features = nn.LSTM(128, 512, num_layers=2, dropout=0.2, batch_first=True, bidirectional=True)
+                                                embedding_dim=64)
+        self.features = nn.LSTM(64, 256, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
 
-        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=32, out_length=8, in_capsules=32,
-                                        share_weight=False, num_iterations=num_iterations)
+        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=16, out_length=8,
+                                        num_iterations=num_iterations)
 
     def forward(self, x):
         embed = self.embedding(x)
         out, _ = self.features(embed)
 
-        out = out[:, -1, :].contiguous().view(out.size(0), -1, 32)
+        out = out[:, -1, :].contiguous().view(out.size(0), -1, 16)
         out = self.classifier(out)
         classes = out.norm(dim=-1)
         return classes
