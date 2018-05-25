@@ -36,11 +36,11 @@ class CompositionalEmbedding(nn.Module):
         super(CompositionalEmbedding, self).__init__()
         self.num_embeddings = num_embeddings
         self.embedding_dim = embedding_dim
-        self.code = Parameter(torch.Tensor(num_embeddings, num_codebook, num_codeword))
-        self.codebook = Parameter(torch.Tensor(num_codebook, num_codeword, embedding_dim))
+        self.code = Parameter(torch.randn(num_embeddings, num_codebook, num_codeword))
+        self.codebook = Parameter(torch.randn(num_codebook, num_codeword, embedding_dim))
 
-        nn.init.xavier_uniform(self.code)
-        nn.init.xavier_uniform(self.codebook)
+        # nn.init.xavier_uniform(self.code)
+        # nn.init.xavier_uniform(self.codebook)
 
     def forward(self, input):
         batch_size = input.size(0)
