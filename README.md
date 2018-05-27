@@ -20,6 +20,14 @@ pip install torchtext
 conda install tqdm
 ```
 
+## Datasets
+The `ag_news`, `amazon_review_full`, `amazon_review_polarity`, `dbpedia`, `sogou_news`, `yahoo_answers`, `yelp_review_full`
+and `yelp_review_polarity` datasets are downloaded from [here](https://drive.google.com/drive/folders/0Bz8a_Dbh9Qhbfll6bVpmNUtUcFdjYmF2SEpmZUZUcVNiMUw1TWN6RDV3a0JHT3kxLVhVR2M).
+
+The `20 Newsgroups`, `Reuters 21578`, `Cade` and `WebKB` datasets can be found [here](http://ana.cachopo.org/datasets-for-single-label-text-categorization).
+
+The `TREC`, `IMDB` and `SST` datasets are downloaded by `torchtext`.
+
 ## Usage
 ```
 python -m visdom.server -logging_level WARNING & python main.py --data_type TREC --num_epochs 300
