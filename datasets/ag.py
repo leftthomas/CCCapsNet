@@ -5,11 +5,8 @@ from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def ag_dataset(directory='data/',
-               train=False,
-               test=False,
-               check_files=['test.txt'],
-               url='http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz'):
+def ag_dataset(directory='data/', train=False, test=False, check_files=['test.txt'],
+               url='https://drive.google.com/open?id=1wNEIR3xNZncHmqzFnTjxX8js5PAOKGnk'):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 

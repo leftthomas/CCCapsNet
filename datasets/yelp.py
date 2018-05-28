@@ -5,15 +5,10 @@ from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def imdb_dataset(directory='data/',
-                 train=False,
-                 test=False,
-                 train_directory='train',
-                 test_directory='test',
-                 extracted_name='aclImdb',
-                 check_files=['aclImdb/README'],
-                 url='http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz',
-                 sentiments=['pos', 'neg']):
+def yelp_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
+                 # yelp_review_full, yelp_review_polarity
+                 urls=['https://drive.google.com/open?id=1Ve7f-s7Cv1R77vBtmEIBbXaAtjHrigNO',
+                       'https://drive.google.com/open?id=1p2av1gm_0GqP8MYwDibNSto384PhxR3P'], fine_grained=False):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 
@@ -28,12 +23,8 @@ def imdb_dataset(directory='data/',
         directory (str, optional): Directory to cache the dataset.
         train (bool, optional): If to load the training split of the dataset.
         test (bool, optional): If to load the test split of the dataset.
-        train_directory (str, optional): The directory of the training split.
-        test_directory (str, optional): The directory of the test split.
-        extracted_name (str, optional): Name of the extracted dataset directory.
         check_files (str, optional): Check if these files exist, then this download was successful.
-        url (str, optional): URL of the dataset `tar.gz` file.
-        sentiments (list of str, optional): Sentiments to load from the dataset.
+        urls (str, optional): URL of the dataset `tar.gz` file.
 
     Returns:
         :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and

@@ -1,6 +1,10 @@
 import torch.nn.functional as F
 from torch import nn
 from torchnlp.datasets import imdb_dataset, smt_dataset, trec_dataset
+from torchnlp.utils import datasets_iterator
+
+from datasets import ag_dataset, amazon_dataset, cade_dataset, dbpedia_dataset, newsgroups_dataset, reuters_dataset, \
+    sogou_dataset, webkb_dataset, yahoo_dataset, yelp_dataset
 
 
 class MarginLoss(nn.Module):
@@ -22,20 +26,28 @@ def load_data(data_type, train_mode, batch_size, fine_grained):
     elif data_type == 'IMDB':
         dataset = imdb_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'Newsgroups':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = newsgroups_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'Reuters':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = reuters_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
     elif data_type == 'Cade':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = cade_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'WebKB':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = webkb_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'DBPedia':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = dbpedia_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'AGNews':
+        dataset = ag_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'YahooAnswers':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = yahoo_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'SogouNews':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = sogou_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'YelpReview':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = yelp_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
     elif data_type == 'AmazonReview':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = amazon_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+    else:
+        raise ValueError('Expected data_type must be one of TREC, SMT, IMDB, Newsgroups, Reuters, Cade, WebKB, DBPedia,'
+                         ' AGNews, YahooAnswers, SogouNews, YelpReview and AmazonReview, got {} instead.'
+                         .format(data_type))
+
+    return datasets_iterator([dataset])
