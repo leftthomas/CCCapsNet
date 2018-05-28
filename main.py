@@ -75,7 +75,10 @@ def on_end_epoch(state):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train Text Classification')
-    parser.add_argument('--data_type', default='TREC', type=str, choices=['TREC', 'SST', 'IMDB'], help='dataset type')
+    parser.add_argument('--data_type', default='TREC', type=str,
+                        choices=['TREC', 'SST', 'IMDB', 'Newsgroups', 'Reuters', 'Cade', 'WebKB', 'DBPedia', 'AGNews',
+                                 'YahooAnswers', 'SogouNews', 'YelpReviewPolarity', 'YelpReviewFull',
+                                 'AmazonReviewPolarity', 'AmazonReviewFull'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, '
                                                                     'it only work for TREC and SST')
     parser.add_argument('--num_iterations', default=1, type=int, help='initial routing iterations number')

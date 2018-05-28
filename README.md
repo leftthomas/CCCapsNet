@@ -32,7 +32,9 @@ The `TREC`, `IMDB` and `SST` datasets are downloaded by `torchtext`.
 ```
 python -m visdom.server -logging_level WARNING & python main.py --data_type TREC --num_epochs 300
 optional arguments:
---data_type              dataset type [default value is 'TREC'](choices:['TREC', 'SST', 'IMDB'])
+--data_type              dataset type [default value is 'TREC'](choices:['TREC', 'SST', 'IMDB', 'Newsgroups', 'Reuters', 
+                         'Cade', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers', 'SogouNews', 'YelpReviewPolarity', 'YelpReviewFull',
+                         'AmazonReviewPolarity', 'AmazonReviewFull'])
 --fine_grained           use fine grained class or not, it only work for TREC and SST [default value is False]
 --num_iterations         initial routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
