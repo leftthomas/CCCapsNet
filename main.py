@@ -15,10 +15,11 @@ from utils import load_data, MarginLoss
 
 def processor(sample):
     data, label, training = sample
-    label = torch.eye(num_class).index_select(dim=0, index=label.data)
+    label = torch.eye(num_class).index_select(dim=0, index=label)
     if torch.cuda.is_available():
         data = data.cuda()
         label = label.cuda()
+    data = Variable(data)
     label = Variable(label)
 
     model.train(training)
@@ -39,8 +40,8 @@ def reset_meters():
 
 
 def on_forward(state):
-    meter_accuracy.add(state['output'].data, state['sample'][1].data)
-    meter_confusion.add(state['output'].data, state['sample'][1].data)
+    meter_accuracy.add(state['output'].data, state['sample'][1])
+    meter_confusion.add(state['output'].data, state['sample'][1])
     meter_loss.add(state['loss'].data[0])
 
 
@@ -57,7 +58,8 @@ def on_end_epoch(state):
     train_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
 
     reset_meters()
-
+    # prepare test dataset
+    test_iter = load_data(DATA_TYPE, False, BATCH_SIZE, FINE_GRAINED)
     engine.test(processor, test_iter)
 
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
@@ -76,11 +78,10 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train Text Classification')
     parser.add_argument('--data_type', default='TREC', type=str,
-                        choices=['TREC', 'SST', 'IMDB', 'Newsgroups', 'Reuters', 'Cade', 'WebKB', 'DBPedia', 'AGNews',
-                                 'YahooAnswers', 'SogouNews', 'YelpReviewPolarity', 'YelpReviewFull',
-                                 'AmazonReviewPolarity', 'AmazonReviewFull'], help='dataset type')
-    parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, '
-                                                                    'it only work for TREC and SST')
+                        choices=['TREC', 'SMT', 'IMDB', 'Newsgroups', 'Reuters', 'Cade', 'WebKB', 'DBPedia', 'AGNews',
+                                 'YahooAnswers', 'SogouNews', 'YelpReview', 'AmazonReview'], help='dataset type')
+    parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
+                                                                    'TREC, SMT, Reuters, YelpReview and AmazonReview')
     parser.add_argument('--num_iterations', default=1, type=int, help='initial routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
@@ -92,8 +93,8 @@ if __name__ == '__main__':
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
-    # prepare dataset
-    train_iter, test_iter, data_info = load_data(DATA_TYPE, BATCH_SIZE, FINE_GRAINED)
+    # prepare train dataset
+    train_iter = load_data(DATA_TYPE, True, BATCH_SIZE, FINE_GRAINED)
     vocab_size = data_info['vocab_size']
     num_class = data_info['num_class']
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))

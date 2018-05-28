@@ -11,9 +11,9 @@ conda install pytorch torchvision -c pytorch
 ```
 pip install git+https://github.com/pytorch/tnt.git@master
 ```
-* torchtext
+* PyTorch-NLP
 ```
-pip install torchtext
+pip install pytorch-nlp
 ```
 * tqdm
 ```
@@ -21,21 +21,21 @@ conda install tqdm
 ```
 
 ## Datasets
-The `ag_news`, `amazon_review_full`, `amazon_review_polarity`, `dbpedia`, `sogou_news`, `yahoo_answers`, `yelp_review_full`
-and `yelp_review_polarity` datasets are downloaded from [here](http://goo.gl/JyCnZq).
+The `AGNews`, `AmazonReview`, `DBPedia`, `SogouNews`, `YahooAnswers` and `YelpReview` datasets are coming from [here](http://goo.gl/JyCnZq).
 
-The `20 Newsgroups`, `Reuters 21578`, `Cade` and `WebKB` datasets can be found [here](http://ana.cachopo.org/datasets-for-single-label-text-categorization).
+The `Newsgroups`, `Reuters`, `Cade` and `WebKB` datasets can be found [here](http://ana.cachopo.org/datasets-for-single-label-text-categorization).
 
-The `TREC`, `IMDB` and `SST` datasets are downloaded by `torchtext`.
+The `TREC`, `IMDB` and `SMT` datasets are downloaded by `PyTorch-NLP`.
+
+You needn't download the datasets by yourself, the code will download them automatically. 
 
 ## Usage
 ```
 python -m visdom.server -logging_level WARNING & python main.py --data_type TREC --num_epochs 300
 optional arguments:
---data_type              dataset type [default value is 'TREC'](choices:['TREC', 'SST', 'IMDB', 'Newsgroups', 'Reuters', 
-                         'Cade', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers', 'SogouNews', 'YelpReviewPolarity', 'YelpReviewFull',
-                         'AmazonReviewPolarity', 'AmazonReviewFull'])
---fine_grained           use fine grained class or not, it only work for TREC and SST [default value is False]
+--data_type              dataset type [default value is 'TREC'](choices:['TREC', 'SMT', 'IMDB', 'Newsgroups', 'Reuters', 
+                         'Cade', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers', 'SogouNews', 'YelpReview', 'AmazonReview'])
+--fine_grained           use fine grained class or not, it only works for TREC, SMT, Reuters, YelpReview and AmazonReview [default value is False]
 --num_iterations         initial routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 100]

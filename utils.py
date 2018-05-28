@@ -1,7 +1,6 @@
 import torch.nn.functional as F
-import torchtext.data as data
 from torch import nn
-from torchtext.datasets import SST, TREC, IMDB
+from torchnlp.datasets import imdb_dataset, smt_dataset, trec_dataset
 
 
 class MarginLoss(nn.Module):
@@ -15,36 +14,28 @@ class MarginLoss(nn.Module):
         return loss.sum(dim=-1).mean()
 
 
-class BatchWrapper:
-    def __init__(self, dl):
-        self.dl = dl
-
-    def __iter__(self):
-        for batch in self.dl:
-            text = getattr(batch, 'text')
-            label = getattr(batch, 'label')
-            yield [text, label]
-
-    def __len__(self):
-        return len(self.dl)
-
-
-def load_data(data_type, batch_size, fine_grained):
-    text = data.Field(sequential=True, lower=True, batch_first=True)
-    label = data.LabelField(batch_first=True)
-
+def load_data(data_type, train_mode, batch_size, fine_grained):
     if data_type == 'TREC':
-        train, test = TREC.splits(text, label, root='data', fine_grained=fine_grained)
-    elif data_type == 'SST':
-        train, val, test = SST.splits(text, label, root='data', fine_grained=fine_grained)
-    else:
-        # IMDB
-        train, test = IMDB.splits(text, label, root='data')
-
-    text.build_vocab(train, max_size=15000)
-    label.build_vocab(train)
-
-    train_iter, test_iter = data.BucketIterator.splits((train, test), batch_size=batch_size, repeat=False, device=-1)
-    data_info = {'vocab_size': len(text.vocab), 'num_class': len(label.vocab)}
-
-    return BatchWrapper(train_iter), BatchWrapper(test_iter), data_info
+        dataset = trec_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+    elif data_type == 'SMT':
+        dataset = smt_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+    elif data_type == 'IMDB':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'Newsgroups':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'Reuters':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+    elif data_type == 'Cade':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'WebKB':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'DBPedia':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'YahooAnswers':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'SogouNews':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+    elif data_type == 'YelpReview':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+    elif data_type == 'AmazonReview':
+        dataset = imdb_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
