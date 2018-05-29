@@ -7,8 +7,10 @@ from torchnlp.download import download_file_maybe_extract
 
 def amazon_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
                    # amazon_review_full, amazon_review_polarity
-                   urls=['https://drive.google.com/open?id=1ps9Sh8i9i-1JId-37InvUbk0t4stxh6L',
-                         'https://drive.google.com/open?id=1Qv9vdBf2LfbQsfcKfMsHAEuSsPCWYUk_'], fine_grained=False):
+                   urls=['https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
+                         'aWQ9MXBzOVNoOGk5aS0xSklkLTM3SW52VWJrMHQ0c3R4aDZM.tar.gz',
+                         'https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
+                         'aWQ9MVF2OXZkQmYyTGZiUXNmY0tmTXNIQUV1U3NQQ1dZVWtf.tar.gz'], fine_grained=False):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 

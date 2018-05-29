@@ -6,7 +6,8 @@ from torchnlp.download import download_file_maybe_extract
 
 
 def dbpedia_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
-                    url='https://drive.google.com/open?id=13WPe20BmrI_a9vgRa91PxfTrbBcR-1Ee'):
+                    url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
+                        'aWQ9MTNXUGUyMEJtcklfYTl2Z1JhOTFQeGZUcmJCY1ItMUVl.tar.gz'):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 

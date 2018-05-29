@@ -20,31 +20,36 @@ class MarginLoss(nn.Module):
 
 def load_data(data_type, train_mode, batch_size, fine_grained):
     if data_type == 'TREC':
-        dataset = trec_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = trec_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode,
+                               fine_grained=fine_grained)
     elif data_type == 'SMT':
-        dataset = smt_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = smt_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode,
+                              fine_grained=fine_grained)
     elif data_type == 'IMDB':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = imdb_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'Newsgroups':
-        dataset = newsgroups_dataset(train=train_mode, test=not train_mode)
+        dataset = newsgroups_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'Reuters':
-        dataset = reuters_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = reuters_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode,
+                                  fine_grained=fine_grained)
     elif data_type == 'Cade':
-        dataset = cade_dataset(train=train_mode, test=not train_mode)
+        dataset = cade_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'WebKB':
-        dataset = webkb_dataset(train=train_mode, test=not train_mode)
+        dataset = webkb_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'DBPedia':
-        dataset = dbpedia_dataset(train=train_mode, test=not train_mode)
+        dataset = dbpedia_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'AGNews':
-        dataset = ag_dataset(train=train_mode, test=not train_mode)
+        dataset = ag_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'YahooAnswers':
-        dataset = yahoo_dataset(train=train_mode, test=not train_mode)
+        dataset = yahoo_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'SogouNews':
-        dataset = sogou_dataset(train=train_mode, test=not train_mode)
+        dataset = sogou_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode)
     elif data_type == 'YelpReview':
-        dataset = yelp_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = yelp_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode,
+                               fine_grained=fine_grained)
     elif data_type == 'AmazonReview':
-        dataset = amazon_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = amazon_dataset(directory='data/' + data_type, train=train_mode, test=not train_mode,
+                                 fine_grained=fine_grained)
     else:
         raise ValueError('Expected data_type must be one of TREC, SMT, IMDB, Newsgroups, Reuters, Cade, WebKB, DBPedia,'
                          ' AGNews, YahooAnswers, SogouNews, YelpReview and AmazonReview, got {} instead.'

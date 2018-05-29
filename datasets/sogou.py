@@ -6,7 +6,8 @@ from torchnlp.download import download_file_maybe_extract
 
 
 def sogou_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
-                  url='https://drive.google.com/open?id=1D7JkMRSUNvNVYK98I0OETN94LjNtuLlx'):
+                  url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
+                      'aWQ9MUQ3SmtNUlNVTnZOVllLOThJME9FVE45NExqTnR1TGx4.tar.gz'):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 
