@@ -1,11 +1,11 @@
-import glob
+import csv
 import os
 
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def ag_dataset(directory='data/', train=False, test=False, check_files=['ag_news/readme.txt'],
+def ag_dataset(directory='data/', train=False, test=False, extracted_name='ag_news', check_files=['ag_news/readme.txt'],
                url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
                    'aWQ9MXdORUlSM3hOWm5jSG1xekZuVGp4WDhqczVQQU9LR25r.tar.gz'):
     """
@@ -21,6 +21,7 @@ def ag_dataset(directory='data/', train=False, test=False, check_files=['ag_news
         directory (str, optional): Directory to cache the dataset.
         train (bool, optional): If to load the training split of the dataset.
         test (bool, optional): If to load the test split of the dataset.
+        extracted_name (str, optional): Name of the extracted dataset directory.
         check_files (str, optional): Check if these files exist, then this download was successful.
         url (str, optional): URL of the dataset `tar.gz` file.
 
@@ -33,26 +34,23 @@ def ag_dataset(directory='data/', train=False, test=False, check_files=['ag_news
         >>> train = ag_dataset(train=True)
         >>> train[0:2]
         [{
-          'text': 'For a movie that gets no respect there sure are a lot of memorable quotes...',
-          'sentiment': 'pos'
-        }, {
-          'text': 'Bizarre horror movie filled with famous faces but stolen by Cristina Raines...',
-          'sentiment': 'pos'
-        }]
+          'label': '3',
+          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
+          'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
+         {
+          'label': '3',
+          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
+          'description': 'Reuters - Private investment firm Carlyle Group...'}]
     """
     download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
 
     ret = []
-    for _ in range(train + test):
+    splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    for file_name in splits:
+        csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
         examples = []
-        for sentiment in sentiments:
-            for filename in glob.iglob(os.path.join(directory, sentiment, '*.txt')):
-                with open(filename, 'r', encoding="utf-8") as f:
-                    text = f.readline()
-                examples.append({
-                    'text': text,
-                    'sentiment': sentiment,
-                })
+        for data in csv_file:
+            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
