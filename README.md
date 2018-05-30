@@ -27,7 +27,10 @@ The `Newsgroups`, `Reuters`, `Cade` and `WebKB` datasets can be found [here](htt
 
 The `TREC`, `IMDB` and `SMT` datasets are downloaded by `PyTorch-NLP`.
 
-You needn't download the datasets by yourself, the code will download them automatically. 
+You needn't download the datasets by yourself, the code will download them automatically.
+If you encounter network issues, you can download all the datasets from 
+[BaiduYun](https://pan.baidu.com/s/1FrgwMzUFF8IMFY4d5_YJNA) or 
+[GoogleDrive](https://drive.google.com/open?id=10n_eZ2ZyRjhRWFjxky7_PhcGHecDjKJ2), and then extract them into `data` directory.
 
 ## Usage
 ```
