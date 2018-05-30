@@ -1,20 +1,23 @@
+import csv
 import os
 
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def dbpedia_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
+def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='dbpedia',
+                    check_files=['dbpedia/readme.txt'],
                     url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
                         'aWQ9MTNXUGUyMEJtcklfYTl2Z1JhOTFQeGZUcmJCY1ItMUVl.tar.gz'):
     """
-    Load the AG's News Topic Classification dataset (Version 3).
+    Load the DBPedia Ontology Classification dataset (Version 2).
 
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes
-    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
-    samples. The total number of training samples is 120,000 and testing 7,600.
+    The DBpedia ontology classification dataset is constructed by picking 14 non-overlapping classes
+    from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we randomly
+    choose 40,000 training samples and 5,000 testing samples. Therefore, the total size of the training
+    dataset is 560,000 and testing dataset 70,000.
 
-    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
+    **Reference:** http://dbpedia.org
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -29,17 +32,17 @@ def dbpedia_dataset(directory='data/', train=False, test=False, check_files=['ac
         test dataset in order if their respective boolean argument is true.
 
     Example:
-        >>> from datasets import ag_dataset
-        >>> train = ag_dataset(train=True)
+        >>> from datasets import dbpedia_dataset
+        >>> train = dbpedia_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
-          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
+          'label': '1',
+          'title': 'E. D. Abbott Ltd',
+          'content': ' Abbott of Farnham E D Abbott Limited was a British coachbuilding ...'},
          {
-          'label': '3',
-          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
-          'description': 'Reuters - Private investment firm Carlyle Group...'}]
+          'label': '1',
+          'title': 'Schwan-Stabilo',
+          'content': " Schwan-STABILO is a German maker of pens for writing colouring ..."}]
     """
     download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
 
@@ -49,7 +52,7 @@ def dbpedia_dataset(directory='data/', train=False, test=False, check_files=['ac
         csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
         examples = []
         for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
+            examples.append({'label': data[0], 'title': data[1], 'content': data[2]})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
