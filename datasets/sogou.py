@@ -1,19 +1,24 @@
 import os
 
+import numpy as np
+import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def sogou_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
+def sogou_dataset(directory='data/', train=False, test=False, extracted_name='sogou_news',
+                  check_files=['sogou_news/readme.txt'],
                   url='https://drive.google.com/uc?export=download&id=1D7JkMRSUNvNVYK98I0OETN94LjNtuLlx'):
     """
-    Load the AG's News Topic Classification dataset (Version 3).
+    Load the Sogou News Topic Classification dataset (Version 3).
 
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes
-    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
-    samples. The total number of training samples is 120,000 and testing 7,600.
+    The Sogou news topic classification dataset is constructed by manually labeling each news article
+    according to its URL, which represents roughly the categorization of news in their websites. We
+    chose 5 largest categories for the dataset, each having 90,000 samples for training and 12,000 for
+    testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation system.
+    In total there are 450,000 training samples and 60,000 testing samples.
 
-    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
+    **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -28,8 +33,8 @@ def sogou_dataset(directory='data/', train=False, test=False, check_files=['aclI
         test dataset in order if their respective boolean argument is true.
 
     Example:
-        >>> from datasets import ag_dataset
-        >>> train = ag_dataset(train=True)
+        >>> from datasets import sogou_dataset
+        >>> train = sogou_dataset(train=True)
         >>> train[0:2]
         [{
           'label': '3',
@@ -40,15 +45,20 @@ def sogou_dataset(directory='data/', train=False, test=False, check_files=['aclI
           'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
           'description': 'Reuters - Private investment firm Carlyle Group...'}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='sogou_news.tar.gz', check_files=check_files)
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    index_to_label = []
+    with open(os.path.join(directory, extracted_name, 'classes.txt'), 'r', encoding='utf-8') as foo:
+        for line in foo.readlines():
+            line = line.rstrip('\n')
+            index_to_label.append(line)
     for file_name in splits:
-        csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
+        csv_file = np.array(pd.read_csv(os.path.join(directory, extracted_name, file_name), header=None)).tolist()
         examples = []
         for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
+            examples.append({'label': index_to_label[int(data[0]) - 1], 'title': data[1], 'content': data[2]})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:

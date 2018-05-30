@@ -1,6 +1,7 @@
-import csv
 import os
 
+import numpy as np
+import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
@@ -51,7 +52,7 @@ def ag_dataset(directory='data/', train=False, test=False, extracted_name='ag_ne
             line = line.rstrip('\n')
             index_to_label.append(line)
     for file_name in splits:
-        csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
+        csv_file = np.array(pd.read_csv(os.path.join(directory, extracted_name, file_name), header=None)).tolist()
         examples = []
         for data in csv_file:
             examples.append({'label': index_to_label[int(data[0]) - 1], 'title': data[1], 'description': data[2]})
