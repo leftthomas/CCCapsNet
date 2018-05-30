@@ -35,25 +35,31 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
         >>> train = yahoo_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
-          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'content': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'answer': "Reuters - Short-sellers, Wall Street's dwindling..."},
+          'label': 'Computers & Internet',
+          'title': "why doesn't an optical mouse work on a glass table?",
+          'content': 'or even on some surfaces?',
+          'answer': 'Optical mice use an LED and a camera to rapidly ...'},
          {
-          'label': '3',
-          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
-          'content': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'answer': 'Reuters - Private investment firm Carlyle Group...'}]
+          'label': 'Sports',
+          'title': 'What is the best off-road motorcycle trail ?',
+          'content': 'long-distance trail throughout CA',
+          'answer': 'i hear that the mojave road is amazing!...'}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='yahoo_answers.tar.gz', check_files=check_files)
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    index_to_label = []
+    with open(os.path.join(directory, extracted_name, 'classes.txt'), 'r', encoding='utf-8') as foo:
+        for line in foo.readlines():
+            line = line.rstrip('\n')
+            index_to_label.append(line)
     for file_name in splits:
         csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
         examples = []
         for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'content': data[2], 'answer': data[3]})
+            examples.append(
+                {'label': index_to_label[int(data[0]) - 1], 'title': data[1], 'content': data[2], 'answer': data[3]})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
