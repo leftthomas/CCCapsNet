@@ -37,13 +37,13 @@ def sogou_dataset(directory='data/', train=False, test=False, extracted_name='so
         >>> train = sogou_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
-          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
+          'label': 'automobile',
+          'title': '2008 di4 qi1 jie4 qi1ng da3o guo2 ji4 che1 zha3n me3i nv3 mo2 te4 ',
+          'content': '2008di4 qi1 jie4 qi1ng da3o guo2 ji4 che1 zha3n yu2...'}
          {
-          'label': '3',
-          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
-          'description': 'Reuters - Private investment firm Carlyle Group...'}]
+          'label': 'automobile',
+          'title': ' zho1ng hua2 ju4n jie2 FRV ya4o shi ',
+          'content': 'tu2 we2i zho1ng hua2 ju4n jie2 FRV ya4o shi .'}]
     """
     download_file_maybe_extract(url=url, directory=directory, filename='sogou_news.tar.gz', check_files=check_files)
 
