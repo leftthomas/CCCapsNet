@@ -6,8 +6,7 @@ from torchnlp.download import download_file_maybe_extract
 
 
 def ag_dataset(directory='data/', train=False, test=False, extracted_name='ag_news', check_files=['ag_news/readme.txt'],
-               url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                   'aWQ9MXdORUlSM3hOWm5jSG1xekZuVGp4WDhqczVQQU9LR25r.tar.gz'):
+               url='https://drive.google.com/uc?export=download&id=1wNEIR3xNZncHmqzFnTjxX8js5PAOKGnk'):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 
@@ -42,7 +41,7 @@ def ag_dataset(directory='data/', train=False, test=False, extracted_name='ag_ne
           'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
           'description': 'Reuters - Private investment firm Carlyle Group...'}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='ag_news.tar.gz', check_files=check_files)
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]

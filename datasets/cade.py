@@ -7,8 +7,7 @@ from torchnlp.download import download_file_maybe_extract
 
 def cade_dataset(directory='data/', train=False, test=False, extracted_name='cade',
                  check_files=['cade/cade-train-stemmed.txt'],
-                 url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                     'aWQ9MTl6RVZSNlpnd1pnODBrd0VBSUJtdE9CZ3FpYkpRUUtY.tar.gz'):
+                 url='https://drive.google.com/uc?export=download&id=19zEVR6ZgwZg80kwEAIBmtOBgqibJQQKX'):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 

@@ -7,8 +7,7 @@ from torchnlp.download import download_file_maybe_extract
 
 def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='dbpedia',
                     check_files=['dbpedia/readme.txt'],
-                    url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                        'aWQ9MTNXUGUyMEJtcklfYTl2Z1JhOTFQeGZUcmJCY1ItMUVl.tar.gz'):
+                    url='https://drive.google.com/uc?export=download&id=13WPe20BmrI_a9vgRa91PxfTrbBcR-1Ee'):
     """
     Load the DBPedia Ontology Classification dataset (Version 2).
 

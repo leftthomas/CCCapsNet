@@ -6,10 +6,9 @@ from torchnlp.download import download_file_maybe_extract
 
 def yelp_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
                  # yelp_review_full, yelp_review_polarity
-                 urls=['https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                       'aWQ9MVZlN2YtczdDdjFSNzd2QnRtRUlCYlhhQXRqSHJpZ05P.tar.gz',
-                       'https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                       'aWQ9MXAyYXYxZ21fMEdxUDhNWXdEaWJOU3RvMzg0UGh4UjNQ.tar.gz'], fine_grained=False):
+                 urls=['https://drive.google.com/uc?export=download&id=1Ve7f-s7Cv1R77vBtmEIBbXaAtjHrigNO',
+                       'https://drive.google.com/uc?export=download&id=1p2av1gm_0GqP8MYwDibNSto384PhxR3P'],
+                 fine_grained=False):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 

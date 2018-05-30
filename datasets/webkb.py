@@ -5,8 +5,7 @@ from torchnlp.download import download_file_maybe_extract
 
 
 def webkb_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
-                  url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                      'aWQ9MXBzVkRTbGJTUXVFbkV0UEU4TDhVN1VINW1od21Bdl9t.tar.gz'):
+                  url='https://drive.google.com/uc?export=download&id=1psVDSlbSQuEnEtPE8L8U7UH5mhwmAv_m'):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 

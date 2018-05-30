@@ -5,8 +5,8 @@ from torchnlp.download import download_file_maybe_extract
 
 
 def reuters_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
-                    url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                        'aWQ9MWdyaG0xTnZFdHk0NlhiTEJTUXNGcUVRbXZ6eW4ya1gw.tar.gz', fine_grained=False):
+                    url='https://drive.google.com/uc?export=download&id=1grhm1NvEty46XbLBSQsFqEQmvzyn2kX0',
+                    fine_grained=False):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 

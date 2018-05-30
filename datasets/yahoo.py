@@ -7,8 +7,7 @@ from torchnlp.download import download_file_maybe_extract
 
 def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='yahoo_answers',
                   check_files=['yahoo_answers/readme.txt'],
-                  url='https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                      'aWQ9MUs2WGpmaTc2Y3R4YjhlZ1lzT0tLRV9HMHduMFV3X1JB.tar.gz'):
+                  url='https://drive.google.com/uc?export=download&id=1K6Xjfi76ctxb8egYsOKKE_G0wn0Uw_RA'):
     """
     Load the Yahoo! Answers Topic Classification dataset (Version 2).
 

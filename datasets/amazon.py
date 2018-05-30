@@ -6,10 +6,9 @@ from torchnlp.download import download_file_maybe_extract
 
 def amazon_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
                    # amazon_review_full, amazon_review_polarity
-                   urls=['https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                         'aWQ9MXBzOVNoOGk5aS0xSklkLTM3SW52VWJrMHQ0c3R4aDZM.tar.gz',
-                         'https://link.gimhoy.com/googledrive/aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL29wZW4/'
-                         'aWQ9MVF2OXZkQmYyTGZiUXNmY0tmTXNIQUV1U3NQQ1dZVWtf.tar.gz'], fine_grained=False):
+                   urls=['https://drive.google.com/uc?export=download&id=1ps9Sh8i9i-1JId-37InvUbk0t4stxh6L',
+                         'https://drive.google.com/uc?export=download&id=1Qv9vdBf2LfbQsfcKfMsHAEuSsPCWYUk_'],
+                   fine_grained=False):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 
@@ -25,7 +24,7 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['acl
         test (bool, optional): If to load the test split of the dataset.
         extracted_name (str, optional): Name of the extracted dataset directory.
         check_files (str, optional): Check if these files exist, then this download was successful.
-        url (str, optional): URL of the dataset `tar.gz` file.
+        urls (str, optional): URL of the dataset `tar.gz` file.
 
     Returns:
         :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and
