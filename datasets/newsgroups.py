@@ -28,8 +28,8 @@ def newsgroups_dataset(directory='data/', train=False, test=False, check_files=[
         test dataset in order if their respective boolean argument is true.
 
     Example:
-        >>> from datasets import ag_dataset
-        >>> train = ag_dataset(train=True)
+        >>> from datasets import newsgroups_dataset
+        >>> train = newsgroups_dataset(train=True)
         >>> train[0:2]
         [{
           'label': '3',
