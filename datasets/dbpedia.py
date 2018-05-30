@@ -35,23 +35,28 @@ def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='
         >>> train = dbpedia_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '1',
+          'label': 'Company',
           'title': 'E. D. Abbott Ltd',
           'content': ' Abbott of Farnham E D Abbott Limited was a British coachbuilding ...'},
          {
-          'label': '1',
+          'label': 'Company',
           'title': 'Schwan-Stabilo',
           'content': " Schwan-STABILO is a German maker of pens for writing colouring ..."}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='dbpedia.tar.gz', check_files=check_files)
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    index_to_label = []
+    with open(os.path.join(directory, extracted_name, 'classes.txt'), 'r', encoding='utf-8') as foo:
+        for line in foo.readlines():
+            line = line.rstrip('\n')
+            index_to_label.append(line)
     for file_name in splits:
         csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
         examples = []
         for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'content': data[2]})
+            examples.append({'label': index_to_label[int(data[0]) - 1], 'title': data[1], 'content': data[2]})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:

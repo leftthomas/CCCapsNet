@@ -33,11 +33,11 @@ def ag_dataset(directory='data/', train=False, test=False, extracted_name='ag_ne
         >>> train = ag_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
+          'label': 'Business',
           'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
           'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
          {
-          'label': '3',
+          'label': 'Business',
           'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
           'description': 'Reuters - Private investment firm Carlyle Group...'}]
     """
@@ -45,11 +45,16 @@ def ag_dataset(directory='data/', train=False, test=False, extracted_name='ag_ne
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    index_to_label = []
+    with open(os.path.join(directory, extracted_name, 'classes.txt'), 'r', encoding='utf-8') as foo:
+        for line in foo.readlines():
+            line = line.rstrip('\n')
+            index_to_label.append(line)
     for file_name in splits:
         csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
         examples = []
         for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
+            examples.append({'label': index_to_label[int(data[0]) - 1], 'title': data[1], 'description': data[2]})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
