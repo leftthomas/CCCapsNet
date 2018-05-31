@@ -8,13 +8,18 @@ def webkb_dataset(directory='data/', train=False, test=False, extracted_name='we
                   check_files=['webkb/webkb-train-stemmed.txt'],
                   url='https://drive.google.com/uc?export=download&id=1psVDSlbSQuEnEtPE8L8U7UH5mhwmAv_m'):
     """
-    Load the AG's News Topic Classification dataset (Version 3).
+    Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
 
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes
-    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
-    samples. The total number of training samples is 120,000 and testing 7,600.
+    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide
+    Knowledge Base (Web->Kb) project of the CMU text learning group. These pages
+    were collected from computer science departments of various universities in 1997,
+    manually classified into seven different classes: student, faculty, staff,
+    department, course, project, and other. The classes Department and Staff is
+    discarded, because there were only a few pages from each university. The class
+    Other is discarded, because pages were very different among this class. The total
+    number of training samples is 2,803 and testing 1,396.
 
-    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
+    **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -33,23 +38,23 @@ def webkb_dataset(directory='data/', train=False, test=False, extracted_name='we
         >>> train = webkb_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
-          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
+          'label': 'student',
+          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic...'}
          {
-          'label': '3',
-          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
-          'description': 'Reuters - Private investment firm Carlyle Group...'}]
+          'label': 'student',
+          'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
     """
     download_file_maybe_extract(url=url, directory=directory, filename='webkb.tar.gz', check_files=check_files)
 
     ret = []
-    splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    splits = [file_name for (requested, file_name) in
+              [(train, 'webkb-train-stemmed.txt'), (test, 'webkb-test-stemmed.txt')] if requested]
     for file_name in splits:
-        csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
-        examples = []
-        for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
+        with open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8') as foo:
+            examples = []
+            for line in foo.readlines():
+                label, text = line.split('\t')
+                examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
