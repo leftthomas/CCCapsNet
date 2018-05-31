@@ -1,4 +1,3 @@
-import csv
 import os
 
 from torchnlp.datasets.dataset import Dataset
@@ -9,13 +8,13 @@ def cade_dataset(directory='data/', train=False, test=False, extracted_name='cad
                  check_files=['cade/cade-train-stemmed.txt'],
                  url='https://drive.google.com/uc?export=download&id=19zEVR6ZgwZg80kwEAIBmtOBgqibJQQKX'):
     """
-    Load the AG's News Topic Classification dataset (Version 3).
+    Load the Cade12 dataset (Version 1).
 
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes
-    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
-    samples. The total number of training samples is 120,000 and testing 7,600.
+    The Cade12 dataset is corresponding to a subset of web pages extracted from the CADÊ Web Directory,
+    which points to Brazilian web pages classified by human experts. The total number of training samples
+    is 27,322 and testing 13,661.
 
-    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
+    **Reference:** http://www.cade.com.br/
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -34,23 +33,23 @@ def cade_dataset(directory='data/', train=False, test=False, extracted_name='cad
         >>> train = cade_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
-          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
+          'label': '08_cultura',
+          'text': 'br br email arvores arvores http www apoio mascote natureza vida...'}
          {
-          'label': '3',
-          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
-          'description': 'Reuters - Private investment firm Carlyle Group...'}]
+          'label': '02_sociedade',
+          'text': 'page frames browser support virtual araraquara shop '}]
     """
     download_file_maybe_extract(url=url, directory=directory, filename='cade.tar.gz', check_files=check_files)
 
     ret = []
-    splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    splits = [file_name for (requested, file_name) in
+              [(train, 'cade-train-stemmed.txt'), (test, 'cade-test-stemmed.txt')] if requested]
     for file_name in splits:
-        csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
-        examples = []
-        for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
+        with open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8') as foo:
+            examples = []
+            for line in foo.readlines():
+                label, text = line.split('\t')
+                examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
