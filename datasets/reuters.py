@@ -4,7 +4,8 @@ from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def reuters_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
+def reuters_dataset(directory='data/', train=False, test=False, extracted_name='reuters',
+                    check_files=['reuters/r8-train-stemmed.txt'],
                     url='https://drive.google.com/uc?export=download&id=1grhm1NvEty46XbLBSQsFqEQmvzyn2kX0',
                     fine_grained=False):
     """
@@ -41,7 +42,7 @@ def reuters_dataset(directory='data/', train=False, test=False, check_files=['ac
           'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
           'description': 'Reuters - Private investment firm Carlyle Group...'}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='reuters.tar.gz', check_files=check_files)
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]

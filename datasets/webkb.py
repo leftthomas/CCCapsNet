@@ -4,7 +4,8 @@ from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def webkb_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
+def webkb_dataset(directory='data/', train=False, test=False, extracted_name='webkb',
+                  check_files=['webkb/webkb-train-stemmed.txt'],
                   url='https://drive.google.com/uc?export=download&id=1psVDSlbSQuEnEtPE8L8U7UH5mhwmAv_m'):
     """
     Load the AG's News Topic Classification dataset (Version 3).
@@ -40,7 +41,7 @@ def webkb_dataset(directory='data/', train=False, test=False, check_files=['aclI
           'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
           'description': 'Reuters - Private investment firm Carlyle Group...'}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='webkb.tar.gz', check_files=check_files)
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]

@@ -4,16 +4,17 @@ from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
 
-def newsgroups_dataset(directory='data/', train=False, test=False, check_files=['aclImdb/README'],
+def newsgroups_dataset(directory='data/', train=False, test=False, extracted_name='newsgroups',
+                       check_files=['newsgroups/20ng-train-stemmed.txt'],
                        url='https://drive.google.com/uc?export=download&id=10NqffTpj_qhyBXaRPr54169O-l1X1pjS'):
     """
-    Load the AG's News Topic Classification dataset (Version 3).
+    Load the 20 Newsgroups dataset (Version 'bydate').
 
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes
-    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
-    samples. The total number of training samples is 120,000 and testing 7,600.
+    The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents,
+    partitioned (nearly) evenly across 20 different newsgroups. The total number of training
+    samples is 11,293 and testing 7,528.
 
-    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
+    **Reference:** http://qwone.com/~jason/20Newsgroups/
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -32,23 +33,23 @@ def newsgroups_dataset(directory='data/', train=False, test=False, check_files=[
         >>> train = newsgroups_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
-          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
+          'label': 'alt.atheism',
+          'text': 'alt atheism faq atheist resourc archiv name atheism resourc alt...'},
          {
-          'label': '3',
-          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
-          'description': 'Reuters - Private investment firm Carlyle Group...'}]
+          'label': 'alt.atheism',
+          'text': 'alt atheism faq introduct atheism archiv name atheism introduct alt...'}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='newsgroups.tar.gz', check_files=check_files)
 
     ret = []
-    splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    splits = [file_name for (requested, file_name) in
+              [(train, '20ng-train-stemmed.txt'), (test, '20ng-test-stemmed.txt')] if requested]
     for file_name in splits:
-        csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
-        examples = []
-        for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
+        with open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8') as foo:
+            examples = []
+            for line in foo.readlines():
+                label, text = line.split('\t')
+                examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:

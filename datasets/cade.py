@@ -42,7 +42,7 @@ def cade_dataset(directory='data/', train=False, test=False, extracted_name='cad
           'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
           'description': 'Reuters - Private investment firm Carlyle Group...'}]
     """
-    download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
+    download_file_maybe_extract(url=url, directory=directory, filename='cade.tar.gz', check_files=check_files)
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
