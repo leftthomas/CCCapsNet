@@ -9,13 +9,15 @@ def reuters_dataset(directory='data/', train=False, test=False, extracted_name='
                     url='https://drive.google.com/uc?export=download&id=1grhm1NvEty46XbLBSQsFqEQmvzyn2kX0',
                     fine_grained=False):
     """
-    Load the AG's News Topic Classification dataset (Version 3).
+    Load the Reuters-21578 R8 or Reuters-21578 R52 dataset (Version 'modApté').
 
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes
-    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
-    samples. The total number of training samples is 120,000 and testing 7,600.
+    The Reuters-21578 dataset considers only the documents with a single topic and the
+    classes which still have at least one train and one test example, we have 8 of the 10
+    most frequent classes and 52 of the original 90. In total there are 5,485 trainig samples
+    and 2,189 testing samples in R8 dataset. The total number of training samples is 6,532
+    and testing 2,568 in R52 dataset.
 
-    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
+    **Reference:** http://www.daviddlewis.com/resources/testcollections/reuters21578/
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -24,6 +26,8 @@ def reuters_dataset(directory='data/', train=False, test=False, extracted_name='
         extracted_name (str, optional): Name of the extracted dataset directory.
         check_files (str, optional): Check if these files exist, then this download was successful.
         url (str, optional): URL of the dataset `tar.gz` file.
+        fine_grained (bool, optional): Whether to use 52-class instead of 8-class labeling. Which
+        means using R52 dataset instead of R8 dataset
 
     Returns:
         :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and
@@ -34,23 +38,26 @@ def reuters_dataset(directory='data/', train=False, test=False, extracted_name='
         >>> train = reuters_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': '3',
-          'title': 'Wall St. Bears Claw Back Into the Black (Reuters)',
-          'description': "Reuters - Short-sellers, Wall Street's dwindling..."},
+          'label': 'earn',
+          'text': 'champion product approv stock split champion product inc board director...'}
          {
-          'label': '3',
-          'title': 'Carlyle Looks Toward Commercial Aerospace (Reuters)',
-          'description': 'Reuters - Private investment firm Carlyle Group...'}]
+          'label': 'acq',
+          'text': 'comput termin system cpml complet sale comput termin system inc complet...'}]
     """
     download_file_maybe_extract(url=url, directory=directory, filename='reuters.tar.gz', check_files=check_files)
 
+    if fine_grained:
+        train_file_name, test_file_name = 'r52-train-stemmed.txt', 'r52-test-stemmed.txt'
+    else:
+        train_file_name, test_file_name = 'r8-train-stemmed.txt', 'r8-test-stemmed.txt'
     ret = []
-    splits = [file_name for (requested, file_name) in [(train, 'train.csv'), (test, 'test.csv')] if requested]
+    splits = [file_name for (requested, file_name) in [(train, train_file_name), (test, test_file_name)] if requested]
     for file_name in splits:
-        csv_file = csv.reader(open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8'))
-        examples = []
-        for data in csv_file:
-            examples.append({'label': data[0], 'title': data[1], 'description': data[2]})
+        with open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8') as foo:
+            examples = []
+            for line in foo.readlines():
+                label, text = line.split('\t')
+                examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
