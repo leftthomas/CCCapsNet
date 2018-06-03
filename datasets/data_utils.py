@@ -1,5 +1,7 @@
 import os
 import re
+from porterstemmer import Stemmer
+
 
 stopwords = []
 with open(os.path.join('data', 'stopwords.txt'), 'r', encoding='utf-8') as foo:
@@ -22,6 +24,9 @@ def text_preprocess(text):
     # Remove the 524 SMART stopwords (the original stop word list contains 571 words, but there are 47 words contain
     # hyphens, so we removed them, and we found the word 'would' appears twice, so we also removed it, the final stop
     # word list contains 523 words). Some of them had already been removed, because they were shorter than 3 characters.
-    # the original stop word list can be found from http://www.lextek.com/manuals/onix/stopwords2.html
+    # the original stop word list can be found from http://www.lextek.com/manuals/onix/stopwords2.html.
     text = ' '.join(word for word in text.split() if word not in stopwords)
+    # Apply Porter's Stemmer to the remaining words.
+    stemmer = Stemmer()
+    text = ' '.join(stemmer(word) for word in text.split())
     return text
