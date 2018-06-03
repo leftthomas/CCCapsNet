@@ -77,7 +77,7 @@ def on_end_epoch(state):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train Text Classification')
-    parser.add_argument('--data_type', default='Reuters', type=str,
+    parser.add_argument('--data_type', default='WebKB', type=str,
                         choices=['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers',
                                  'YelpReview', 'AmazonReview'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '

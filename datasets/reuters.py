@@ -17,10 +17,10 @@ def reuters_dataset(directory='data/', train=False, test=False, extracted_name='
     most frequent classes and 52 of the original 90. In total there are 5,485 trainig samples
     and 2,189 testing samples in R8 dataset. The total number of training samples is 6,532
     and testing 2,568 in R52 dataset.
-    The min length of text about R8 train data is 20, max length of it is 3292; The min length
-    of text about R8 test data is 23, max length of it is 3100.
-    The min length of text about R52 train data is 20, max length of it is 3292; The min length
-    of text about R52 test data is 23, max length of it is 3100.
+    The min length of text about R8 train data is 4, max length of it is 533; The min length
+    of text about R8 test data is 5, max length of it is 484.
+    The min length of text about R52 train data is 4, max length of it is 595; The min length
+    of text about R52 test data is 5, max length of it is 484.
 
     **Reference:** http://www.daviddlewis.com/resources/testcollections/reuters21578/
 
