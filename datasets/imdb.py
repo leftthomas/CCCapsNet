@@ -18,8 +18,8 @@ def imdb_dataset(directory='data/', train=False, test=False, train_directory='tr
     previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for
     training, and 25,000 for testing. There is additional unlabeled data for use as well. Raw text
     and already processed bag of words formats are provided.
-    The min length of text about train data is 15, max length of it is 594; The min length
-    of text about test data is 42, max length of it is 497.
+    The min length of text about train data is 4, max length of it is 1199; The min length
+    of text about test data is 3, max length of it is 930.
 
     **Reference:** http://ai.stanford.edu/~amaas/data/sentiment/
 
@@ -43,11 +43,11 @@ def imdb_dataset(directory='data/', train=False, test=False, train_directory='tr
         >>> train = imdb_dataset(train=True)
         >>> train[0:2]
         [{
-          'label': 'Company',
-          'text': ' Abbott of Farnham E D Abbott Limited was a British coachbuilding ...'},
+          'label': 'pos',
+          'text': 'movi respect lot memor quot list gem imagin movi joe piscopo funni...'},
          {
-          'label': 'Company',
-          'text': " Schwan-STABILO is a German maker of pens for writing colouring ..."}]
+          'label': 'pos',
+          'text': 'bizarr horror movi fill famou face stolen cristina rain flamingo road...'}]
     """
     download_file_maybe_extract(url=url, directory=directory, check_files=check_files)
 
