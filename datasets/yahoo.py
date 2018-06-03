@@ -16,11 +16,10 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
     Load the Yahoo! Answers Topic Classification dataset (Version 2).
 
     The Yahoo! Answers topic classification dataset is constructed using 10 largest main categories.
-    Each class contains 140,000 training samples and 6,000 testing samples. Therefore, the total number
-    of training samples is 1,400,000 and testing samples 60,000 in this dataset. From all the answers
-    and other meta-information, we only used the best answer content and the main category information.
-    The min length of text about train data is 15, max length of it is 594; The min length
-    of text about test data is 42, max length of it is 497.
+    The total number of training samples is 753,587 and testing samples 32,263 in this dataset. We
+    only used the best answer content and the main category information.
+    The min length of text about train data is 1, max length of it is 747; The min length
+    of text about test data is 1, max length of it is 491.
 
     **Reference:** https://webscope.sandbox.yahoo.com/catalog.php?datatype=l
 
@@ -42,10 +41,10 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
         >>> train[0:2]
         [{
           'label': 'Computers & Internet',
-          'text': "why doesn't an optical mouse work on a glass table?"},
+          'text': 'doesn optic mous work glass tabl surfac optic mice led camera rapidli captur imag...'},
          {
           'label': 'Sports',
-          'text': 'What is the best off-road motorcycle trail ?'}]
+          'text': 'road motorcycl trail long distanc trail hear mojav road amaz nsearch onlin'}]
     """
     download_file_maybe_extract(url=url, directory=directory, filename='yahoo_answers.tar.gz', check_files=check_files)
 
