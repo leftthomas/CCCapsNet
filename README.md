@@ -25,7 +25,7 @@ The `AGNews`, `AmazonReview`, `DBPedia`, `YahooAnswers` and `YelpReview` dataset
 
 The `Newsgroups`, `Reuters` and `WebKB` datasets can be found [here](http://ana.cachopo.org/datasets-for-single-label-text-categorization).
 
-The `TREC` and `IMDB` datasets are downloaded by `PyTorch-NLP`.
+The `IMDB` dataset is downloaded by `PyTorch-NLP`.
 
 You needn't download the datasets by yourself, the code will download them automatically.
 If you encounter network issues, you can download all the datasets from 
@@ -36,9 +36,9 @@ If you encounter network issues, you can download all the datasets from
 ```
 python -m visdom.server -logging_level WARNING & python main.py --data_type TREC --num_epochs 300
 optional arguments:
---data_type              dataset type [default value is 'TREC'](choices:['TREC', 'IMDB', 'Newsgroups', 'Reuters', 
-                         'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers', 'YelpReview', 'AmazonReview'])
---fine_grained           use fine grained class or not, it only works for TREC, Reuters, YelpReview and AmazonReview [default value is False]
+--data_type              dataset type [default value is 'IMDB'](choices:['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia', 
+                         'AGNews', 'YahooAnswers', 'YelpReview', 'AmazonReview'])
+--fine_grained           use fine grained class or not, it only works for Reuters, YelpReview and AmazonReview [default value is False]
 --num_iterations         initial routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 100]

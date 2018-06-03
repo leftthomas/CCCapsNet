@@ -2,8 +2,8 @@ import torch.nn.functional as F
 from torch import nn
 from torchnlp.utils import datasets_iterator
 
-from datasets import imdb_dataset, trec_dataset, ag_dataset, amazon_dataset, dbpedia_dataset, \
-    newsgroups_dataset, reuters_dataset, webkb_dataset, yahoo_dataset, yelp_dataset
+from datasets import imdb_dataset, ag_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, reuters_dataset, \
+    webkb_dataset, yahoo_dataset, yelp_dataset
 
 
 class MarginLoss(nn.Module):
@@ -18,9 +18,7 @@ class MarginLoss(nn.Module):
 
 
 def load_data(data_type, train_mode, batch_size, fine_grained):
-    if data_type == 'TREC':
-        dataset = trec_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
-    elif data_type == 'IMDB':
+    if data_type == 'IMDB':
         dataset = imdb_dataset(train=train_mode, test=not train_mode)
     elif data_type == 'Newsgroups':
         dataset = newsgroups_dataset(train=train_mode, test=not train_mode)
@@ -39,7 +37,7 @@ def load_data(data_type, train_mode, batch_size, fine_grained):
     elif data_type == 'AmazonReview':
         dataset = amazon_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
     else:
-        raise ValueError('Expected data_type must be one of TREC, IMDB, Newsgroups, Reuters, WebKB, DBPedia,'
+        raise ValueError('Expected data_type must be one of IMDB, Newsgroups, Reuters, WebKB, DBPedia,'
                          ' AGNews, YahooAnswers, YelpReview and AmazonReview, got {} instead.'.format(data_type))
 
     return datasets_iterator([dataset])
