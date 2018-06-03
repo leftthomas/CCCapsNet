@@ -17,15 +17,16 @@ def yelp_dataset(directory='data/', train=False, test=False, check_files=['readm
     """
     Load the Yelp Review Full Star or Yelp Review Polarity dataset (Version 1).
 
-    The Yelp reviews full star dataset is constructed by randomly taking 130,000 training samples and
-    10,000 testing samples for each review star from 1 to 5. In total there are 650,000 trainig samples
-    and 50,000 testing samples.
+    The Yelp reviews full star dataset is constructed by randomly taking training samples and testing
+    samples for each review star from 1 to 5. In total there are 649,816 trainig samples and 49,990
+    testing samples.
     The Yelp reviews polarity dataset is constructed by considering stars 1 and 2 negative, and 3 and 4
-    positive. For each polarity 280,000 training samples and 19,000 testing samples are take randomly.
-    In total there are 560,000 trainig samples and 38,000 testing samples. Negative polarity is class 1,
-    and positive class 2.
-    The min length of text about train data is 15, max length of it is 594; The min length
-    of text about test data is 42, max length of it is 497.
+    positive. In total there are 559,861 trainig samples and 37,985 testing samples. Negative polarity
+    is class 1, and positive class 2.
+    The min length of text about polarity train data is 1, max length of it is 617; The min length
+    of text about polarity test data is 1, max length of it is 504.
+    The min length of text about full train data is 1, max length of it is 617; The min length
+    of text about full test data is 1, max length of it is 524.
 
     **Reference:** http://www.yelp.com/dataset_challenge
 
@@ -48,10 +49,10 @@ def yelp_dataset(directory='data/', train=False, test=False, check_files=['readm
         >>> train[0:2]
         [{
           'label': '1',
-          'text': "Unfortunately, the frustration of being Dr. Goldberg's patient is..."}
+          'text': "frustrat goldberg patient repeat experi doctor nyc good doctor terribl staff staff simpli..."}
          {
           'label': '2',
-          'text': "Been going to Dr. Goldberg for over 10 years. I think I was one of..."}]
+          'text': "goldberg year patient start mhmg great year big pictur gyn markoff found fibroid explor..."}]
     """
     if fine_grained:
         extracted_name, url = 'yelp_review_full', urls[0]
