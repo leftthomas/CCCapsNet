@@ -63,7 +63,10 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
         for data in csv_file:
             label, title, content, answer = index_to_label[int(data[0]) - 1], data[1], data[2], data[3]
             # The title of each document is simply added in the beginning of the document's text.
-            text = text_preprocess(title + ' ' + content + ' ' + answer)
+            if isinstance(title, str) and isinstance(content, str) and isinstance(answer, str):
+                text = text_preprocess(title + ' ' + content + ' ' + answer)
+            else:
+                continue
             examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
 

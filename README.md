@@ -21,9 +21,9 @@ conda install tqdm
 ```
 
 ## Datasets
-The `AGNews`, `AmazonReview`, `DBPedia`, `SogouNews`, `YahooAnswers` and `YelpReview` datasets are coming from [here](http://goo.gl/JyCnZq).
+The `AGNews`, `AmazonReview`, `DBPedia`, `YahooAnswers` and `YelpReview` datasets are coming from [here](http://goo.gl/JyCnZq).
 
-The `Newsgroups`, `Reuters`, `Cade` and `WebKB` datasets can be found [here](http://ana.cachopo.org/datasets-for-single-label-text-categorization).
+The `Newsgroups`, `Reuters` and `WebKB` datasets can be found [here](http://ana.cachopo.org/datasets-for-single-label-text-categorization).
 
 The `TREC`, `IMDB` and `SMT` datasets are downloaded by `PyTorch-NLP`.
 
@@ -37,7 +37,7 @@ If you encounter network issues, you can download all the datasets from
 python -m visdom.server -logging_level WARNING & python main.py --data_type TREC --num_epochs 300
 optional arguments:
 --data_type              dataset type [default value is 'TREC'](choices:['TREC', 'SMT', 'IMDB', 'Newsgroups', 'Reuters', 
-                         'Cade', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers', 'SogouNews', 'YelpReview', 'AmazonReview'])
+                         'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers', 'YelpReview', 'AmazonReview'])
 --fine_grained           use fine grained class or not, it only works for TREC, SMT, Reuters, YelpReview and AmazonReview [default value is False]
 --num_iterations         initial routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
