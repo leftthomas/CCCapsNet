@@ -17,8 +17,10 @@ def reuters_dataset(directory='data/', train=False, test=False, extracted_name='
     most frequent classes and 52 of the original 90. In total there are 5,485 trainig samples
     and 2,189 testing samples in R8 dataset. The total number of training samples is 6,532
     and testing 2,568 in R52 dataset.
-    The min length of text about train data is 15, max length of it is 594; The min length
-    of text about test data is 42, max length of it is 497.
+    The min length of text about R8 train data is 20, max length of it is 3292; The min length
+    of text about R8 test data is 23, max length of it is 3100.
+    The min length of text about R52 train data is 20, max length of it is 3292; The min length
+    of text about R52 test data is 23, max length of it is 3100.
 
     **Reference:** http://www.daviddlewis.com/resources/testcollections/reuters21578/
 
@@ -62,10 +64,13 @@ def reuters_dataset(directory='data/', train=False, test=False, extracted_name='
             text_max_length = 0
             for line in foo.readlines():
                 label, text = line.split('\t')
-                if len(text) > text_max_length:
-                    text_max_length = len(text)
-                if len(text) < text_min_length:
-                    text_min_length = len(text)
+                if len(text) == 0:
+                    continue
+                else:
+                    if len(text.split()) > text_max_length:
+                        text_max_length = len(text.split())
+                    if len(text.split()) < text_min_length:
+                        text_min_length = len(text.split())
                 examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
         print('text_min_length:' + str(text_min_length))

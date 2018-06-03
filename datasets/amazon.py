@@ -77,10 +77,10 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
                 if len(text) == 0:
                     continue
                 else:
-                    if len(text) > text_max_length:
-                        text_max_length = len(text)
-                    if len(text) < text_min_length:
-                        text_min_length = len(text)
+                    if len(text.split()) > text_max_length:
+                        text_max_length = len(text.split())
+                    if len(text.split()) < text_min_length:
+                        text_min_length = len(text.split())
             else:
                 continue
             examples.append({'label': label, 'text': text})

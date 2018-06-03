@@ -1,4 +1,5 @@
 import os
+import sys
 
 import numpy as np
 import pandas as pd
@@ -58,15 +59,26 @@ def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='
     for file_name in splits:
         csv_file = np.array(pd.read_csv(os.path.join(directory, extracted_name, file_name), header=None)).tolist()
         examples = []
+        text_min_length = sys.maxsize
+        text_max_length = 0
         for data in csv_file:
             label, title, description = index_to_label[int(data[0]) - 1], data[1], data[2]
             # The title of each document is simply added in the beginning of the document's text.
             if isinstance(title, str) and isinstance(description, str):
                 text = text_preprocess(title + ' ' + description)
+                if len(text) == 0:
+                    continue
+                else:
+                    if len(text.split()) > text_max_length:
+                        text_max_length = len(text.split())
+                    if len(text.split()) < text_min_length:
+                        text_min_length = len(text.split())
             else:
                 continue
             examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
+        print('text_min_length:' + str(text_min_length))
+        print('text_max_length:' + str(text_max_length))
 
     if len(ret) == 1:
         return ret[0]

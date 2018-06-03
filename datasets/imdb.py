@@ -1,5 +1,6 @@
 import glob
 import os
+import sys
 
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
@@ -58,13 +59,24 @@ def imdb_dataset(directory='data/', train=False, test=False, train_directory='tr
     for split_directory in splits:
         full_path = os.path.join(directory, extracted_name, split_directory)
         examples = []
+        text_min_length = sys.maxsize
+        text_max_length = 0
         for sentiment in sentiments:
             for filename in glob.iglob(os.path.join(full_path, sentiment, '*.txt')):
                 with open(filename, 'r', encoding="utf-8") as f:
                     text = f.readline()
                 text = text_preprocess(text)
+                if len(text) == 0:
+                    continue
+                else:
+                    if len(text.split()) > text_max_length:
+                        text_max_length = len(text.split())
+                    if len(text.split()) < text_min_length:
+                        text_min_length = len(text.split())
                 examples.append({'label': sentiment, 'text': text})
         ret.append(Dataset(examples))
+        print('text_min_length:' + str(text_min_length))
+        print('text_max_length:' + str(text_max_length))
 
     if len(ret) == 1:
         return ret[0]
