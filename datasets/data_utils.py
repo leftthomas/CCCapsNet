@@ -29,4 +29,6 @@ def text_preprocess(text):
     # Apply Porter's Stemmer to the remaining words.
     stemmer = Stemmer()
     text = ' '.join(stemmer(word) for word in text.split())
+    # Substitute multiple SPACES by a single SPACE.
+    text = ' '.join(text.split())
     return text
