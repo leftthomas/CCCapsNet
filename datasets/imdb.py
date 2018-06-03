@@ -66,7 +66,7 @@ def imdb_dataset(directory='data/', train=False, test=False, train_directory='tr
                 with open(filename, 'r', encoding="utf-8") as f:
                     text = f.readline()
                 text = text_preprocess(text)
-                if len(text) == 0:
+                if len(text.split()) == 0:
                     continue
                 else:
                     if len(text.split()) > text_max_length:

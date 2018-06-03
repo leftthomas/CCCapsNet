@@ -59,7 +59,7 @@ def webkb_dataset(directory='data/', train=False, test=False, extracted_name='we
             text_max_length = 0
             for line in foo.readlines():
                 label, text = line.split('\t')
-                if len(text) == 0:
+                if len(text.split()) == 0:
                     continue
                 else:
                     if len(text.split()) > text_max_length:

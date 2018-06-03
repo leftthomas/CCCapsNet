@@ -66,7 +66,7 @@ def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='
             # The title of each document is simply added in the beginning of the document's text.
             if isinstance(title, str) and isinstance(description, str):
                 text = text_preprocess(title + ' ' + description)
-                if len(text) == 0:
+                if len(text.split()) == 0:
                     continue
                 else:
                     if len(text.split()) > text_max_length:

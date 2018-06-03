@@ -72,7 +72,7 @@ def yelp_dataset(directory='data/', train=False, test=False, check_files=['readm
         for data in csv_file:
             label, text = str(data[0]), data[1]
             text = text_preprocess(text)
-            if len(text) == 0:
+            if len(text.split()) == 0:
                 continue
             else:
                 if len(text.split()) > text_max_length:
