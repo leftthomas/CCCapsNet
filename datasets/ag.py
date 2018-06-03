@@ -17,8 +17,8 @@ def ag_dataset(directory='data/', train=False, test=False, extracted_name='ag_ne
     The AG's news topic classification dataset is constructed by choosing 4 largest classes
     from the original corpus. Each class contains 30,000 training samples and 1,900 testing
     samples. The total number of training samples is 120,000 and testing 7,600.
-    The min length of text about train data is 15, max length of it is 594; The min length
-    of text about test data is 42, max length of it is 497.
+    The min length of text about train data is 3, max length of it is 91; The min length
+    of text about test data is 5, max length of it is 74.
 
     **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
 
