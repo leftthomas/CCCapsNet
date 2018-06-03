@@ -1,4 +1,5 @@
 import os
+import sys
 
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
@@ -57,10 +58,18 @@ def reuters_dataset(directory='data/', train=False, test=False, extracted_name='
     for file_name in splits:
         with open(os.path.join(directory, extracted_name, file_name), 'r', encoding='utf-8') as foo:
             examples = []
+            text_min_length = sys.maxsize
+            text_max_length = 0
             for line in foo.readlines():
                 label, text = line.split('\t')
+                if len(text) > text_max_length:
+                    text_max_length = len(text)
+                if len(text) < text_min_length:
+                    text_min_length = len(text)
                 examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
+        print('text_min_length:' + str(text_min_length))
+        print('text_max_length:' + str(text_max_length))
 
     if len(ret) == 1:
         return ret[0]
