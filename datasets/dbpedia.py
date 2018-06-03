@@ -61,7 +61,10 @@ def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='
         for data in csv_file:
             label, title, description = index_to_label[int(data[0]) - 1], data[1], data[2]
             # The title of each document is simply added in the beginning of the document's text.
-            text = text_preprocess(title + ' ' + description)
+            if isinstance(title, str) and isinstance(description, str):
+                text = text_preprocess(title + ' ' + description)
+            else:
+                continue
             examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
 
