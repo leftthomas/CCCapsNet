@@ -5,6 +5,8 @@ import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
+from .data_utils import text_preprocess
+
 
 def yelp_dataset(directory='data/', train=False, test=False, check_files=['readme.txt'],
                  # yelp_review_full, yelp_review_polarity
@@ -63,7 +65,9 @@ def yelp_dataset(directory='data/', train=False, test=False, check_files=['readm
         csv_file = np.array(pd.read_csv(os.path.join(directory, extracted_name, file_name), header=None)).tolist()
         examples = []
         for data in csv_file:
-            examples.append({'label': str(data[0]), 'text': data[1]})
+            label, text = str(data[0]), data[1]
+            text = text_preprocess(text)
+            examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:

@@ -5,6 +5,8 @@ import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
+from .data_utils import text_preprocess
+
 
 def sogou_dataset(directory='data/', train=False, test=False, extracted_name='sogou_news',
                   check_files=['sogou_news/readme.txt'],
@@ -58,7 +60,10 @@ def sogou_dataset(directory='data/', train=False, test=False, extracted_name='so
         csv_file = np.array(pd.read_csv(os.path.join(directory, extracted_name, file_name), header=None)).tolist()
         examples = []
         for data in csv_file:
-            examples.append({'label': index_to_label[int(data[0]) - 1], 'title': data[1], 'content': data[2]})
+            label, title, description = index_to_label[int(data[0]) - 1], data[1], data[2]
+            # The title of each document is simply added in the beginning of the document's text.
+            text = text_preprocess(title + ' ' + description)
+            examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:

@@ -5,6 +5,8 @@ import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
+from .data_utils import text_preprocess
+
 
 def amazon_dataset(directory='data/', train=False, test=False, check_files=['readme.txt'],
                    # amazon_review_full, amazon_review_polarity
@@ -65,7 +67,10 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
         csv_file = np.array(pd.read_csv(os.path.join(directory, extracted_name, file_name), header=None)).tolist()
         examples = []
         for data in csv_file:
-            examples.append({'label': str(data[0]), 'title': data[1], 'text': data[2]})
+            label, title, description = str(data[0]), data[1], data[2]
+            # The title of each document is simply added in the beginning of the document's text.
+            text = text_preprocess(title + ' ' + description)
+            examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
 
     if len(ret) == 1:
