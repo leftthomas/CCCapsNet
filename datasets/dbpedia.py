@@ -18,6 +18,8 @@ def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='
     from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we randomly
     choose 40,000 training samples and 5,000 testing samples. Therefore, the total size of the training
     dataset is 560,000 and testing dataset 70,000.
+    The min length of text about train data is 15, max length of it is 594; The min length
+    of text about test data is 42, max length of it is 497.
 
     **Reference:** http://dbpedia.org
 
@@ -39,12 +41,10 @@ def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='
         >>> train[0:2]
         [{
           'label': 'Company',
-          'title': 'E. D. Abbott Ltd',
-          'content': ' Abbott of Farnham E D Abbott Limited was a British coachbuilding ...'},
+          'text': ' Abbott of Farnham E D Abbott Limited was a British coachbuilding ...'},
          {
           'label': 'Company',
-          'title': 'Schwan-Stabilo',
-          'content': " Schwan-STABILO is a German maker of pens for writing colouring ..."}]
+          'text': " Schwan-STABILO is a German maker of pens for writing colouring ..."}]
     """
     download_file_maybe_extract(url=url, directory=directory, filename='dbpedia.tar.gz', check_files=check_files)
 

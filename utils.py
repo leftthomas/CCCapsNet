@@ -19,23 +19,23 @@ class MarginLoss(nn.Module):
 
 def load_data(data_type, train_mode, batch_size, fine_grained):
     if data_type == 'IMDB':
-        dataset = imdb_dataset(train=train_mode, test=not train_mode)
+        dataset = imdb_dataset(train=train_mode, test=train_mode)
     elif data_type == 'Newsgroups':
-        dataset = newsgroups_dataset(train=train_mode, test=not train_mode)
+        dataset = newsgroups_dataset(train=train_mode, test=train_mode)
     elif data_type == 'Reuters':
-        dataset = reuters_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = reuters_dataset(train=train_mode, test=train_mode, fine_grained=fine_grained)
     elif data_type == 'WebKB':
-        dataset = webkb_dataset(train=train_mode, test=not train_mode)
+        dataset = webkb_dataset(train=train_mode, test=train_mode)
     elif data_type == 'DBPedia':
-        dataset = dbpedia_dataset(train=train_mode, test=not train_mode)
+        dataset = dbpedia_dataset(train=train_mode, test=train_mode)
     elif data_type == 'AGNews':
-        dataset = ag_dataset(train=train_mode, test=not train_mode)
+        dataset = ag_dataset(train=train_mode, test=train_mode)
     elif data_type == 'YahooAnswers':
-        dataset = yahoo_dataset(train=train_mode, test=not train_mode)
+        dataset = yahoo_dataset(train=train_mode, test=train_mode)
     elif data_type == 'YelpReview':
-        dataset = yelp_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = yelp_dataset(train=train_mode, test=train_mode, fine_grained=fine_grained)
     elif data_type == 'AmazonReview':
-        dataset = amazon_dataset(train=train_mode, test=not train_mode, fine_grained=fine_grained)
+        dataset = amazon_dataset(train=train_mode, test=train_mode, fine_grained=fine_grained)
     else:
         raise ValueError('Expected data_type must be one of IMDB, Newsgroups, Reuters, WebKB, DBPedia,'
                          ' AGNews, YahooAnswers, YelpReview and AmazonReview, got {} instead.'.format(data_type))

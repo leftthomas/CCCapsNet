@@ -18,6 +18,8 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
     Each class contains 140,000 training samples and 6,000 testing samples. Therefore, the total number
     of training samples is 1,400,000 and testing samples 60,000 in this dataset. From all the answers
     and other meta-information, we only used the best answer content and the main category information.
+    The min length of text about train data is 15, max length of it is 594; The min length
+    of text about test data is 42, max length of it is 497.
 
     **Reference:** https://webscope.sandbox.yahoo.com/catalog.php?datatype=l
 
@@ -39,14 +41,10 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
         >>> train[0:2]
         [{
           'label': 'Computers & Internet',
-          'title': "why doesn't an optical mouse work on a glass table?",
-          'content': 'or even on some surfaces?',
-          'answer': 'Optical mice use an LED and a camera to rapidly ...'},
+          'text': "why doesn't an optical mouse work on a glass table?"},
          {
           'label': 'Sports',
-          'title': 'What is the best off-road motorcycle trail ?',
-          'content': 'long-distance trail throughout CA',
-          'answer': 'i hear that the mojave road is amazing!...'}]
+          'text': 'What is the best off-road motorcycle trail ?'}]
     """
     download_file_maybe_extract(url=url, directory=directory, filename='yahoo_answers.tar.gz', check_files=check_files)
 

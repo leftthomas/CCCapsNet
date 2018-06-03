@@ -23,6 +23,8 @@ def yelp_dataset(directory='data/', train=False, test=False, check_files=['readm
     positive. For each polarity 280,000 training samples and 19,000 testing samples are take randomly.
     In total there are 560,000 trainig samples and 38,000 testing samples. Negative polarity is class 1,
     and positive class 2.
+    The min length of text about train data is 15, max length of it is 594; The min length
+    of text about test data is 42, max length of it is 497.
 
     **Reference:** http://www.yelp.com/dataset_challenge
 

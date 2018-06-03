@@ -13,6 +13,8 @@ def newsgroups_dataset(directory='data/', train=False, test=False, extracted_nam
     The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents,
     partitioned (nearly) evenly across 20 different newsgroups. The total number of training
     samples is 11,293 and testing 7,528.
+    The min length of text about train data is 15, max length of it is 594; The min length
+    of text about test data is 42, max length of it is 497.
 
     **Reference:** http://qwone.com/~jason/20Newsgroups/
 

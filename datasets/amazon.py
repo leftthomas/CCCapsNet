@@ -23,6 +23,8 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
     5 as positive. For each polarity 1,800,000 training samples and 200,000 testing samples are take randomly.
     In total there are 3,600,000 trainig samples and 400,000 testing samples. Negative polarity is class 1,
     and positive class 2.
+    The min length of text about train data is 15, max length of it is 594; The min length
+    of text about test data is 42, max length of it is 497.
 
     **Reference:** http://jmcauley.ucsd.edu/data/amazon/
 
@@ -45,11 +47,9 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
         >>> train[0:2]
         [{
           'label': '2',
-          'title': 'Stuning even for the non-gamer',
           'text': 'This sound track was beautiful! It paints the senery in your mind so...'}
          {
           'label': '2',
-          'title': 'The best soundtrack ever to anything.',
           'text': "I'm reading a lot of reviews saying that this is the best 'game soundtrack'..."}]
     """
     if fine_grained:
