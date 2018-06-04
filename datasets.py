@@ -174,3 +174,28 @@ def webkb_dataset(directory='data/', train=False, test=False):
 
     return imdb_dataset(directory, 'webkb', train, test,
                         share_id=['166VJXbk0WdZIEU527m8LAka7qOv0jfCq', '18dpFqT_-GUOWq6h8KGGAhGDRQCa2_DfP'])
+
+
+def yahoo_dataset(directory='data/', train=False, test=False):
+    """
+    Load the Yahoo! Answers Topic Classification dataset (Version 2).
+
+    The Yahoo! Answers topic classification dataset is constructed using 10 largest main categories.
+    The total number of training samples is 753,587 and testing samples 32,263 in this dataset. We
+    only used the best answer content and the main category information.
+    The min length of text about train data is 1, max length of it is 747; The min length
+    of text about test data is 1, max length of it is 491.
+
+    Example:
+        >>> train = yahoo_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': 'Computers & Internet',
+          'text': 'doesn optic mous work glass tabl surfac optic mice led camera rapidli captur imag...'},
+         {
+          'label': 'Sports',
+          'text': 'road motorcycl trail long distanc trail hear mojav road amaz nsearch onlin'}]
+    """
+
+    return imdb_dataset(directory, 'yahoo', train, test,
+                        share_id=['1R8urh9-aBgZsECsyJzL-CSjJArceR-0D', '1_z2itvF0APqTNYG4CE-fquB5PFWq_OFu'])
