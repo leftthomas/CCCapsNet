@@ -44,7 +44,7 @@ all the datasets from the aforementioned cloud storage webs, and put the downloa
 
 ## Usage
 ```
-python -m visdom.server -logging_level WARNING & python main.py --data_type TREC --num_epochs 300
+python -m visdom.server -logging_level WARNING & python main.py --data_type newsgroups --num_epochs 300
 optional arguments:
 --data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
                          'dbpedia', 'agnews', 'yahoo', 'yelp', 'amazon'])
