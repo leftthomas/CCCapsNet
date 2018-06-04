@@ -77,11 +77,11 @@ def on_end_epoch(state):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train Text Classification')
-    parser.add_argument('--data_type', default='AmazonReview', type=str,
-                        choices=['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers',
-                                 'YelpReview', 'AmazonReview'], help='dataset type')
+    parser.add_argument('--data_type', default='imdb', type=str,
+                        choices=['imdb', 'newsgroups', 'reuters', 'webkb', 'dbpedia', 'agnews', 'yahoo', 'yelp',
+                                 'amazon'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
-                                                                    'Reuters, YelpReview and AmazonReview')
+                                                                    'reuters, yelp and amazon')
     parser.add_argument('--num_iterations', default=1, type=int, help='initial routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')

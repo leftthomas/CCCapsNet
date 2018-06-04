@@ -46,9 +46,9 @@ all the datasets from the aforementioned cloud storage webs, and put the downloa
 ```
 python -m visdom.server -logging_level WARNING & python main.py --data_type TREC --num_epochs 300
 optional arguments:
---data_type              dataset type [default value is 'IMDB'](choices:['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia', 
-                         'AGNews', 'YahooAnswers', 'YelpReview', 'AmazonReview'])
---fine_grained           use fine grained class or not, it only works for Reuters, YelpReview and AmazonReview [default value is False]
+--data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
+                         'dbpedia', 'agnews', 'yahoo', 'yelp', 'amazon'])
+--fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --num_iterations         initial routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 100]
