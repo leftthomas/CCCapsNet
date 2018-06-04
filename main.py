@@ -5,12 +5,14 @@ import torchnet as tnt
 from capsule_layer.optim import MultiStepRI
 from torch.autograd import Variable
 from torch.optim import Adam
+from torch.utils.data import DataLoader
 from torchnet.engine import Engine
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
+from torchnlp.samplers import BucketBatchSampler
 from tqdm import tqdm
 
 from model import Model
-from utils import load_data, MarginLoss
+from utils import load_data, MarginLoss, collate_fn
 
 
 def processor(sample):
@@ -59,7 +61,10 @@ def on_end_epoch(state):
 
     reset_meters()
 
-    engine.test(processor, test_iter)
+    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, True, sort_key=lambda row: len(row['text']))
+    test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
+
+    engine.test(processor, test_iterator)
 
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
@@ -70,7 +75,10 @@ def on_end_epoch(state):
 
     # scheduler routing iterations
     scheduler.step()
-    torch.save(model.state_dict(), 'epochs/%s_%d.pth' % (DATA_TYPE, state['epoch']))
+    if FINE_GRAINED:
+        torch.save(model.state_dict(), 'epochs/%s_%d.pth' % (DATA_TYPE + '_fine_grained', state['epoch']))
+    else:
+        torch.save(model.state_dict(), 'epochs/%s_%d.pth' % (DATA_TYPE, state['epoch']))
 
 
 if __name__ == '__main__':
@@ -93,10 +101,10 @@ if __name__ == '__main__':
     NUM_EPOCHS = opt.num_epochs
 
     # prepare dataset
-    encoder, labels, train_iter, test_iter = load_data(DATA_TYPE, BATCH_SIZE, FINE_GRAINED)
-    vocab_size = encoder.vocab_size
-    num_class = len(labels)
+    vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, FINE_GRAINED)
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
+    train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, True, sort_key=lambda row: len(row['text']))
+    train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
     loss_criterion = MarginLoss()
@@ -113,16 +121,19 @@ if __name__ == '__main__':
     meter_accuracy = tnt.meter.ClassErrorMeter(accuracy=True)
     meter_confusion = tnt.meter.ConfusionMeter(num_class, normalized=True)
 
-    train_loss_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Train Loss'})
-    train_accuracy_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Train Accuracy'})
-    test_loss_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Test Loss'})
-    test_accuracy_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Test Accuracy'})
-    confusion_logger = VisdomLogger('heatmap', env=DATA_TYPE, opts={'title': 'Confusion Matrix', 'columnnames': labels,
-                                                                    'rownames': labels})
+    if FINE_GRAINED:
+        env_name = DATA_TYPE + '_fine_grained'
+    else:
+        env_name = DATA_TYPE
+    train_loss_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Train Loss'})
+    train_accuracy_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Train Accuracy'})
+    test_loss_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Test Loss'})
+    test_accuracy_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Test Accuracy'})
+    confusion_logger = VisdomLogger('heatmap', env=env_name, opts={'title': 'Confusion Matrix'})
 
     engine.hooks['on_sample'] = on_sample
     engine.hooks['on_forward'] = on_forward
     engine.hooks['on_start_epoch'] = on_start_epoch
     engine.hooks['on_end_epoch'] = on_end_epoch
 
-    engine.train(processor, train_iter, maxepoch=NUM_EPOCHS, optimizer=optimizer)
+    engine.train(processor, train_iterator, maxepoch=NUM_EPOCHS, optimizer=optimizer)

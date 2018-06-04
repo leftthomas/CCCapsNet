@@ -1,7 +1,10 @@
+import torch
 import torch.nn.functional as F
 from torch import nn
-from torch.utils.data import DataLoader
-from torchnlp.text_encoders import WhitespaceEncoder
+from torchnlp.text_encoders import WhitespaceEncoder, IdentityEncoder
+from torchnlp.text_encoders.reserved_tokens import PADDING_TOKEN
+from torchnlp.utils import datasets_iterator
+from torchnlp.utils import pad_batch
 
 from datasets import imdb_dataset, agnews_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, \
     reuters_dataset, webkb_dataset, yahoo_dataset, yelp_dataset
@@ -18,7 +21,7 @@ class MarginLoss(nn.Module):
         return loss.sum(dim=-1).mean()
 
 
-def load_data(data_type, batch_size, fine_grained):
+def load_data(data_type, fine_grained):
     if data_type == 'imdb':
         dataset = imdb_dataset(train=True, test=True)
     elif data_type == 'newsgroups':
@@ -40,8 +43,20 @@ def load_data(data_type, batch_size, fine_grained):
     else:
         raise ValueError('{} data type not supported.'.format(data_type))
 
-    encoder = WhitespaceEncoder(dataset[0].__getitem__('text'), append_eos=True)
-    labels = list(set(dataset[0].__getitem__('label')))
-    return encoder, labels, DataLoader(dataset[0], batch_size, shuffle=True, num_workers=4), DataLoader(dataset[1],
-                                                                                                        batch_size,
-                                                                                                        num_workers=4)
+    sentence_corpus = [row['text'] for row in datasets_iterator(dataset[0], dataset[1])]
+    sentence_encoder = WhitespaceEncoder(sentence_corpus, reserved_tokens=[PADDING_TOKEN])
+    label_corpus = [row['label'] for row in datasets_iterator(dataset[0], dataset[1])]
+    label_encoder = IdentityEncoder(label_corpus, reserved_tokens=[])
+
+    # Encode
+    for row in datasets_iterator(dataset[0], dataset[1]):
+        row['text'] = sentence_encoder.encode(row['text'])
+        row['label'] = label_encoder.encode(row['label'])
+    return sentence_encoder.vocab_size, label_encoder.vocab_size, dataset[0], dataset[1]
+
+
+def collate_fn(batch):
+    """ list of tensors to a batch tensors """
+    text_batch, _ = pad_batch([row['text'] for row in batch])
+    label_batch = [row['label'] for row in batch]
+    return torch.stack(text_batch), torch.stack(label_batch)
