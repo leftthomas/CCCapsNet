@@ -58,8 +58,7 @@ def on_end_epoch(state):
     train_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
 
     reset_meters()
-    # prepare test dataset
-    test_iter = load_data(DATA_TYPE, False, BATCH_SIZE, FINE_GRAINED)
+
     engine.test(processor, test_iter)
 
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
@@ -93,10 +92,10 @@ if __name__ == '__main__':
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
-    # prepare train dataset
-    train_iter = load_data(DATA_TYPE, True, BATCH_SIZE, FINE_GRAINED)
-    vocab_size = data_info['vocab_size']
-    num_class = data_info['num_class']
+    # prepare dataset
+    encoder, labels, train_iter, test_iter = load_data(DATA_TYPE, BATCH_SIZE, FINE_GRAINED)
+    vocab_size = encoder.vocab_size
+    num_class = len(labels)
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
 
     model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
@@ -118,7 +117,8 @@ if __name__ == '__main__':
     train_accuracy_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Train Accuracy'})
     test_loss_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Test Loss'})
     test_accuracy_logger = VisdomPlotLogger('line', env=DATA_TYPE, opts={'title': 'Test Accuracy'})
-    confusion_logger = VisdomLogger('heatmap', env=DATA_TYPE, opts={'title': 'Confusion Matrix'})
+    confusion_logger = VisdomLogger('heatmap', env=DATA_TYPE, opts={'title': 'Confusion Matrix', 'columnnames': labels,
+                                                                    'rownames': labels})
 
     engine.hooks['on_sample'] = on_sample
     engine.hooks['on_forward'] = on_forward

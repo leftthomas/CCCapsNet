@@ -198,7 +198,7 @@ def yahoo_dataset(directory='data/', train=False, test=False):
     """
 
     return imdb_dataset(directory, 'yahoo', train, test,
-                        share_id=['1R8urh9-aBgZsECsyJzL-CSjJArceR-0D', '1_z2itvF0APqTNYG4CE-fquB5PFWq_OFu'])
+                        share_id=['19JYGfx7v_2cbCIyYiyHBc0kh8dp_GDZw', '1lgduXxv-VtjitEgk90U-ZMwk76fFQFYu'])
 
 
 def reuters_dataset(directory='data/', train=False, test=False, fine_grained=False):
