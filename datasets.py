@@ -51,3 +51,29 @@ def basic_dataset(directory='data/', data_type='imdb', train=False, test=False, 
         return ret[0]
     else:
         return tuple(ret)
+
+
+def ag_dataset(directory='data/', train=False, test=False):
+    """
+    Load the AG's News Topic Classification dataset (Version 3).
+
+    The AG's news topic classification dataset is constructed by choosing 4 largest classes
+    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
+    samples. The total number of training samples is 120,000 and testing 7,600.
+    The min length of text about train data is 3, max length of it is 91; The min length
+    of text about test data is 5, max length of it is 74.
+
+    Example:
+        >>> from datasets import ag_dataset
+        >>> train = ag_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band ultra cynic green'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput make time...'}]
+    """
+
+    return basic_dataset(directory, 'agnews', train, test,
+                         share_id=['1plrqZTyhYvSkvKsNaos5hqN6eqjfWMb6', '1dY2ppjVEloLSKAOfnS2oUdai-wR8ISc0'])
