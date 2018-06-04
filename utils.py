@@ -59,4 +59,4 @@ def collate_fn(batch):
     """ list of tensors to a batch tensors """
     text_batch, _ = pad_batch([row['text'] for row in batch])
     label_batch = [row['label'] for row in batch]
-    return torch.stack(text_batch), torch.stack(label_batch)
+    return [text_batch, torch.cat(label_batch)]
