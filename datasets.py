@@ -144,3 +144,33 @@ def newsgroups_dataset(directory='data/', train=False, test=False):
 
     return imdb_dataset(directory, 'newsgroups', train, test,
                         share_id=['16uZCEsmwKteEcSCjKaXR-Nw-w0WVwOY7', '1mmiPXs-otrdmh_w5jNjIP6niXVICW1T6'])
+
+
+def webkb_dataset(directory='data/', train=False, test=False):
+    """
+    Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
+
+    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide
+    Knowledge Base (Web->Kb) project of the CMU text learning group. These pages
+    were collected from computer science departments of various universities in 1997,
+    manually classified into seven different classes: student, faculty, staff,
+    department, course, project, and other. The classes Department and Staff is
+    discarded, because there were only a few pages from each university. The class
+    Other is discarded, because pages were very different among this class. The total
+    number of training samples is 2,785 and testing 1,383.
+    The min length of text about train data is 1, max length of it is 20628; The min length
+    of text about test data is 1, max length of it is 2082.
+
+    Example:
+        >>> train = webkb_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': 'student',
+          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic...'}
+         {
+          'label': 'student',
+          'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
+    """
+
+    return imdb_dataset(directory, 'webkb', train, test,
+                        share_id=['166VJXbk0WdZIEU527m8LAka7qOv0jfCq', '18dpFqT_-GUOWq6h8KGGAhGDRQCa2_DfP'])
