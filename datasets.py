@@ -85,10 +85,10 @@ def agnews_dataset(directory='data/', train=False, test=False):
         >>> train[0:2]
         [{
           'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band ultra cynic green'},
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
          {
           'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput make time...'}]
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
     return imdb_dataset(directory, 'agnews', train, test,
@@ -111,10 +111,10 @@ def dbpedia_dataset(directory='data/', train=False, test=False):
         >>> train[0:2]
         [{
           'label': 'Company',
-          'text': 'abbott abbott farnham abbott limit british coachbuild busi base farnham surrei...'},
+          'text': 'abbott abbott farnham abbott limit british coachbuild busi base farnham...'},
          {
           'label': 'Company',
-          'text': 'schwan stabilo schwan stabilo german maker pen write colour cosmet marker highlight...'}]
+          'text': 'schwan stabilo schwan stabilo german maker pen write colour cosmet marker...'}]
     """
 
     return imdb_dataset(directory, 'dbpedia', train, test,
@@ -139,7 +139,7 @@ def newsgroups_dataset(directory='data/', train=False, test=False):
           'text': 'alt atheism faq atheist resourc archiv name atheism resourc alt...'},
          {
           'label': 'alt.atheism',
-          'text': 'alt atheism faq introduct atheism archiv name atheism introduct alt...'}]
+          'text': 'alt atheism faq introduct atheism archiv name atheism introduct...'}]
     """
 
     return imdb_dataset(directory, 'newsgroups', train, test,
@@ -191,7 +191,7 @@ def yahoo_dataset(directory='data/', train=False, test=False):
         >>> train[0:2]
         [{
           'label': 'Computers & Internet',
-          'text': 'doesn optic mous work glass tabl surfac optic mice led camera rapidli captur imag...'},
+          'text': 'doesn optic mous work glass tabl surfac optic mice led camera rapidli...'},
          {
           'label': 'Sports',
           'text': 'road motorcycl trail long distanc trail hear mojav road amaz nsearch onlin'}]
@@ -199,3 +199,101 @@ def yahoo_dataset(directory='data/', train=False, test=False):
 
     return imdb_dataset(directory, 'yahoo', train, test,
                         share_id=['1R8urh9-aBgZsECsyJzL-CSjJArceR-0D', '1_z2itvF0APqTNYG4CE-fquB5PFWq_OFu'])
+
+
+def reuters_dataset(directory='data/', train=False, test=False, fine_grained=False):
+    """
+    Load the Reuters-21578 R8 or Reuters-21578 R52 dataset (Version 'modApté').
+
+    The Reuters-21578 dataset considers only the documents with a single topic and the
+    classes which still have at least one train and one test example, we have 8 of the 10
+    most frequent classes and 52 of the original 90. In total there are 5,485 trainig samples
+    and 2,189 testing samples in R8 dataset. The total number of training samples is 6,532
+    and testing 2,568 in R52 dataset.
+    The min length of text about R8 train data is 4, max length of it is 533; The min length
+    of text about R8 test data is 5, max length of it is 484.
+    The min length of text about R52 train data is 4, max length of it is 595; The min length
+    of text about R52 test data is 5, max length of it is 484.
+
+    Example:
+        >>> train = reuters_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': 'earn',
+          'text': 'champion product approv stock split champion product inc board director...'}
+         {
+          'label': 'acq',
+          'text': 'comput termin system cpml complet sale comput termin system inc complet...'}]
+    """
+
+    if fine_grained:
+        ids = ['1JL83q8YoyaffLxSJsrJSAGYSDVcZotNR', '1qQqBUQTGTVwotRPuDwfpHry5Qw77-Dix']
+    else:
+        ids = ['1jL06ZqR74fKYsMwAFwyGXE_KmZ_b1yGZ', '1QDgNKHyaCTwEdjeN2XJE1nUwKmloPkU9']
+    return imdb_dataset(directory, 'reuters', train, test, fine_grained, share_id=ids)
+
+
+def yelp_dataset(directory='data/', train=False, test=False, fine_grained=False):
+    """
+    Load the Yelp Review Full Star or Yelp Review Polarity dataset (Version 1).
+
+    The Yelp reviews full star dataset is constructed by randomly taking training samples and testing
+    samples for each review star from 1 to 5. In total there are 649,816 trainig samples and 49,990
+    testing samples.
+    The Yelp reviews polarity dataset is constructed by considering stars 1 and 2 negative, and 3 and 4
+    positive. In total there are 559,861 trainig samples and 37,985 testing samples. Negative polarity
+    is class 1, and positive class 2.
+    The min length of text about polarity train data is 1, max length of it is 617; The min length
+    of text about polarity test data is 1, max length of it is 504.
+    The min length of text about full train data is 1, max length of it is 617; The min length
+    of text about full test data is 1, max length of it is 524.
+
+    Example:
+        >>> train = yelp_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': '1',
+          'text': "frustrat goldberg patient repeat experi doctor nyc good doctor terribl staff..."}
+         {
+          'label': '2',
+          'text': "goldberg year patient start mhmg great year big pictur gyn markoff found..."}]
+    """
+
+    if fine_grained:
+        ids = ['1hRGkaOnYNtjhRXIm43Oo643GiStrxvJ0', '1D8EckH1KPfrfsIV3nIU2eOsFtTGTG7DP']
+    else:
+        ids = ['1twA4DhJ2mnWh2aQr0qK1UlgqKSmcxuZp', '1KFt3vAZVyUkAnrIvKG7chYXkH0ez49ph']
+    return imdb_dataset(directory, 'yelp', train, test, fine_grained, share_id=ids)
+
+
+def amazon_dataset(directory='data/', train=False, test=False, fine_grained=False):
+    """
+    Load the Amazon Review Full Score or Amazon Review Polaridy dataset (Version 3).
+
+    The Amazon reviews full score dataset is constructed by randomly taking training samples and testing
+    samples for each review score from 1 to 5. In total there are 2,999,903 training samples and 649,981
+    testing samples.
+    The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative, and 4
+    and 5 as positive. In total there are 3,599,904 trainig samples and 399,988 testing samples. Negative
+    polarity is class 1, and positive class 2.
+    The min length of text about full score train data is 1, max length of it is 141; The min length
+    of text about full score test data is 1, max length of it is 132.
+    The min length of text about polarity train data is 1, max length of it is 156; The min length
+    of text about polarity test data is 1, max length of it is 120.
+
+    Example:
+        >>> train = amazon_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': '2',
+          'text': 'stune gamer sound track beauti paint seneri mind recomend peopl hate vid...'}
+         {
+          'label': '2',
+          'text': 'soundtrack read lot review game soundtrack figur write review disagre bit...'}]
+    """
+
+    if fine_grained:
+        ids = ['1h3xQk2R5uzS6Wp_OcRwSrAxCc1HhqtmL', '1H_DX_dUy9wCr_w3TVomU3nb_G9zMya-F']
+    else:
+        ids = ['10n7q9huXqsdg6-MXc7P0J2qmoY5zMWMm', '1ke5OP0PvV0NWhBTDe1DoIntuJsug6xHN']
+    return imdb_dataset(directory, 'amazon', train, test, fine_grained, share_id=ids)
