@@ -17,15 +17,16 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
     """
     Load the Amazon Review Full Score or Amazon Review Polaridy dataset (Version 3).
 
-    The Amazon reviews full score dataset is constructed by randomly taking 600,000 training samples and
-    130,000 testing samples for each review score from 1 to 5. In total there are 3,000,000 trainig samples
-    and 650,000 testing samples.
-    The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative, and 4 and
-    5 as positive. For each polarity 1,800,000 training samples and 200,000 testing samples are take randomly.
-    In total there are 3,600,000 trainig samples and 400,000 testing samples. Negative polarity is class 1,
-    and positive class 2.
-    The min length of text about train data is 15, max length of it is 943; The min length
-    of text about test data is 42, max length of it is 779.
+    The Amazon reviews full score dataset is constructed by randomly taking training samples and testing
+    samples for each review score from 1 to 5. In total there are 2,999,903 training samples and 649,981
+    testing samples.
+    The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative, and 4
+    and 5 as positive. In total there are 3,599,904 trainig samples and 399,988 testing samples. Negative
+    polarity is class 1, and positive class 2.
+    The min length of text about full score train data is 1, max length of it is 141; The min length
+    of text about full score test data is 1, max length of it is 132.
+    The min length of text about polarity train data is 1, max length of it is 156; The min length
+    of text about polarity test data is 1, max length of it is 120.
 
     **Reference:** http://jmcauley.ucsd.edu/data/amazon/
 
@@ -48,10 +49,10 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
         >>> train[0:2]
         [{
           'label': '2',
-          'text': 'This sound track was beautiful! It paints the senery in your mind so...'}
+          'text': 'stune gamer sound track beauti paint seneri mind recomend peopl hate vid game...'}
          {
           'label': '2',
-          'text': "I'm reading a lot of reviews saying that this is the best 'game soundtrack'..."}]
+          'text': 'soundtrack read lot review game soundtrack figur write review disagre bit...'}]
     """
     if fine_grained:
         extracted_name, url = 'amazon_review_full', urls[0]
