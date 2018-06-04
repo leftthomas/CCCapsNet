@@ -66,6 +66,15 @@ def newsgroups_dataset(directory='data/', train=False, test=False, extracted_nam
         print('text_min_length:' + str(text_min_length))
         print('text_max_length:' + str(text_max_length))
 
+    train_file = 'data/newsgroups_train.txt'
+    train_f = open(train_file, 'w')
+    for train_data in ret[0]:
+        train_f.write(train_data['label'] + '\t' + train_data['text'] + '\n')
+    test_file = 'data/newsgroups_test.txt'
+    test_f = open(test_file, 'w')
+    for test_data in ret[1]:
+        test_f.write(test_data['label'] + '\t' + test_data['text'] + '\n')
+
     if len(ret) == 1:
         return ret[0]
     else:
