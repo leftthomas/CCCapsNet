@@ -77,3 +77,30 @@ def ag_dataset(directory='data/', train=False, test=False):
 
     return basic_dataset(directory, 'agnews', train, test,
                          share_id=['1plrqZTyhYvSkvKsNaos5hqN6eqjfWMb6', '1dY2ppjVEloLSKAOfnS2oUdai-wR8ISc0'])
+
+
+def dbpedia_dataset(directory='data/', train=False, test=False):
+    """
+    Load the DBPedia Ontology Classification dataset (Version 2).
+
+    The DBpedia ontology classification dataset is constructed by picking 14 non-overlapping classes
+    from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we randomly
+    choose 40,000 training samples and 5,000 testing samples. Therefore, the total size of the training
+    dataset is 560,000 and testing dataset 70,000.
+    The min length of text about train data is 1, max length of it is 1001; The min length
+    of text about test data is 2, max length of it is 355.
+
+    Example:
+        >>> from datasets import dbpedia_dataset
+        >>> train = dbpedia_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': 'Company',
+          'text': 'abbott abbott farnham abbott limit british coachbuild busi base farnham surrei...'},
+         {
+          'label': 'Company',
+          'text': 'schwan stabilo schwan stabilo german maker pen write colour cosmet marker highlight...'}]
+    """
+
+    return basic_dataset(directory, 'dbpedia', train, test,
+                         share_id=['1UVRYZ8B30vepUnfNVjZoqC1srAp_EDfT', '1JPYEPbexNRXq2U05a2dIBFrhjCZdK9Y5'])
