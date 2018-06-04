@@ -2,7 +2,7 @@ import torch.nn.functional as F
 from torch import nn
 from torchnlp.utils import datasets_iterator
 
-from datasets import imdb_dataset, ag_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, reuters_dataset, \
+from datasets import imdb_dataset, agnews_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, reuters_dataset, \
     webkb_dataset, yahoo_dataset, yelp_dataset
 
 
@@ -29,7 +29,7 @@ def load_data(data_type, train_mode, batch_size, fine_grained):
     elif data_type == 'DBPedia':
         dataset = dbpedia_dataset(train=train_mode, test=train_mode)
     elif data_type == 'AGNews':
-        dataset = ag_dataset(train=train_mode, test=train_mode)
+        dataset = agnews_dataset(train=train_mode, test=train_mode)
     elif data_type == 'YahooAnswers':
         dataset = yahoo_dataset(train=train_mode, test=train_mode)
     elif data_type == 'YelpReview':

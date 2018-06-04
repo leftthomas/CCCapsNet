@@ -4,11 +4,18 @@ from google_drive_downloader import GoogleDriveDownloader as gdd
 from torchnlp.datasets.dataset import Dataset
 
 
-def basic_dataset(directory='data/', data_type='imdb', train=False, test=False, fine_grained=False,
-                  # train, test
-                  share_id=['1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn', '1uSzCdUncgTwIb8cyT_xPoYvxiDN4_xLA']):
+def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, fine_grained=False,
+                 # train, test
+                 share_id=['1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn', '1uSzCdUncgTwIb8cyT_xPoYvxiDN4_xLA']):
     """
-    Load the txt dataset.
+    Load the IMDB dataset (Large Movie Review Dataset v1.0).
+
+    This is a dataset for binary sentiment classification containing substantially more data than
+    previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for
+    training, and 25,000 for testing. There is additional unlabeled data for use as well. Raw text
+    and already processed bag of words formats are provided.
+    The min length of text about train data is 4, max length of it is 1199; The min length
+    of text about test data is 3, max length of it is 930.
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -21,6 +28,16 @@ def basic_dataset(directory='data/', data_type='imdb', train=False, test=False, 
     Returns:
         :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and
         test dataset in order if their respective boolean argument is true.
+
+    Example:
+        >>> train = imdb_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': 'pos',
+          'text': 'movi respect lot memor quot list gem imagin movi joe piscopo funni...'},
+         {
+          'label': 'pos',
+          'text': 'bizarr horror movi fill famou face stolen cristina rain flamingo road...'}]
     """
 
     if train is False and test is False:
@@ -53,7 +70,7 @@ def basic_dataset(directory='data/', data_type='imdb', train=False, test=False, 
         return tuple(ret)
 
 
-def ag_dataset(directory='data/', train=False, test=False):
+def agnews_dataset(directory='data/', train=False, test=False):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 
@@ -64,8 +81,7 @@ def ag_dataset(directory='data/', train=False, test=False):
     of text about test data is 5, max length of it is 74.
 
     Example:
-        >>> from datasets import ag_dataset
-        >>> train = ag_dataset(train=True)
+        >>> train = agnews_dataset(train=True)
         >>> train[0:2]
         [{
           'label': 'Business',
@@ -75,8 +91,8 @@ def ag_dataset(directory='data/', train=False, test=False):
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput make time...'}]
     """
 
-    return basic_dataset(directory, 'agnews', train, test,
-                         share_id=['1plrqZTyhYvSkvKsNaos5hqN6eqjfWMb6', '1dY2ppjVEloLSKAOfnS2oUdai-wR8ISc0'])
+    return imdb_dataset(directory, 'agnews', train, test,
+                        share_id=['1plrqZTyhYvSkvKsNaos5hqN6eqjfWMb6', '1dY2ppjVEloLSKAOfnS2oUdai-wR8ISc0'])
 
 
 def dbpedia_dataset(directory='data/', train=False, test=False):
@@ -91,7 +107,6 @@ def dbpedia_dataset(directory='data/', train=False, test=False):
     of text about test data is 2, max length of it is 355.
 
     Example:
-        >>> from datasets import dbpedia_dataset
         >>> train = dbpedia_dataset(train=True)
         >>> train[0:2]
         [{
@@ -102,5 +117,30 @@ def dbpedia_dataset(directory='data/', train=False, test=False):
           'text': 'schwan stabilo schwan stabilo german maker pen write colour cosmet marker highlight...'}]
     """
 
-    return basic_dataset(directory, 'dbpedia', train, test,
-                         share_id=['1UVRYZ8B30vepUnfNVjZoqC1srAp_EDfT', '1JPYEPbexNRXq2U05a2dIBFrhjCZdK9Y5'])
+    return imdb_dataset(directory, 'dbpedia', train, test,
+                        share_id=['1UVRYZ8B30vepUnfNVjZoqC1srAp_EDfT', '1JPYEPbexNRXq2U05a2dIBFrhjCZdK9Y5'])
+
+
+def newsgroups_dataset(directory='data/', train=False, test=False):
+    """
+    Load the 20 Newsgroups dataset (Version 'bydate').
+
+    The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents,
+    partitioned (nearly) evenly across 20 different newsgroups. The total number of training
+    samples is 11,293 and testing 7,527.
+    The min length of text about train data is 1, max length of it is 6779; The min length
+    of text about test data is 1, max length of it is 6142.
+
+    Example:
+        >>> train = newsgroups_dataset(train=True)
+        >>> train[0:2]
+        [{
+          'label': 'alt.atheism',
+          'text': 'alt atheism faq atheist resourc archiv name atheism resourc alt...'},
+         {
+          'label': 'alt.atheism',
+          'text': 'alt atheism faq introduct atheism archiv name atheism introduct alt...'}]
+    """
+
+    return imdb_dataset(directory, 'newsgroups', train, test,
+                        share_id=['16uZCEsmwKteEcSCjKaXR-Nw-w0WVwOY7', '1mmiPXs-otrdmh_w5jNjIP6niXVICW1T6'])
