@@ -271,10 +271,10 @@ def amazon_dataset(directory='data/', train=False, test=False, fine_grained=Fals
     Load the Amazon Review Full Score or Amazon Review Polaridy dataset (Version 3).
 
     The Amazon reviews full score dataset is constructed by randomly taking training samples and testing
-    samples for each review score from 1 to 5. In total there are 2,999,903 training samples and 649,981
+    samples for each review score from 1 to 5. In total there are 2,999,979 training samples and 649,993
     testing samples.
     The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative, and 4
-    and 5 as positive. In total there are 3,599,904 trainig samples and 399,988 testing samples. Negative
+    and 5 as positive. In total there are 3,599,981 trainig samples and 399,998 testing samples. Negative
     polarity is class 1, and positive class 2.
     The min length of text about full score train data is 1, max length of it is 141; The min length
     of text about full score test data is 1, max length of it is 132.
@@ -293,7 +293,7 @@ def amazon_dataset(directory='data/', train=False, test=False, fine_grained=Fals
     """
 
     if fine_grained:
-        ids = ['1h3xQk2R5uzS6Wp_OcRwSrAxCc1HhqtmL', '1H_DX_dUy9wCr_w3TVomU3nb_G9zMya-F']
+        ids = ['1IegvAdxzTye3XLybtfUD1UgNtDzVXn3y', '1fHeXimRtpi2M1EMsZ6phT2QZ-696gofm']
     else:
-        ids = ['10n7q9huXqsdg6-MXc7P0J2qmoY5zMWMm', '1ke5OP0PvV0NWhBTDe1DoIntuJsug6xHN']
+        ids = ['1Wxahg6ipC9OFnzGH901S6NIVYNILS0ND', '1dbAsmrtGxk9qIVE5DCNxIidhKHMz6PaO']
     return imdb_dataset(directory, 'amazon', train, test, fine_grained, share_id=ids)

@@ -32,7 +32,7 @@ def load_data(data_type, fine_grained):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess Text Datasets')
-    parser.add_argument('--data_type', default='YelpReview', type=str,
+    parser.add_argument('--data_type', default='IMDB', type=str,
                         choices=['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers',
                                  'YelpReview', 'AmazonReview'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
