@@ -17,12 +17,13 @@ def yelp_dataset(directory='data/', train=False, test=False, check_files=['readm
     """
     Load the Yelp Review Full Star or Yelp Review Polarity dataset (Version 1).
 
-    The Yelp reviews full star dataset is constructed by randomly taking training samples and testing
-    samples for each review star from 1 to 5. In total there are 649,816 trainig samples and 49,990
-    testing samples.
+    The Yelp reviews full star dataset is constructed by randomly taking 130,000 training samples and
+    10,000 testing samples for each review star from 1 to 5. In total there are 650,000 trainig samples
+    and 50,000 testing samples.
     The Yelp reviews polarity dataset is constructed by considering stars 1 and 2 negative, and 3 and 4
-    positive. In total there are 559,861 trainig samples and 37,985 testing samples. Negative polarity
-    is class 1, and positive class 2.
+    positive. For each polarity 280,000 training samples and 19,000 testing samples are take randomly.
+    In total there are 560,000 trainig samples and 38,000 testing samples. Negative polarity is class 1,
+    and positive class 2.
 
     **Reference:** http://www.yelp.com/dataset_challenge
 

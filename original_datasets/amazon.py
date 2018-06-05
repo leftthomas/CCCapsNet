@@ -17,12 +17,13 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
     """
     Load the Amazon Review Full Score or Amazon Review Polaridy dataset (Version 3).
 
-    The Amazon reviews full score dataset is constructed by randomly taking training samples and testing
-    samples for each review score from 1 to 5. In total there are 2,999,903 training samples and 649,981
-    testing samples.
-    The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative, and 4
-    and 5 as positive. In total there are 3,599,904 trainig samples and 399,988 testing samples. Negative
-    polarity is class 1, and positive class 2.
+    The Amazon reviews full score dataset is constructed by randomly taking 600,000 training samples and
+    130,000 testing samples for each review score from 1 to 5. In total there are 3,000,000 trainig samples
+    and 650,000 testing samples.
+    The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative, and 4 and
+    5 as positive. For each polarity 1,800,000 training samples and 200,000 testing samples are take randomly.
+    In total there are 3,600,000 trainig samples and 400,000 testing samples. Negative polarity is class 1,
+    and positive class 2.
 
     **Reference:** http://jmcauley.ucsd.edu/data/amazon/
 

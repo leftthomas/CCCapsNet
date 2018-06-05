@@ -18,7 +18,7 @@ def webkb_dataset(directory='data/', train=False, test=False, extracted_name='we
     department, course, project, and other. The classes Department and Staff is
     discarded, because there were only a few pages from each university. The class
     Other is discarded, because pages were very different among this class. The total
-    number of training samples is 2,785 and testing 1,383.
+    number of training samples is 2,803 and testing 1,396.
 
     **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
 

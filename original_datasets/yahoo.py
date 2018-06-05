@@ -16,8 +16,9 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
     Load the Yahoo! Answers Topic Classification dataset (Version 2).
 
     The Yahoo! Answers topic classification dataset is constructed using 10 largest main categories.
-    The total number of training samples is 753,587 and testing samples 32,263 in this dataset. We
-    only used the best answer content and the main category information.
+    Each class contains 140,000 training samples and 6,000 testing samples. Therefore, the total number
+    of training samples is 1,400,000 and testing samples 60,000 in this dataset. From all the answers
+    and other meta-information, we only used the best answer content and the main category information.
 
     **Reference:** https://webscope.sandbox.yahoo.com/catalog.php?datatype=l
 
