@@ -61,7 +61,7 @@ def on_end_epoch(state):
 
     reset_meters()
 
-    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, True, sort_key=lambda row: len(row['text']))
+    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     engine.test(processor, test_iterator)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     # prepare dataset
     vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, FINE_GRAINED)
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
-    train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, True, sort_key=lambda row: len(row['text']))
+    train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
