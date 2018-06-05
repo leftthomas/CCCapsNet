@@ -6,7 +6,7 @@ from torchnlp.text_encoders.reserved_tokens import PADDING_TOKEN
 from torchnlp.utils import datasets_iterator
 from torchnlp.utils import pad_batch
 
-from datasets import imdb_dataset, agnews_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, \
+from preprocessed_datasets import imdb_dataset, agnews_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, \
     reuters_dataset, webkb_dataset, yahoo_dataset, yelp_dataset
 
 

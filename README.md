@@ -15,6 +15,10 @@ pip install git+https://github.com/pytorch/tnt.git@master
 ```
 pip install pytorch-nlp
 ```
+* PorterStemmer
+```
+pip install PorterStemmer
+```
 * googledrivedownloader
 ```
 pip install googledrivedownloader
@@ -43,6 +47,18 @@ You needn't download the datasets by yourself, the code will download them autom
 all the datasets from the aforementioned cloud storage webs, and put the downloaded datasets into `data` directory.
 
 ## Usage
+
+### Preprocess Data
+```
+python preprocess_data.py --data_type Newsgroups
+optional arguments:
+--data_type              dataset type [default value is 'IMDB'](choices:['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia',
+                         'AGNews', 'YahooAnswers', 'YelpReview', 'AmazonReview'])
+--fine_grained           use fine grained class or not, it only works for Reuters, YelpReview and AmazonReview [default value is False]
+```
+The preprocessed datasets are in `data` directory.
+
+### Train Model
 ```
 python -m visdom.server -logging_level WARNING & python main.py --data_type newsgroups --num_epochs 300
 optional arguments:
