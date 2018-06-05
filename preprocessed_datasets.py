@@ -181,9 +181,9 @@ def yahoo_dataset(directory='data/', train=False, test=False):
     Load the Yahoo! Answers Topic Classification dataset (Version 2).
 
     The Yahoo! Answers topic classification dataset is constructed using 10 largest main categories.
-    The total number of training samples is 753,587 and testing samples 32,263 in this dataset. We
+    The total number of training samples is 1,399,272 and testing samples 59,969 in this dataset. We
     only used the best answer content and the main category information.
-    The min length of text about train data is 1, max length of it is 747; The min length
+    The min length of text about train data is 1, max length of it is 1006; The min length
     of text about test data is 1, max length of it is 491.
 
     Example:
@@ -198,7 +198,7 @@ def yahoo_dataset(directory='data/', train=False, test=False):
     """
 
     return imdb_dataset(directory, 'yahoo', train, test,
-                        share_id=['19JYGfx7v_2cbCIyYiyHBc0kh8dp_GDZw', '1lgduXxv-VtjitEgk90U-ZMwk76fFQFYu'])
+                        share_id=['1TM4AHEJEeb-l6sMRpl2Y5qiaJ4FateJl', '1JstXhPIgzjNOU4Ekeb3ICIOfVVJoto5D'])
 
 
 def reuters_dataset(directory='data/', train=False, test=False, fine_grained=False):
