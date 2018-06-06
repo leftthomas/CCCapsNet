@@ -79,12 +79,12 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
         ret.append(Dataset(examples))
 
     if train:
-        print("[!] avg_train_length: {}".format(avg_train_length // len(ret[0])))
+        print("[!] avg_train_length: {}".format(round(avg_train_length / len(ret[0]))))
     if test:
         if train:
-            print("[!] avg_test_length: {}".format(avg_test_length // len(ret[1])))
+            print("[!] avg_test_length: {}".format(round(avg_test_length / len(ret[1]))))
         else:
-            print("[!] avg_test_length: {}".format(avg_test_length // len(ret[0])))
+            print("[!] avg_test_length: {}".format(round(avg_test_length / len(ret[0]))))
     if len(ret) == 1:
         return ret[0]
     else:
