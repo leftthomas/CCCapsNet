@@ -113,7 +113,7 @@ if __name__ == '__main__':
         loss_criterion.cuda()
 
     scheduler = MultiStepRI(model, milestones=[10, 30, 70], verbose=True)
-    optimizer = Adam(model.parameters(), lr=1e-1)
+    optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
 
     engine = Engine()
