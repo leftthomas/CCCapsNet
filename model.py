@@ -41,7 +41,7 @@ class CompositionalEmbedding(nn.Module):
         self.embedding_dim = embedding_dim
 
         if num_codeword is None:
-            num_codeword = math.ceil(math.log(num_embeddings, num_codebook))
+            num_codeword = math.ceil(math.pow(num_embeddings, 1 / num_codebook))
         self.code = Parameter(torch.Tensor(num_embeddings, num_codebook, num_codeword))
         self.codebook = Parameter(torch.Tensor(num_codebook, num_codeword, embedding_dim))
 
