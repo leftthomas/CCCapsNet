@@ -45,7 +45,7 @@ def load_data(data_type, fine_grained):
 
     sentence_corpus = [row['text'] for row in datasets_iterator(dataset[0], )]
     sentence_encoder = WhitespaceEncoder(sentence_corpus, reserved_tokens=[PADDING_TOKEN, UNKNOWN_TOKEN])
-    label_corpus = [row['label'] for row in datasets_iterator(dataset[0], dataset[1])]
+    label_corpus = [row['label'] for row in datasets_iterator(dataset[0], )]
     label_encoder = IdentityEncoder(label_corpus, reserved_tokens=[])
 
     # Encode
