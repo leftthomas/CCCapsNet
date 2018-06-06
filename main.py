@@ -77,9 +77,9 @@ def on_end_epoch(state):
     scheduler.step()
 
     # save best model
+    # pay attention, it's a global value
+    global best_acc
     if meter_accuracy.value()[0] > best_acc:
-        # pay attention, it's a global value
-        global best_acc
         best_acc = meter_accuracy.value()[0]
         if FINE_GRAINED:
             torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
