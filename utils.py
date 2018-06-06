@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 from torchnlp.text_encoders import WhitespaceEncoder, IdentityEncoder
-from torchnlp.text_encoders.reserved_tokens import PADDING_TOKEN
+from torchnlp.text_encoders.reserved_tokens import PADDING_TOKEN, UNKNOWN_TOKEN
 from torchnlp.utils import datasets_iterator
 from torchnlp.utils import pad_batch
 
@@ -43,8 +43,8 @@ def load_data(data_type, fine_grained):
     else:
         raise ValueError('{} data type not supported.'.format(data_type))
 
-    sentence_corpus = [row['text'] for row in datasets_iterator(dataset[0], dataset[1])]
-    sentence_encoder = WhitespaceEncoder(sentence_corpus, reserved_tokens=[PADDING_TOKEN])
+    sentence_corpus = [row['text'] for row in datasets_iterator(dataset[0], )]
+    sentence_encoder = WhitespaceEncoder(sentence_corpus, reserved_tokens=[PADDING_TOKEN, UNKNOWN_TOKEN])
     label_corpus = [row['label'] for row in datasets_iterator(dataset[0], dataset[1])]
     label_encoder = IdentityEncoder(label_corpus, reserved_tokens=[])
 
