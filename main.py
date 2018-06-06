@@ -90,7 +90,7 @@ if __name__ == '__main__':
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
     parser.add_argument('--num_iterations', default=1, type=int, help='initial routing iterations number')
-    parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
+    parser.add_argument('--batch_size', default=10, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
     opt = parser.parse_args()
