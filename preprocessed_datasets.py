@@ -53,8 +53,10 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
 
     if train:
         gdd.download_file_from_google_drive(file_id=share_id[0], dest_path=directory + train_file)
+        avg_train_length = 0
     if test:
         gdd.download_file_from_google_drive(file_id=share_id[1], dest_path=directory + test_file)
+        avg_test_length = 0
 
     ret = []
     splits = [file_name for (requested, file_name) in [(train, train_file), (test, test_file)] if requested]
@@ -69,9 +71,20 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
                 # we only use the text which length >=5 as train data
                 if len(text.split()) < 5 and file_name == train_file:
                     continue
+                if file_name == train_file:
+                    avg_train_length += len(text.split())
+                if file_name == test_file:
+                    avg_test_length += len(text.split())
                 examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
 
+    if train:
+        print("[!] avg_train_length: {}".format(avg_train_length // len(ret[0])))
+    if test:
+        if train:
+            print("[!] avg_test_length: {}".format(avg_test_length // len(ret[1])))
+        else:
+            print("[!] avg_test_length: {}".format(avg_test_length // len(ret[0])))
     if len(ret) == 1:
         return ret[0]
     else:
