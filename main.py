@@ -75,10 +75,16 @@ def on_end_epoch(state):
 
     # scheduler routing iterations
     scheduler.step()
-    if FINE_GRAINED:
-        torch.save(model.state_dict(), 'epochs/%s_%d.pth' % (DATA_TYPE + '_fine_grained', state['epoch']))
-    else:
-        torch.save(model.state_dict(), 'epochs/%s_%d.pth' % (DATA_TYPE, state['epoch']))
+
+    # save best model
+    if meter_accuracy.value()[0] > best_acc:
+        # pay attention, it's a global value
+        global best_acc
+        best_acc = meter_accuracy.value()[0]
+        if FINE_GRAINED:
+            torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
+        else:
+            torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
 
 
 if __name__ == '__main__':
@@ -120,6 +126,9 @@ if __name__ == '__main__':
     meter_loss = tnt.meter.AverageValueMeter()
     meter_accuracy = tnt.meter.ClassErrorMeter(accuracy=True)
     meter_confusion = tnt.meter.ConfusionMeter(num_class, normalized=True)
+
+    # record current best test accuracy
+    best_acc = 0
 
     if FINE_GRAINED:
         env_name = DATA_TYPE + '_fine_grained'
