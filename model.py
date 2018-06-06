@@ -61,7 +61,7 @@ class Model(nn.Module):
     def __init__(self, vocab_size, num_class, num_iterations):
         super().__init__()
 
-        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, num_codebook=16, num_codeword=32,
+        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, num_codebook=8, num_codeword=4,
                                                 embedding_dim=64)
         self.features = nn.LSTM(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
 
