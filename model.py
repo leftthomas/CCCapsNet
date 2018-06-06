@@ -1,3 +1,5 @@
+import math
+
 import torch
 import torch.nn.functional as F
 from capsule_layer import CapsuleLinear
@@ -10,9 +12,9 @@ class CompositionalEmbedding(nn.Module):
 
      Args:
         num_embeddings (int): size of the dictionary of embeddings
-        num_codebook (int): size of the codebook of embeddings
-        num_codeword (int): size of the codeword of embeddings
         embedding_dim (int): size of each embedding vector
+        num_codebook (int): size of the codebook of embeddings
+        num_codeword (int, optional): size of the codeword of embeddings
 
      Shape:
          - Input: (LongTensor): (N, W), W = number of indices to extract per mini-batch
@@ -26,17 +28,20 @@ class CompositionalEmbedding(nn.Module):
 
      Examples::
          >>> from torch.autograd import Variable
-         >>> m = CompositionalEmbedding(20000, 16, 32, 64)
+         >>> m = CompositionalEmbedding(20000, 64, 16, 32)
          >>> input = Variable(torch.randperm(128).view(16, -1))
          >>> output = m(input)
          >>> print(output.size())
          torch.Size([16, 8, 64])
      """
 
-    def __init__(self, num_embeddings, num_codebook, num_codeword, embedding_dim):
+    def __init__(self, num_embeddings, embedding_dim, num_codebook, num_codeword=None):
         super(CompositionalEmbedding, self).__init__()
         self.num_embeddings = num_embeddings
         self.embedding_dim = embedding_dim
+
+        if num_codeword is None:
+            num_codeword = math.ceil(math.log(num_embeddings, num_codebook))
         self.code = Parameter(torch.Tensor(num_embeddings, num_codebook, num_codeword))
         self.codebook = Parameter(torch.Tensor(num_codebook, num_codeword, embedding_dim))
 
@@ -61,8 +66,7 @@ class Model(nn.Module):
     def __init__(self, vocab_size, num_class, num_iterations):
         super().__init__()
 
-        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, num_codebook=8, num_codeword=4,
-                                                embedding_dim=64)
+        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=64, num_codebook=8)
         self.features = nn.LSTM(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
 
         self.classifier = CapsuleLinear(out_capsules=num_class, in_length=16, out_length=8,
