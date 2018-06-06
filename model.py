@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 from capsule_layer import CapsuleLinear
 from torch import nn
 from torch.nn.parameter import Parameter
@@ -46,6 +47,8 @@ class CompositionalEmbedding(nn.Module):
         batch_size = input.size(0)
         index = input.view(-1)
         code = self.code.index_select(dim=0, index=index)
+        # reweight, do softmax, make sure the sum of code in each book to 1
+        code = F.softmax(code, dim=-1)
         out = (code[:, :, None, :] @ self.codebook[None, :, :, :]).squeeze(dim=-2).sum(dim=1)
         out = out.view(batch_size, -1, self.embedding_dim)
         return out
