@@ -61,6 +61,12 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
             examples = []
             for line in f.readlines():
                 label, text = line.split('\t')
+                # we only need the first 6000 words
+                if len(text.split()) > 6000:
+                    text = ' '.join(text.split()[:6000])
+                # we only use the text which length >=5 as train data
+                if len(text.split()) < 5 and file_name == train_file:
+                    continue
                 examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
 
