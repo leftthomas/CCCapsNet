@@ -11,11 +11,13 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 
     This is a dataset for binary sentiment classification containing substantially more data than
-    previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for
-    training, and 25,000 for testing. There is additional unlabeled data for use as well. Raw text
-    and already processed bag of words formats are provided.
-    The min length of text about train data is 4, max length of it is 1199; The min length
-    of text about test data is 3, max length of it is 930.
+    previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for training,
+    and 25,000 for testing.
+    The min length of text about train data is 4, max length of it is 1199; The min length of text
+    about test data is 3, max length of it is 930.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -80,11 +82,14 @@ def agnews_dataset(directory='data/', train=False, test=False):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes
-    from the original corpus. Each class contains 30,000 training samples and 1,900 testing
-    samples. The total number of training samples is 120,000 and testing 7,600.
-    The min length of text about train data is 3, max length of it is 91; The min length
-    of text about test data is 5, max length of it is 74.
+    The AG's news topic classification dataset is constructed by choosing 4 largest classes from
+    the original corpus. Each class contains 30,000 training samples and 1,900 testing samples.
+    The total number of training samples is 120,000 and testing 7,600.
+    The min length of text about train data is 3, max length of it is 91; The min length of text
+    about test data is 5, max length of it is 74.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = agnews_dataset(train=True)
@@ -106,11 +111,14 @@ def dbpedia_dataset(directory='data/', train=False, test=False):
     Load the DBPedia Ontology Classification dataset (Version 2).
 
     The DBpedia ontology classification dataset is constructed by picking 14 non-overlapping classes
-    from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we randomly
-    choose 40,000 training samples and 5,000 testing samples. Therefore, the total size of the training
-    dataset is 560,000 and testing dataset 70,000.
-    The min length of text about train data is 1, max length of it is 1001; The min length
-    of text about test data is 2, max length of it is 355.
+    from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we
+    randomly choose 40,000 training samples and 5,000 testing samples. Therefore, the total size
+    of the training dataset is 560,000 and testing dataset 70,000.
+    The min length of text about train data is 1, max length of it is 1001; The min length of text
+    about test data is 2, max length of it is 355.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = dbpedia_dataset(train=True)
@@ -134,8 +142,11 @@ def newsgroups_dataset(directory='data/', train=False, test=False):
     The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents,
     partitioned (nearly) evenly across 20 different newsgroups. The total number of training
     samples is 11,293 and testing 7,527.
-    The min length of text about train data is 1, max length of it is 6779; The min length
-    of text about test data is 1, max length of it is 6142.
+    The min length of text about train data is 1, max length of it is 6779; The min length of text
+    about test data is 1, max length of it is 6142.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = newsgroups_dataset(train=True)
@@ -156,16 +167,18 @@ def webkb_dataset(directory='data/', train=False, test=False):
     """
     Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
 
-    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide
-    Knowledge Base (Web->Kb) project of the CMU text learning group. These pages
-    were collected from computer science departments of various universities in 1997,
-    manually classified into seven different classes: student, faculty, staff,
-    department, course, project, and other. The classes Department and Staff is
-    discarded, because there were only a few pages from each university. The class
-    Other is discarded, because pages were very different among this class. The total
-    number of training samples is 2,785 and testing 1,383.
-    The min length of text about train data is 1, max length of it is 20628; The min length
-    of text about test data is 1, max length of it is 2082.
+    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide Knowledge Base
+    (Web->Kb) project of the CMU text learning group. These pages were collected from computer
+    science departments of various universities in 1997, manually classified into seven different
+    classes: student, faculty, staff, department, course, project, and other. The classes Department
+    and Staff is discarded, because there were only a few pages from each university. The class Other
+    is discarded, because pages were very different among this class. The total number of training
+    samples is 2,785 and testing 1,383.
+    The min length of text about train data is 1, max length of it is 20628; The min length of text
+    about test data is 1, max length of it is 2082.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = webkb_dataset(train=True)
@@ -187,10 +200,13 @@ def yahoo_dataset(directory='data/', train=False, test=False):
     Load the Yahoo! Answers Topic Classification dataset (Version 2).
 
     The Yahoo! Answers topic classification dataset is constructed using 10 largest main categories.
-    The total number of training samples is 1,399,272 and testing samples 59,969 in this dataset. We
-    only used the best answer content and the main category information.
-    The min length of text about train data is 1, max length of it is 1006; The min length
-    of text about test data is 1, max length of it is 491.
+    The total number of training samples is 1,399,272 and testing samples 59,969 in this dataset.
+    We only used the best answer content and the main category information.
+    The min length of text about train data is 1, max length of it is 1006; The min length of text
+    about test data is 1, max length of it is 491.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = yahoo_dataset(train=True)
@@ -211,15 +227,18 @@ def reuters_dataset(directory='data/', train=False, test=False, fine_grained=Fal
     """
     Load the Reuters-21578 R8 or Reuters-21578 R52 dataset (Version 'modApté').
 
-    The Reuters-21578 dataset considers only the documents with a single topic and the
-    classes which still have at least one train and one test example, we have 8 of the 10
-    most frequent classes and 52 of the original 90. In total there are 5,485 trainig samples
-    and 2,189 testing samples in R8 dataset. The total number of training samples is 6,532
-    and testing 2,568 in R52 dataset.
-    The min length of text about R8 train data is 4, max length of it is 533; The min length
-    of text about R8 test data is 5, max length of it is 484.
-    The min length of text about R52 train data is 4, max length of it is 595; The min length
-    of text about R52 test data is 5, max length of it is 484.
+    The Reuters-21578 dataset considers only the documents with a single topic and the classes
+    which still have at least one train and one test example, we have 8 of the 10 most frequent
+    classes and 52 of the original 90. In total there are 5,485 trainig samples and 2,189 testing
+    samples in R8 dataset. The total number of training samples is 6,532 and testing 2,568 in R52
+    dataset.
+    The min length of text about R8 train data is 4, max length of it is 533; The min length of
+    text about R8 test data is 5, max length of it is 484.
+    The min length of text about R52 train data is 4, max length of it is 595; The min length of
+    text about R52 test data is 5, max length of it is 484.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = reuters_dataset(train=True)
@@ -243,16 +262,19 @@ def yelp_dataset(directory='data/', train=False, test=False, fine_grained=False)
     """
     Load the Yelp Review Full Star or Yelp Review Polarity dataset (Version 1).
 
-    The Yelp reviews full star dataset is constructed by randomly taking training samples and testing
-    samples for each review star from 1 to 5. In total there are 649,816 trainig samples and 49,990
-    testing samples.
-    The Yelp reviews polarity dataset is constructed by considering stars 1 and 2 negative, and 3 and 4
-    positive. In total there are 559,861 trainig samples and 37,985 testing samples. Negative polarity
-    is class 1, and positive class 2.
+    The Yelp reviews full star dataset is constructed by randomly taking training samples and
+    testing samples for each review star from 1 to 5. In total there are 649,816 trainig samples
+    and 49,990 testing samples.
+    The Yelp reviews polarity dataset is constructed by considering stars 1 and 2 negative, and 3
+    and 4 positive. In total there are 559,861 trainig samples and 37,985 testing samples. Negative
+    polarity is class 1, and positive class 2.
     The min length of text about polarity train data is 1, max length of it is 617; The min length
     of text about polarity test data is 1, max length of it is 504.
-    The min length of text about full train data is 1, max length of it is 617; The min length
-    of text about full test data is 1, max length of it is 524.
+    The min length of text about full train data is 1, max length of it is 617; The min length of
+    text about full test data is 1, max length of it is 524.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = yelp_dataset(train=True)
@@ -276,16 +298,19 @@ def amazon_dataset(directory='data/', train=False, test=False, fine_grained=Fals
     """
     Load the Amazon Review Full Score or Amazon Review Polaridy dataset (Version 3).
 
-    The Amazon reviews full score dataset is constructed by randomly taking training samples and testing
-    samples for each review score from 1 to 5. In total there are 2,999,979 training samples and 649,993
-    testing samples.
-    The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative, and 4
-    and 5 as positive. In total there are 3,599,981 trainig samples and 399,998 testing samples. Negative
-    polarity is class 1, and positive class 2.
+    The Amazon reviews full score dataset is constructed by randomly taking training samples and
+    testing samples for each review score from 1 to 5. In total there are 2,999,979 training samples
+    and 649,993 testing samples.
+    The Amazon reviews polarity dataset is constructed by taking review score 1 and 2 as negative,
+    and 4 and 5 as positive. In total there are 3,599,981 trainig samples and 399,998 testing samples.
+    Negative polarity is class 1, and positive class 2.
     The min length of text about full score train data is 1, max length of it is 141; The min length
     of text about full score test data is 1, max length of it is 132.
     The min length of text about polarity train data is 1, max length of it is 156; The min length
     of text about polarity test data is 1, max length of it is 120.
+    -------------------------------------Processing Step 2---------------------------------------
+    The total number of training samples is 120,000. The average length of text about train data is
+    3, the average length of text about test data is 5.
 
     Example:
         >>> train = amazon_dataset(train=True)
