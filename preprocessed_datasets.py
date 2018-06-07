@@ -17,7 +17,7 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
     about test data is 3, max length of it is 930.
     -------------------------------------Processing Step 2---------------------------------------
     The total number of training samples is 24,996. The average length of text about train data is
-    95, the average length of text about test data is 93.
+    96, the average length of text about test data is 94.
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -159,7 +159,7 @@ def newsgroups_dataset(directory='data/', train=False, test=False):
     about test data is 1, max length of it is 6142.
     -------------------------------------Processing Step 2---------------------------------------
     The total number of training samples is 11,263. The average length of text about train data is
-    142, the average length of text about test data is 138.
+    143, the average length of text about test data is 139.
 
     Example:
         >>> train = newsgroups_dataset(train=True)
@@ -191,7 +191,7 @@ def webkb_dataset(directory='data/', train=False, test=False):
     about test data is 1, max length of it is 2082.
     -------------------------------------Processing Step 2---------------------------------------
     The total number of training samples is 2,756. The average length of text about train data is
-    129, the average length of text about test data is 135.
+    130, the average length of text about test data is 136.
 
     Example:
         >>> train = webkb_dataset(train=True)
@@ -219,7 +219,7 @@ def yahoo_dataset(directory='data/', train=False, test=False):
     about test data is 1, max length of it is 491.
     -------------------------------------Processing Step 2---------------------------------------
     The total number of training samples is 1,350,268. The average length of text about train data is
-    38, the average length of text about test data is 36.
+    38, the average length of text about test data is 37.
 
     Example:
         >>> train = yahoo_dataset(train=True)
@@ -291,7 +291,7 @@ def yelp_dataset(directory='data/', train=False, test=False, fine_grained=False)
     The total number of training samples about polarity is 551,262. The average length of text about
     train data is 53, the average length of text about test data is 52.
     The total number of training samples about full is 640,042. The average length of text about
-    train data is 53, the average length of text about test data is 53.
+    train data is 54, the average length of text about test data is 53.
 
     Example:
         >>> train = yelp_dataset(train=True)
@@ -329,7 +329,7 @@ def amazon_dataset(directory='data/', train=False, test=False, fine_grained=Fals
     The total number of training samples about polarity is 3,597,953 The average length of text about
     train data is 31, the average length of text about test data is 31.
     The total number of training samples about full is 2,998,091. The average length of text about
-    train data is 31, the average length of text about test data is 31.
+    train data is 32, the average length of text about test data is 32.
 
     Example:
         >>> train = amazon_dataset(train=True)
