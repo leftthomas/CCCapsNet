@@ -68,9 +68,6 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
                 # we only need the first 6000 words
                 if len(text.split()) > 6000:
                     text = ' '.join(text.split()[:6000])
-                # we only use the text which length >=3 as train data
-                if len(text.split()) < 3 and file_name == train_file:
-                    continue
                 if file_name == train_file:
                     avg_train_length += len(text.split())
                 if file_name == test_file:
