@@ -67,7 +67,7 @@ class Model(nn.Module):
         super().__init__()
 
         self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=64, num_codebook=8)
-        self.features = nn.LSTM(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
+        self.features = nn.LSTM(64, 128, num_layers=2, dropout=0.2, batch_first=True, bidirectional=True)
 
         self.classifier = CapsuleLinear(out_capsules=num_class, in_length=16, out_length=8,
                                         num_iterations=num_iterations)
