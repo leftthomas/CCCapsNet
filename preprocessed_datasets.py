@@ -64,9 +64,9 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
             examples = []
             for line in f.readlines():
                 label, text = line.split('\t')
-                # we only need the first 7000 words
-                if len(text.split()) > 7000:
-                    text = ' '.join(text.split()[:7000])
+                # we only need the first 1200 words
+                if len(text.split()) > 1200:
+                    text = ' '.join(text.split()[:1200])
                 if file_name == train_file:
                     avg_train_length += len(text.split())
                 if file_name == test_file:
@@ -152,7 +152,7 @@ def newsgroups_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 1, max length of it is 6779; The min length of text
     about test data is 1, max length of it is 6142.
     -------------------------------------Processing Step 2---------------------------------------
-    The average length of text about train data is 143, the average length of text about test data is 139.
+    The average length of text about train data is 131, the average length of text about test data is 129.
 
     Example:
         >>> train = newsgroups_dataset(train=True)
@@ -183,7 +183,7 @@ def webkb_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 1, max length of it is 20628; The min length of text
     about test data is 1, max length of it is 2082.
     -------------------------------------Processing Step 2---------------------------------------
-    The average length of text about train data is 129, the average length of text about test data is 136.
+    The average length of text about train data is 126, the average length of text about test data is 134.
 
     Example:
         >>> train = webkb_dataset(train=True)
