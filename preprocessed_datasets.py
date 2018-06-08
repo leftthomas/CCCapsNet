@@ -16,8 +16,7 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
     The min length of text about train data is 4, max length of it is 1199; The min length of text
     about test data is 3, max length of it is 930.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples is 24,996. The average length of text about train data is
-    96, the average length of text about test data is 94.
+    The average length of text about train data is 96, the average length of text about test data is 94.
 
     Args:
         directory (str, optional): Directory to cache the dataset.
@@ -65,9 +64,9 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
             examples = []
             for line in f.readlines():
                 label, text = line.split('\t')
-                # we only need the first 6000 words
-                if len(text.split()) > 6000:
-                    text = ' '.join(text.split()[:6000])
+                # we only need the first 8000 words
+                if len(text.split()) > 8000:
+                    text = ' '.join(text.split()[:8000])
                 if file_name == train_file:
                     avg_train_length += len(text.split())
                 if file_name == test_file:
@@ -98,8 +97,7 @@ def agnews_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 3, max length of it is 91; The min length of text
     about test data is 5, max length of it is 74.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples is 119,994. The average length of text about train data is
-    22, the average length of text about test data is 22.
+    The average length of text about train data is 22, the average length of text about test data is 22.
 
     Example:
         >>> train = agnews_dataset(train=True)
@@ -127,8 +125,7 @@ def dbpedia_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 1, max length of it is 1001; The min length of text
     about test data is 2, max length of it is 355.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples is 559,455. The average length of text about train data is
-    27, the average length of text about test data is 27.
+    The average length of text about train data is 27, the average length of text about test data is 27.
 
     Example:
         >>> train = dbpedia_dataset(train=True)
@@ -155,8 +152,7 @@ def newsgroups_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 1, max length of it is 6779; The min length of text
     about test data is 1, max length of it is 6142.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples is 11,263. The average length of text about train data is
-    143, the average length of text about test data is 139.
+    The average length of text about train data is 143, the average length of text about test data is 139.
 
     Example:
         >>> train = newsgroups_dataset(train=True)
@@ -187,8 +183,7 @@ def webkb_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 1, max length of it is 20628; The min length of text
     about test data is 1, max length of it is 2082.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples is 2,756. The average length of text about train data is
-    130, the average length of text about test data is 136.
+    The average length of text about train data is 130, the average length of text about test data is 136.
 
     Example:
         >>> train = webkb_dataset(train=True)
@@ -215,8 +210,7 @@ def yahoo_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 1, max length of it is 1006; The min length of text
     about test data is 1, max length of it is 491.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples is 1,350,268. The average length of text about train data is
-    38, the average length of text about test data is 37.
+    The average length of text about train data is 37, the average length of text about test data is 37.
 
     Example:
         >>> train = yahoo_dataset(train=True)
@@ -247,10 +241,10 @@ def reuters_dataset(directory='data/', train=False, test=False, fine_grained=Fal
     The min length of text about R52 train data is 4, max length of it is 595; The min length of
     text about R52 test data is 5, max length of it is 484.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples about R8 is 5,483. The average length of text about train
-    data is 66, the average length of text about test data is 60.
-    The total number of training samples about R52 is 6,530. The average length of text about train
-    data is 70, the average length of text about test data is 64.
+    The average length of text about R8 train data is 66, the average length of text about R8
+    test data is 60.
+    The average length of text about R52 train data is 70, the average length of text about R52
+    test data is 64.
 
     Example:
         >>> train = reuters_dataset(train=True)
@@ -285,10 +279,10 @@ def yelp_dataset(directory='data/', train=False, test=False, fine_grained=False)
     The min length of text about full train data is 1, max length of it is 617; The min length of
     text about full test data is 1, max length of it is 524.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples about polarity is 551,262. The average length of text about
-    train data is 53, the average length of text about test data is 52.
-    The total number of training samples about full is 640,042. The average length of text about
-    train data is 54, the average length of text about test data is 53.
+    The average length of text about polarity train data is 53, the average length of text about
+    polarity test data is 52.
+    The average length of text about full train data is 53, the average length of text about full
+    test data is 53.
 
     Example:
         >>> train = yelp_dataset(train=True)
@@ -323,10 +317,10 @@ def amazon_dataset(directory='data/', train=False, test=False, fine_grained=Fals
     The min length of text about polarity train data is 1, max length of it is 156; The min length
     of text about polarity test data is 1, max length of it is 120.
     -------------------------------------Processing Step 2---------------------------------------
-    The total number of training samples about polarity is 3,597,953 The average length of text about
-    train data is 31, the average length of text about test data is 31.
-    The total number of training samples about full is 2,998,091. The average length of text about
-    train data is 32, the average length of text about test data is 32.
+    The average length of text about polarity train data is 31, the average length of text about
+    polarity test data is 31.
+    The average length of text about full train data is 32, the average length of text about full
+    test data is 32.
 
     Example:
         >>> train = amazon_dataset(train=True)
