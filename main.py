@@ -70,12 +70,6 @@ def on_end_epoch(state):
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
     confusion_logger.log(meter_confusion.value())
 
-    print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%%' % (
-        state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0]))
-
-    # scheduler routing iterations
-    scheduler.step()
-
     # save best model
     # pay attention, it's a global value
     global best_acc
@@ -85,6 +79,12 @@ def on_end_epoch(state):
             torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
         else:
             torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
+
+    print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
+        state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
+
+    # scheduler routing iterations
+    scheduler.step()
 
 
 if __name__ == '__main__':
