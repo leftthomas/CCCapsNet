@@ -183,7 +183,7 @@ def webkb_dataset(directory='data/', train=False, test=False):
     The min length of text about train data is 1, max length of it is 20628; The min length of text
     about test data is 1, max length of it is 2082.
     -------------------------------------Processing Step 2---------------------------------------
-    The average length of text about train data is 130, the average length of text about test data is 136.
+    The average length of text about train data is 129, the average length of text about test data is 136.
 
     Example:
         >>> train = webkb_dataset(train=True)
