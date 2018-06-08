@@ -64,9 +64,9 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
             examples = []
             for line in f.readlines():
                 label, text = line.split('\t')
-                # we only need the first 8000 words
-                if len(text.split()) > 8000:
-                    text = ' '.join(text.split()[:8000])
+                # we only need the first 7000 words
+                if len(text.split()) > 7000:
+                    text = ' '.join(text.split()[:7000])
                 if file_name == train_file:
                     avg_train_length += len(text.split())
                 if file_name == test_file:
