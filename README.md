@@ -40,17 +40,6 @@ all the datasets from the aforementioned cloud storage webs, and put the downloa
 
 ## Usage
 
-### Preprocess Data
-```
-python preprocess_data.py --data_type Newsgroups
-optional arguments:
---data_type              dataset type [default value is 'IMDB'](choices:['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia',
-                         'AGNews', 'YahooAnswers', 'YelpReview', 'AmazonReview'])
---fine_grained           use fine grained class or not, it only works for Reuters, YelpReview and AmazonReview [default value is False]
-```
-The preprocessed datasets are in `data` directory. This step can be skipped, it takes a long time. We remain this code for 
-anyone want know the preprocessing details.
-
 ### Train Model
 ```
 python -m visdom.server -logging_level WARNING & python main.py --data_type newsgroups --num_epochs 300

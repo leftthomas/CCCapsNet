@@ -4,12 +4,11 @@ import sys
 from torchnlp.datasets.dataset import Dataset
 
 from utils import GoogleDriveDownloader as gdd
+from utils import text_preprocess
 
 
-def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, verbose=False,
-                 file_names=['train.csv', 'test.csv'], orig_id='1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn',
-                 # train, test
-                 pred_ids=['1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn', '1uSzCdUncgTwIb8cyT_xPoYvxiDN4_xLA']):
+def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_grained=False,
+                 verbose=False, text_length=1200, share_id='1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn'):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 
@@ -27,17 +26,19 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, verbo
         data_type (str, optional): Which dataset to use.
         preprocessing (bool, optional): Whether to preprocess the original dataset. If preprocessing
             equals None, it will not download the preprocessed dataset, it will generate preprocessed
-            dataset from the original dataset
+            dataset from the original dataset.
+        fine_grained (bool, optional): Whether to use fine_grained dataset instead of polarity dataset.
         verbose (bool, optional): Whether to print the dataset details.
-        file_names (str, optional): downloaded dataset train and test file names.
-        orig_id (str, optional): Google Drive share ID about the original dataset to download.
-        pred_ids (str, optional): Google Drive share IDs about the preprocessed dataset to download.
+        text_length (int, optional): Only load the first text_length words, it only works when
+            preprocessing is True.
+        share_id (str, optional): Google Drive share ID about the original dataset to download.
 
     Returns:
-        :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and test dataset.
+        :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and test
+        dataset.
 
     Example:
-        >>> train, test = imdb_dataset()
+        >>> train, test = imdb_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': 'pos',
@@ -54,36 +55,58 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, verbo
           'text': 'bizarr horror movi fill famou face stolen cristina rain flamingo road...'}]
     """
 
-    if len(file_names) != 2 and len(pred_ids) != 2:
-        raise ValueError('The file_names and pred_ids must contains two elements.')
-    train_file, test_file = os.path.join(directory, data_type, file_names[0]), os.path.join(directory, data_type,
-                                                                                            file_names[1])
     if preprocessing:
-        gdd.download_file_from_google_drive(pred_ids[0], train_file, directory + data_type + train_file)
-        gdd.download_file_from_google_drive(pred_ids[1], test_file, directory + data_type + test_file)
+        gdd.download_file_from_google_drive(share_id, data_type + '_preprocessed.zip', directory + data_type)
+        if fine_grained:
+            train_file, test_file = 'preprocessed_fine_grained_train.txt', 'preprocessed_fine_grained_test.txt'
+        else:
+            train_file, test_file = 'preprocessed_train.txt', 'preprocessed_test.txt'
     else:
-        gdd.download_file_from_google_drive(orig_id, data_type + '.zip', directory + data_type, unzip=True)
+        gdd.download_file_from_google_drive(share_id, data_type + '_orginal.zip', directory + data_type)
+        if fine_grained:
+            train_file, test_file = 'orginal_fine_grained_train.txt', 'orginal_fine_grained_test.txt'
+        else:
+            train_file, test_file = 'orginal_train.txt', 'orginal_test.txt'
 
-    min_train_length, avg_train_length, max_train_length = sys.maxsize, 0, 0
-    min_test_length, avg_test_length, max_test_length = sys.maxsize, 0, 0
+    if verbose:
+        min_train_length, avg_train_length, max_train_length = sys.maxsize, 0, 0
+        min_test_length, avg_test_length, max_test_length = sys.maxsize, 0, 0
+
     ret = []
     for file_name in [train_file, test_file]:
-        with open(os.path.join(directory, file_name), 'r', encoding='utf-8') as f:
+        with open(os.path.join(directory, data_type, file_name), 'r', encoding='utf-8') as f:
             examples = []
             for line in f.readlines():
                 label, text = line.split('\t')
-                # we only need the first 1200 words
-                if len(text.split()) > 1200:
-                    text = ' '.join(text.split()[:1200])
-                if file_name == train_file:
-                    avg_train_length += len(text.split())
-                if file_name == test_file:
-                    avg_test_length += len(text.split())
-                examples.append({'label': label, 'text': text.rstrip('\n')})
+                text = text.rstrip('\n')
+                if preprocessing:
+                    if len(text.split()) > text_length:
+                        text = ' '.join(text.split()[:text_length])
+                elif preprocessing is None:
+                    text = text_preprocess(text)
+                    if len(text.split()) == 0:
+                        continue
+                if verbose:
+                    if file_name == train_file:
+                        avg_train_length += len(text.split())
+                        if len(text.split()) > max_train_length:
+                            max_train_length = len(text.split())
+                        if len(text.split()) < min_train_length:
+                            min_train_length = len(text.split())
+                    if file_name == test_file:
+                        avg_test_length += len(text.split())
+                        if len(text.split()) > max_test_length:
+                            max_test_length = len(text.split())
+                        if len(text.split()) < min_test_length:
+                            min_test_length = len(text.split())
+                examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
 
-    print("[!] avg_train_length: {}".format(round(avg_train_length / len(ret[0]))))
-    print("[!] avg_test_length: {}".format(round(avg_test_length / len(ret[1]))))
+    print(
+        "[!] train length--(min: {}, avg: {}, max: {})".format(min_train_length, round(avg_train_length / len(ret[0])),
+                                                               max_train_length))
+    print("[!] test length--(min: {}, avg: {}, max: {})".format(min_test_length, round(avg_test_length / len(ret[1])),
+                                                                max_test_length))
     return tuple(ret)
 
 
