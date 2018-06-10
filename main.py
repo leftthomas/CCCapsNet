@@ -91,8 +91,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train Text Classification')
     parser.add_argument('--data_type', default='imdb', type=str,
-                        choices=['imdb', 'newsgroups', 'reuters', 'webkb', 'dbpedia', 'agnews', 'yahoo', 'yelp',
-                                 'amazon'], help='dataset type')
+                        choices=['imdb', 'newsgroups', 'reuters', 'webkb', 'cade', 'dbpedia', 'agnews', 'yahoo',
+                                 'sogou', 'yelp', 'amazon'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
     parser.add_argument('--num_iterations', default=1, type=int, help='initial routing iterations number')

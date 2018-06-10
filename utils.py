@@ -1,3 +1,4 @@
+import argparse
 import os
 import re
 import warnings
@@ -131,7 +132,7 @@ def text_preprocess(text):
     return text
 
 
-def load_data(data_type, fine_grained):
+def load_data(data_type, fine_grained, encode=True):
     if data_type == 'imdb':
         train_data, test_data = imdb_dataset()
     elif data_type == 'newsgroups':
@@ -153,16 +154,19 @@ def load_data(data_type, fine_grained):
     else:
         raise ValueError('{} data type not supported.'.format(data_type))
 
-    sentence_corpus = [row['text'] for row in datasets_iterator(train_data, )]
-    sentence_encoder = WhitespaceEncoder(sentence_corpus, reserved_tokens=[PADDING_TOKEN, UNKNOWN_TOKEN])
-    label_corpus = [row['label'] for row in datasets_iterator(train_data, )]
-    label_encoder = IdentityEncoder(label_corpus, reserved_tokens=[])
+    if encode:
+        sentence_corpus = [row['text'] for row in datasets_iterator(train_data, )]
+        sentence_encoder = WhitespaceEncoder(sentence_corpus, reserved_tokens=[PADDING_TOKEN, UNKNOWN_TOKEN])
+        label_corpus = [row['label'] for row in datasets_iterator(train_data, )]
+        label_encoder = IdentityEncoder(label_corpus, reserved_tokens=[])
 
-    # Encode
-    for row in datasets_iterator(train_data, test_data):
-        row['text'] = sentence_encoder.encode(row['text'])
-        row['label'] = label_encoder.encode(row['label'])
-    return sentence_encoder.vocab_size, label_encoder.vocab_size, train_data, test_data
+        # Encode
+        for row in datasets_iterator(train_data, test_data):
+            row['text'] = sentence_encoder.encode(row['text'])
+            row['label'] = label_encoder.encode(row['label'])
+        return sentence_encoder.vocab_size, label_encoder.vocab_size, train_data, test_data
+    else:
+        return train_data, test_data
 
 
 def collate_fn(batch):
@@ -170,3 +174,34 @@ def collate_fn(batch):
     text_batch, _ = pad_batch([row['text'] for row in batch])
     label_batch = [row['label'] for row in batch]
     return [text_batch, torch.cat(label_batch)]
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Generate Preprocessed Data')
+    parser.add_argument('--data_type', default='imdb', type=str,
+                        choices=['imdb', 'newsgroups', 'reuters', 'webkb', 'cade', 'dbpedia', 'agnews', 'yahoo',
+                                 'sogou', 'yelp', 'amazon'], help='dataset type')
+    parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
+                                                                    'reuters, yelp and amazon')
+    opt = parser.parse_args()
+    DATA_TYPE = opt.data_type
+    FINE_GRAINED = opt.fine_grained
+    train_dataset, test_dataset = load_data(DATA_TYPE, FINE_GRAINED, encode=False)
+
+    if FINE_GRAINED:
+        train_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_train.txt')
+        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_test.txt')
+    else:
+        train_file = os.path.join('data', DATA_TYPE, 'preprocessed_train.txt')
+        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_train.txt')
+
+    # save files
+    train_f = open(train_file, 'w')
+    for data in train_dataset:
+        train_f.write(data['label'] + '\t' + data['text'] + '\n')
+    train_f.close()
+
+    test_f = open(test_file, 'w')
+    for data in test_dataset:
+        test_f.write(data['label'] + '\t' + data['text'] + '\n')
+    test_f.close()
