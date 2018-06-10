@@ -5,6 +5,7 @@ import torchnet as tnt
 from capsule_layer.optim import MultiStepRI
 from torch.autograd import Variable
 from torch.optim import Adam
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torchnet.engine import Engine
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
@@ -59,6 +60,9 @@ def on_end_epoch(state):
     train_loss_logger.log(state['epoch'], meter_loss.value()[0])
     train_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
 
+    # scheduler learning rate
+    lr_scheduler.step(meter_loss.value()[0], state['epoch'] + 1)
+
     reset_meters()
 
     test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
@@ -84,7 +88,7 @@ def on_end_epoch(state):
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
 
     # scheduler routing iterations
-    scheduler.step()
+    routing_scheduler.step()
 
 
 if __name__ == '__main__':
@@ -118,9 +122,10 @@ if __name__ == '__main__':
         model.cuda()
         loss_criterion.cuda()
 
-    scheduler = MultiStepRI(model, milestones=[10, 30, 70], verbose=True)
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
+    routing_scheduler = MultiStepRI(model, milestones=[10, 30, 50, 70], verbose=True)
+    lr_scheduler = ReduceLROnPlateau(optimizer, verbose=True, threshold=1e-3)
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
