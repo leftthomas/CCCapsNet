@@ -6,8 +6,6 @@ import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
-from .data_utils import text_preprocess
-
 
 def yelp_dataset(directory='data/', train=False, test=False, check_files=['readme.txt'],
                  # yelp_review_full, yelp_review_polarity
@@ -58,7 +56,7 @@ def yelp_dataset(directory='data/', train=False, test=False, check_files=['readm
         text_max_length = 0
         for data in csv_file:
             label, text = str(data[0]), data[1]
-            text = text_preprocess(text)
+            # text = text_preprocess(text)
             if len(text.split()) == 0:
                 continue
             else:

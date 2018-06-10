@@ -6,8 +6,6 @@ import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
-from .data_utils import text_preprocess
-
 
 def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='dbpedia',
                     check_files=['dbpedia/readme.txt'],
@@ -60,7 +58,7 @@ def dbpedia_dataset(directory='data/', train=False, test=False, extracted_name='
                     text = description
                 else:
                     text = title + ' ' + description
-                text = text_preprocess(text)
+                # text = text_preprocess(text)
                 if len(text.split()) == 0:
                     continue
                 else:

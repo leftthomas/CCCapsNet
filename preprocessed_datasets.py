@@ -1,12 +1,15 @@
 import os
+import sys
 
-from google_drive_downloader import GoogleDriveDownloader as gdd
 from torchnlp.datasets.dataset import Dataset
 
+from utils import GoogleDriveDownloader as gdd
 
-def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, fine_grained=False,
+
+def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, verbose=False,
+                 file_names=['train.csv', 'test.csv'], orig_id='1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn',
                  # train, test
-                 share_id=['1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn', '1uSzCdUncgTwIb8cyT_xPoYvxiDN4_xLA']):
+                 pred_ids=['1nlyc9HOTszLPcwzBtx3vws9b2K18eMxn', '1uSzCdUncgTwIb8cyT_xPoYvxiDN4_xLA']):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 
@@ -14,25 +17,35 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
     previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for training,
     and 25,000 for testing.
     The min length of text about train data is 4, max length of it is 1199; The min length of text
-    about test data is 3, max length of it is 930.
-    -------------------------------------Processing Step 2---------------------------------------
-    The average length of text about train data is 96, the average length of text about test data is 94.
+    about test data is 3, max length of it is 930. The average length of text about train data is
+    96, the average length of text about test data is 94.
+
+    **Reference:** http://ai.stanford.edu/~amaas/data/sentiment/
 
     Args:
         directory (str, optional): Directory to cache the dataset.
         data_type (str, optional): Which dataset to use.
-        train (bool, optional): If to load the training split of the dataset.
-        test (bool, optional): If to load the test split of the dataset.
-        fine_grained (bool, optional): Whether to use fine_grained dataset instead of polarity dataset.
-        share_id (str, optional): Google Drive share IDs to download.
+        preprocessing (bool, optional): Whether to preprocess the original dataset. If preprocessing
+            equals None, it will not download the preprocessed dataset, it will generate preprocessed
+            dataset from the original dataset
+        verbose (bool, optional): Whether to print the dataset details.
+        file_names (str, optional): downloaded dataset train and test file names.
+        orig_id (str, optional): Google Drive share ID about the original dataset to download.
+        pred_ids (str, optional): Google Drive share IDs about the preprocessed dataset to download.
 
     Returns:
-        :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and
-        test dataset in order if their respective boolean argument is true.
+        :class:`tuple` of :class:`torchnlp.datasets.Dataset`: Tuple with the training dataset and test dataset.
 
     Example:
-        >>> train = imdb_dataset(train=True)
+        >>> train, test = imdb_dataset()
         >>> train[0:2]
+        [{
+          'label': 'pos',
+          'text': 'movi respect lot memor quot list gem imagin movi joe piscopo funni...'},
+         {
+          'label': 'pos',
+          'text': 'bizarr horror movi fill famou face stolen cristina rain flamingo road...'}]
+        >>> test[0:2]
         [{
           'label': 'pos',
           'text': 'movi respect lot memor quot list gem imagin movi joe piscopo funni...'},
@@ -41,25 +54,20 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
           'text': 'bizarr horror movi fill famou face stolen cristina rain flamingo road...'}]
     """
 
-    if train is False and test is False:
-        raise ValueError("The train and test can't all be False.")
-    if len(share_id) != 2:
-        raise ValueError('The share_id must contains two ids.')
-    if fine_grained:
-        train_file, test_file = data_type + '_fine_grained_train.txt', data_type + '_fine_grained_test.txt'
+    if len(file_names) != 2 and len(pred_ids) != 2:
+        raise ValueError('The file_names and pred_ids must contains two elements.')
+    train_file, test_file = os.path.join(directory, data_type, file_names[0]), os.path.join(directory, data_type,
+                                                                                            file_names[1])
+    if preprocessing:
+        gdd.download_file_from_google_drive(pred_ids[0], train_file, directory + data_type + train_file)
+        gdd.download_file_from_google_drive(pred_ids[1], test_file, directory + data_type + test_file)
     else:
-        train_file, test_file = data_type + '_train.txt', data_type + '_test.txt'
+        gdd.download_file_from_google_drive(orig_id, data_type + '.zip', directory + data_type, unzip=True)
 
-    if train:
-        gdd.download_file_from_google_drive(file_id=share_id[0], dest_path=directory + train_file)
-        avg_train_length = 0
-    if test:
-        gdd.download_file_from_google_drive(file_id=share_id[1], dest_path=directory + test_file)
-        avg_test_length = 0
-
+    min_train_length, avg_train_length, max_train_length = sys.maxsize, 0, 0
+    min_test_length, avg_test_length, max_test_length = sys.maxsize, 0, 0
     ret = []
-    splits = [file_name for (requested, file_name) in [(train, train_file), (test, test_file)] if requested]
-    for file_name in splits:
+    for file_name in [train_file, test_file]:
         with open(os.path.join(directory, file_name), 'r', encoding='utf-8') as f:
             examples = []
             for line in f.readlines():
@@ -74,17 +82,9 @@ def imdb_dataset(directory='data/', data_type='imdb', train=False, test=False, f
                 examples.append({'label': label, 'text': text.rstrip('\n')})
         ret.append(Dataset(examples))
 
-    if train:
-        print("[!] avg_train_length: {}".format(round(avg_train_length / len(ret[0]))))
-    if test:
-        if train:
-            print("[!] avg_test_length: {}".format(round(avg_test_length / len(ret[1]))))
-        else:
-            print("[!] avg_test_length: {}".format(round(avg_test_length / len(ret[0]))))
-    if len(ret) == 1:
-        return ret[0]
-    else:
-        return tuple(ret)
+    print("[!] avg_train_length: {}".format(round(avg_train_length / len(ret[0]))))
+    print("[!] avg_test_length: {}".format(round(avg_test_length / len(ret[1]))))
+    return tuple(ret)
 
 
 def agnews_dataset(directory='data/', train=False, test=False):
@@ -100,8 +100,15 @@ def agnews_dataset(directory='data/', train=False, test=False):
     The average length of text about train data is 22, the average length of text about test data is 22.
 
     Example:
-        >>> train = agnews_dataset(train=True)
+        >>> train, test = agnews_dataset()
         >>> train[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+        >>> test[0:2]
         [{
           'label': 'Business',
           'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
@@ -111,7 +118,7 @@ def agnews_dataset(directory='data/', train=False, test=False):
     """
 
     return imdb_dataset(directory, 'agnews', train, test,
-                        share_id=['1plrqZTyhYvSkvKsNaos5hqN6eqjfWMb6', '1dY2ppjVEloLSKAOfnS2oUdai-wR8ISc0'])
+                        pred_ids=['1plrqZTyhYvSkvKsNaos5hqN6eqjfWMb6', '1dY2ppjVEloLSKAOfnS2oUdai-wR8ISc0'])
 
 
 def dbpedia_dataset(directory='data/', train=False, test=False):
@@ -139,7 +146,7 @@ def dbpedia_dataset(directory='data/', train=False, test=False):
     """
 
     return imdb_dataset(directory, 'dbpedia', train, test,
-                        share_id=['1UVRYZ8B30vepUnfNVjZoqC1srAp_EDfT', '1JPYEPbexNRXq2U05a2dIBFrhjCZdK9Y5'])
+                        pred_ids=['1UVRYZ8B30vepUnfNVjZoqC1srAp_EDfT', '1JPYEPbexNRXq2U05a2dIBFrhjCZdK9Y5'])
 
 
 def newsgroups_dataset(directory='data/', train=False, test=False):
@@ -166,7 +173,7 @@ def newsgroups_dataset(directory='data/', train=False, test=False):
     """
 
     return imdb_dataset(directory, 'newsgroups', train, test,
-                        share_id=['16uZCEsmwKteEcSCjKaXR-Nw-w0WVwOY7', '1mmiPXs-otrdmh_w5jNjIP6niXVICW1T6'])
+                        pred_ids=['16uZCEsmwKteEcSCjKaXR-Nw-w0WVwOY7', '1mmiPXs-otrdmh_w5jNjIP6niXVICW1T6'])
 
 
 def webkb_dataset(directory='data/', train=False, test=False):
@@ -197,7 +204,7 @@ def webkb_dataset(directory='data/', train=False, test=False):
     """
 
     return imdb_dataset(directory, 'webkb', train, test,
-                        share_id=['166VJXbk0WdZIEU527m8LAka7qOv0jfCq', '18dpFqT_-GUOWq6h8KGGAhGDRQCa2_DfP'])
+                        pred_ids=['166VJXbk0WdZIEU527m8LAka7qOv0jfCq', '18dpFqT_-GUOWq6h8KGGAhGDRQCa2_DfP'])
 
 
 def yahoo_dataset(directory='data/', train=False, test=False):
@@ -224,7 +231,7 @@ def yahoo_dataset(directory='data/', train=False, test=False):
     """
 
     return imdb_dataset(directory, 'yahoo', train, test,
-                        share_id=['1TM4AHEJEeb-l6sMRpl2Y5qiaJ4FateJl', '1JstXhPIgzjNOU4Ekeb3ICIOfVVJoto5D'])
+                        pred_ids=['1TM4AHEJEeb-l6sMRpl2Y5qiaJ4FateJl', '1JstXhPIgzjNOU4Ekeb3ICIOfVVJoto5D'])
 
 
 def reuters_dataset(directory='data/', train=False, test=False, fine_grained=False):
@@ -261,7 +268,7 @@ def reuters_dataset(directory='data/', train=False, test=False, fine_grained=Fal
         ids = ['1JL83q8YoyaffLxSJsrJSAGYSDVcZotNR', '1qQqBUQTGTVwotRPuDwfpHry5Qw77-Dix']
     else:
         ids = ['1jL06ZqR74fKYsMwAFwyGXE_KmZ_b1yGZ', '1QDgNKHyaCTwEdjeN2XJE1nUwKmloPkU9']
-    return imdb_dataset(directory, 'reuters', train, test, fine_grained, share_id=ids)
+    return imdb_dataset(directory, 'reuters', train, test, fine_grained, pred_ids=ids)
 
 
 def yelp_dataset(directory='data/', train=False, test=False, fine_grained=False):
@@ -299,7 +306,7 @@ def yelp_dataset(directory='data/', train=False, test=False, fine_grained=False)
         ids = ['1hRGkaOnYNtjhRXIm43Oo643GiStrxvJ0', '1D8EckH1KPfrfsIV3nIU2eOsFtTGTG7DP']
     else:
         ids = ['1twA4DhJ2mnWh2aQr0qK1UlgqKSmcxuZp', '1KFt3vAZVyUkAnrIvKG7chYXkH0ez49ph']
-    return imdb_dataset(directory, 'yelp', train, test, fine_grained, share_id=ids)
+    return imdb_dataset(directory, 'yelp', train, test, fine_grained, pred_ids=ids)
 
 
 def amazon_dataset(directory='data/', train=False, test=False, fine_grained=False):
@@ -337,4 +344,4 @@ def amazon_dataset(directory='data/', train=False, test=False, fine_grained=Fals
         ids = ['1IegvAdxzTye3XLybtfUD1UgNtDzVXn3y', '1fHeXimRtpi2M1EMsZ6phT2QZ-696gofm']
     else:
         ids = ['1Wxahg6ipC9OFnzGH901S6NIVYNILS0ND', '1dbAsmrtGxk9qIVE5DCNxIidhKHMz6PaO']
-    return imdb_dataset(directory, 'amazon', train, test, fine_grained, share_id=ids)
+    return imdb_dataset(directory, 'amazon', train, test, fine_grained, pred_ids=ids)

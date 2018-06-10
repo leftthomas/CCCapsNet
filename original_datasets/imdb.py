@@ -5,8 +5,6 @@ import sys
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
-from .data_utils import text_preprocess
-
 
 def imdb_dataset(directory='data/', train=False, test=False, train_directory='train', test_directory='test',
                  extracted_name='aclImdb', check_files=['aclImdb/README'],
@@ -52,7 +50,7 @@ def imdb_dataset(directory='data/', train=False, test=False, train_directory='tr
             for filename in glob.iglob(os.path.join(full_path, sentiment, '*.txt')):
                 with open(filename, 'r', encoding="utf-8") as f:
                     text = f.readline()
-                text = text_preprocess(text)
+                # text = text_preprocess(text)
                 if len(text.split()) == 0:
                     continue
                 else:

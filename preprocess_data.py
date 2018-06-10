@@ -2,7 +2,7 @@ import argparse
 
 from original_datasets import imdb_dataset, ag_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, \
     reuters_dataset, \
-    webkb_dataset, yahoo_dataset, yelp_dataset
+    webkb_dataset, yahoo_dataset, yelp_dataset, sogou_dataset, cade_dataset
 
 
 def load_data(data_type, fine_grained):
@@ -14,10 +14,14 @@ def load_data(data_type, fine_grained):
         dataset = reuters_dataset(train=True, test=True, fine_grained=fine_grained)
     elif data_type == 'WebKB':
         dataset = webkb_dataset(train=True, test=True)
+    elif data_type == 'Cade':
+        dataset = cade_dataset(train=True, test=True)
     elif data_type == 'DBPedia':
         dataset = dbpedia_dataset(train=True, test=True)
     elif data_type == 'AGNews':
         dataset = ag_dataset(train=True, test=True)
+    elif data_type == 'SogouNews':
+        dataset = sogou_dataset(train=True, test=True)
     elif data_type == 'YahooAnswers':
         dataset = yahoo_dataset(train=True, test=True)
     elif data_type == 'YelpReview':
@@ -33,8 +37,8 @@ def load_data(data_type, fine_grained):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess Text Datasets')
     parser.add_argument('--data_type', default='IMDB', type=str,
-                        choices=['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'DBPedia', 'AGNews', 'YahooAnswers',
-                                 'YelpReview', 'AmazonReview'], help='dataset type')
+                        choices=['IMDB', 'Newsgroups', 'Reuters', 'WebKB', 'Cade', 'DBPedia', 'AGNews', 'SogouNews',
+                                 'YahooAnswers', 'YelpReview', 'AmazonReview'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'Reuters, YelpReview and AmazonReview')
 

@@ -6,8 +6,6 @@ import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
-from .data_utils import text_preprocess
-
 
 def amazon_dataset(directory='data/', train=False, test=False, check_files=['readme.txt'],
                    # amazon_review_full, amazon_review_polarity
@@ -67,7 +65,7 @@ def amazon_dataset(directory='data/', train=False, test=False, check_files=['rea
                     text = description
                 else:
                     text = title + ' ' + description
-                text = text_preprocess(text)
+                # text = text_preprocess(text)
                 if len(text.split()) == 0:
                     continue
                 else:

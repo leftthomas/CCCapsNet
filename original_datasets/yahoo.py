@@ -6,8 +6,6 @@ import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 from torchnlp.download import download_file_maybe_extract
 
-from .data_utils import text_preprocess
-
 
 def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='yahoo_answers',
                   check_files=['yahoo_answers/readme.txt'],
@@ -68,7 +66,7 @@ def yahoo_dataset(directory='data/', train=False, test=False, extracted_name='ya
                 else:
                     text = title + ' ' + content + ' ' + answer
 
-                text = text_preprocess(text)
+                # text = text_preprocess(text)
                 if len(text.split()) == 0:
                     continue
                 else:

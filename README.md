@@ -19,10 +19,6 @@ pip install pytorch-nlp
 ```
 pip install PorterStemmer
 ```
-* googledrivedownloader
-```
-pip install googledrivedownloader
-```
 * tqdm
 ```
 conda install tqdm
