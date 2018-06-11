@@ -3,8 +3,8 @@ import sys
 
 from torchnlp.datasets.dataset import Dataset
 
-from utils import GoogleDriveDownloader as gdd
-from utils import text_preprocess
+from data_utils import GoogleDriveDownloader as gdd
+from data_utils import text_preprocess
 
 
 def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_grained=False,
