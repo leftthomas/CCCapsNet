@@ -124,7 +124,7 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
     **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
 
     Example:
-        >>> train, test = agnews_dataset()
+        >>> train, test = agnews_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': 'Business',
@@ -141,8 +141,7 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    return imdb_dataset(directory, 'agnews', train, test,
-                        pred_ids=['1plrqZTyhYvSkvKsNaos5hqN6eqjfWMb6', '1dY2ppjVEloLSKAOfnS2oUdai-wR8ISc0'])
+    return imdb_dataset(directory, 'agnews', preprocessing, verbose=verbose, text_length=text_length, share_id='')
 
 
 def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
@@ -160,7 +159,7 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
     **Reference:** http://dbpedia.org
 
     Example:
-        >>> train = dbpedia_dataset(train=True)
+        >>> train, test = dbpedia_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': 'Company',
@@ -168,10 +167,16 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
          {
           'label': 'Company',
           'text': 'schwan stabilo schwan stabilo german maker pen write colour cosmet marker...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    return imdb_dataset(directory, 'dbpedia', train, test,
-                        pred_ids=['1UVRYZ8B30vepUnfNVjZoqC1srAp_EDfT', '1JPYEPbexNRXq2U05a2dIBFrhjCZdK9Y5'])
+    return imdb_dataset(directory, 'dbpedia', preprocessing, verbose=verbose, text_length=text_length, share_id='')
 
 
 def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
@@ -188,7 +193,7 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
     **Reference:** http://qwone.com/~jason/20Newsgroups/
 
     Example:
-        >>> train = newsgroups_dataset(train=True)
+        >>> train, test = newsgroups_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': 'alt.atheism',
@@ -196,10 +201,16 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
          {
           'label': 'alt.atheism',
           'text': 'alt atheism faq introduct atheism archiv name atheism introduct...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    return imdb_dataset(directory, 'newsgroups', train, test,
-                        pred_ids=['16uZCEsmwKteEcSCjKaXR-Nw-w0WVwOY7', '1mmiPXs-otrdmh_w5jNjIP6niXVICW1T6'])
+    return imdb_dataset(directory, 'newsgroups', preprocessing, verbose=verbose, text_length=text_length, share_id='')
 
 
 def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
@@ -220,7 +231,7 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
 
     Example:
-        >>> train = webkb_dataset(train=True)
+        >>> train, test = webkb_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': 'student',
@@ -228,10 +239,92 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
          {
           'label': 'student',
           'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    return imdb_dataset(directory, 'webkb', train, test,
-                        pred_ids=['166VJXbk0WdZIEU527m8LAka7qOv0jfCq', '18dpFqT_-GUOWq6h8KGGAhGDRQCa2_DfP'])
+    return imdb_dataset(directory, 'webkb', preprocessing, verbose=verbose, text_length=text_length, share_id='')
+
+
+def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+    """
+    Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
+
+    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide Knowledge Base
+    (Web->Kb) project of the CMU text learning group. These pages were collected from computer
+    science departments of various universities in 1997, manually classified into seven different
+    classes: student, faculty, staff, department, course, project, and other. The classes Department
+    and Staff is discarded, because there were only a few pages from each university. The class Other
+    is discarded, because pages were very different among this class. The total number of training
+    samples is 2,785 and testing 1,383.
+    The min length of text about train data is 1, max length of it is 20628; The min length of text
+    about test data is 1, max length of it is 2082. The average length of text about train data is
+    126, the average length of text about test data is 134.
+
+    **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
+
+    Example:
+        >>> train, test = cade_dataset(preprocessing=True)
+        >>> train[0:2]
+        [{
+          'label': 'student',
+          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic...'}
+         {
+          'label': 'student',
+          'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+    """
+
+    return imdb_dataset(directory, 'cade', preprocessing, verbose=verbose, text_length=text_length, share_id='')
+
+
+def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+    """
+    Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
+
+    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide Knowledge Base
+    (Web->Kb) project of the CMU text learning group. These pages were collected from computer
+    science departments of various universities in 1997, manually classified into seven different
+    classes: student, faculty, staff, department, course, project, and other. The classes Department
+    and Staff is discarded, because there were only a few pages from each university. The class Other
+    is discarded, because pages were very different among this class. The total number of training
+    samples is 2,785 and testing 1,383.
+    The min length of text about train data is 1, max length of it is 20628; The min length of text
+    about test data is 1, max length of it is 2082. The average length of text about train data is
+    126, the average length of text about test data is 134.
+
+    **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
+
+    Example:
+        >>> train, test = sogou_dataset(preprocessing=True)
+        >>> train[0:2]
+        [{
+          'label': 'student',
+          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic...'}
+         {
+          'label': 'student',
+          'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+    """
+
+    return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id='')
 
 
 def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
@@ -250,7 +343,7 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     **Reference:** https://webscope.sandbox.yahoo.com/catalog.php?datatype=l
 
     Example:
-        >>> train = yahoo_dataset(train=True)
+        >>> train, test = yahoo_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': 'Computers & Internet',
@@ -258,10 +351,16 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
          {
           'label': 'Sports',
           'text': 'road motorcycl trail long distanc trail hear mojav road amaz nsearch onlin'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    return imdb_dataset(directory, 'yahoo', train, test,
-                        pred_ids=['1TM4AHEJEeb-l6sMRpl2Y5qiaJ4FateJl', '1JstXhPIgzjNOU4Ekeb3ICIOfVVJoto5D'])
+    return imdb_dataset(directory, 'yahoo', preprocessing, verbose=verbose, text_length=text_length, share_id='')
 
 
 def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
@@ -283,7 +382,7 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
     **Reference:** http://www.daviddlewis.com/resources/testcollections/reuters21578/
 
     Example:
-        >>> train = reuters_dataset(train=True)
+        >>> train, test = reuters_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': 'earn',
@@ -291,13 +390,20 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
          {
           'label': 'acq',
           'text': 'comput termin system cpml complet sale comput termin system inc complet...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
     if fine_grained:
-        ids = ['1JL83q8YoyaffLxSJsrJSAGYSDVcZotNR', '1qQqBUQTGTVwotRPuDwfpHry5Qw77-Dix']
+        share_id = '1JL83q8YoyaffLxSJsrJSAGYSDVcZotNR'
     else:
-        ids = ['1jL06ZqR74fKYsMwAFwyGXE_KmZ_b1yGZ', '1QDgNKHyaCTwEdjeN2XJE1nUwKmloPkU9']
-    return imdb_dataset(directory, 'reuters', train, test, fine_grained, pred_ids=ids)
+        share_id = '1jL06ZqR74fKYsMwAFwyGXE_KmZ_b1yGZ'
+    return imdb_dataset(directory, 'reuters', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
 def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
@@ -325,7 +431,7 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
     **Reference:** http://www.yelp.com/dataset_challenge
 
     Example:
-        >>> train = yelp_dataset(train=True)
+        >>> train, test = yelp_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': '1',
@@ -333,13 +439,20 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
          {
           'label': '2',
           'text': "goldberg year patient start mhmg great year big pictur gyn markoff found..."}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
     if fine_grained:
-        ids = ['1hRGkaOnYNtjhRXIm43Oo643GiStrxvJ0', '1D8EckH1KPfrfsIV3nIU2eOsFtTGTG7DP']
+        share_id = '1hRGkaOnYNtjhRXIm43Oo643GiStrxvJ0'
     else:
-        ids = ['1twA4DhJ2mnWh2aQr0qK1UlgqKSmcxuZp', '1KFt3vAZVyUkAnrIvKG7chYXkH0ez49ph']
-    return imdb_dataset(directory, 'yelp', train, test, fine_grained, pred_ids=ids)
+        share_id = '1twA4DhJ2mnWh2aQr0qK1UlgqKSmcxuZp'
+    return imdb_dataset(directory, 'yelp', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
 def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
@@ -367,7 +480,7 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
     **Reference:** http://jmcauley.ucsd.edu/data/amazon/
 
     Example:
-        >>> train = amazon_dataset(train=True)
+        >>> train, test = amazon_dataset(preprocessing=True)
         >>> train[0:2]
         [{
           'label': '2',
@@ -375,10 +488,17 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
          {
           'label': '2',
           'text': 'soundtrack read lot review game soundtrack figur write review disagre bit...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+         {
+          'label': 'Business',
+          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
     if fine_grained:
-        ids = ['1IegvAdxzTye3XLybtfUD1UgNtDzVXn3y', '1fHeXimRtpi2M1EMsZ6phT2QZ-696gofm']
+        share_id = '1IegvAdxzTye3XLybtfUD1UgNtDzVXn3y'
     else:
-        ids = ['1Wxahg6ipC9OFnzGH901S6NIVYNILS0ND', '1dbAsmrtGxk9qIVE5DCNxIidhKHMz6PaO']
-    return imdb_dataset(directory, 'amazon', train, test, fine_grained, pred_ids=ids)
+        share_id = '1Wxahg6ipC9OFnzGH901S6NIVYNILS0ND'
+    return imdb_dataset(directory, 'amazon', preprocessing, fine_grained, verbose, text_length, share_id)
