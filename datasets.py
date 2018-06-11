@@ -8,7 +8,7 @@ from data_utils import text_preprocess
 
 
 def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_grained=False,
-                 verbose=False, text_length=1200, share_id='16HiYACpRTxcStv20qGaG3fTlCUnf5cD0'):
+                 verbose=False, text_length=1200, share_id='1eT2xhxlY3FqDisxNOuGvtIjh1KLSSo8a'):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 
@@ -145,7 +145,7 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '16plHa4fRjCumX76I5D3UsvNhfOJ2cEe9'
+    share_id = '' if preprocessing else '1NKiFEzTkfsCB6esMPh3jXPV5FI7uLWaP'
     return imdb_dataset(directory, 'agnews', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -181,7 +181,7 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '150z5EyakNosGxQHKOdtKLj23CUKKqAmx'
+    share_id = '' if preprocessing else '177KdABSnX1eR8q0JrEWfhYvw5dNLO9xH'
     return imdb_dataset(directory, 'dbpedia', preprocessing, verbose=verbose, text_length=text_length,
                         share_id=share_id)
 
@@ -217,7 +217,7 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1s1gY7dnqh67CLJkZSEY5Wbpid-Sf5ErM'
+    share_id = '' if preprocessing else '115elqML03UaA-AeIG1AtlZcWsmvKVGUf'
     return imdb_dataset(directory, 'newsgroups', preprocessing, verbose=verbose, text_length=text_length,
                         share_id=share_id)
 
@@ -257,7 +257,7 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1ZuQhOdtWsgIRXy1FELfcJu9iBGWe6hxV'
+    share_id = '' if preprocessing else '1NZr7LdFNvFd1nc53dye3FtIGvHRQSaLA'
     return imdb_dataset(directory, 'webkb', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -292,7 +292,7 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1CLsCtnhLMjOfqVyp577xhH0n3TByYrM4'
+    share_id = '' if preprocessing else '1stdyiTzdl4qgNS2mv7A_Kvb-yyswPkgy'
     return imdb_dataset(directory, 'cade', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -329,7 +329,7 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1f7ID-myb_j8RiLuk26XfmAiPfjAiZuHd'
+    share_id = '' if preprocessing else '1xXj8QEDXvz2qN48a-guPqWti_6PyCXF3'
     return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -364,7 +364,7 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1mJYfNGJaBlHaI1k4QBkqJV2COl_wWfzg'
+    share_id = '' if preprocessing else '1R-qHc3nqk7Nkzxvpp88wydoe-K2Pqvcv'
     return imdb_dataset(directory, 'yahoo', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -404,7 +404,7 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '16CRR1rQ1hisdgd67j5FYnJVN7h9999Ir'
+    share_id = '' if preprocessing else '1RNPiU2KSz3zBFZ8o1z9q_NlHvhAA1cgn'
     return imdb_dataset(directory, 'reuters', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
@@ -446,7 +446,7 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1-DoNu-KjuHOV1CyUEpsjepdWsM8dpVpE'
+    share_id = '' if preprocessing else '1MiYD7dBr91kY7od3aLwVHGK2hZ6naVpY'
     return imdb_dataset(directory, 'yelp', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
@@ -488,5 +488,5 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1AkpRCN92OELmHxGiHiib4Sa8jT-ksCjJ'
+    share_id = '' if preprocessing else '11z8lG7eg4T5D79UWp4hzNiN5brIDwneu'
     return imdb_dataset(directory, 'amazon', preprocessing, fine_grained, verbose, text_length, share_id)
