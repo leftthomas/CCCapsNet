@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 import warnings
 import zipfile
 from os import makedirs
@@ -87,8 +88,17 @@ class GoogleDriveDownloader:
             try:
                 print('Unzipping...', end='')
                 stdout.flush()
-                with zipfile.ZipFile(os.path.join(dest_path, file_name), 'r') as z:
-                    z.extractall(dest_path)
+                with zipfile.ZipFile(os.path.join(dest_path, file_name), 'r') as zip_file:
+                    for member in zip_file.namelist():
+                        filename = os.path.basename(member)
+                        # skip directories
+                        if not filename:
+                            continue
+                        # copy file (taken from zipfile's extract)
+                        source = zip_file.open(member)
+                        target = open(os.path.join(dest_path, filename), 'wb')
+                        with source, target:
+                            shutil.copyfileobj(source, target)
                 print('Done.')
             except zipfile.BadZipfile:
                 warnings.warn('Ignoring `unzip` since "{}" does not look like a valid zip file'.format(file_name))
@@ -102,7 +112,7 @@ class GoogleDriveDownloader:
 
     @staticmethod
     def _save_response_content(response, destination):
-        with open(destination, "wb") as f:
+        with open(destination, 'wb') as f:
             for chunk in response.iter_content(GoogleDriveDownloader.CHUNK_SIZE):
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
