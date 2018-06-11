@@ -18,7 +18,7 @@ from torchnlp.utils import datasets_iterator
 from torchnlp.utils import pad_batch
 
 from datasets import imdb_dataset, agnews_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, \
-    reuters_dataset, webkb_dataset, yahoo_dataset, yelp_dataset
+    reuters_dataset, webkb_dataset, yahoo_dataset, yelp_dataset, cade_dataset, sogou_dataset
 
 
 class GoogleDriveDownloader:
@@ -132,25 +132,33 @@ def text_preprocess(text):
     return text
 
 
-def load_data(data_type, fine_grained, encode=True):
+def load_data(data_type, preprocessing=False, fine_grained=False, verbose=False, text_length=1200, encode=True):
     if data_type == 'imdb':
-        train_data, test_data = imdb_dataset()
+        train_data, test_data = imdb_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
     elif data_type == 'newsgroups':
-        train_data, test_data = newsgroups_dataset()
+        train_data, test_data = newsgroups_dataset(preprocessing=preprocessing, verbose=verbose,
+                                                   text_length=text_length)
     elif data_type == 'reuters':
-        train_data, test_data = reuters_dataset(fine_grained=fine_grained)
+        train_data, test_data = reuters_dataset(preprocessing=preprocessing, fine_grained=fine_grained, verbose=verbose,
+                                                text_length=text_length)
     elif data_type == 'webkb':
-        train_data, test_data = webkb_dataset()
+        train_data, test_data = webkb_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
+    elif data_type == 'cade':
+        train_data, test_data = cade_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
     elif data_type == 'dbpedia':
-        train_data, test_data = dbpedia_dataset()
+        train_data, test_data = dbpedia_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
     elif data_type == 'agnews':
-        train_data, test_data = agnews_dataset()
+        train_data, test_data = agnews_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
     elif data_type == 'yahoo':
-        train_data, test_data = yahoo_dataset()
+        train_data, test_data = yahoo_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
+    elif data_type == 'sogou':
+        train_data, test_data = sogou_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
     elif data_type == 'yelp':
-        train_data, test_data = yelp_dataset(fine_grained=fine_grained)
+        train_data, test_data = yelp_dataset(preprocessing=preprocessing, fine_grained=fine_grained, verbose=verbose,
+                                             text_length=text_length)
     elif data_type == 'amazon':
-        train_data, test_data = amazon_dataset(fine_grained=fine_grained)
+        train_data, test_data = amazon_dataset(preprocessing=preprocessing, fine_grained=fine_grained, verbose=verbose,
+                                               text_length=text_length)
     else:
         raise ValueError('{} data type not supported.'.format(data_type))
 
@@ -186,7 +194,7 @@ if __name__ == '__main__':
     opt = parser.parse_args()
     DATA_TYPE = opt.data_type
     FINE_GRAINED = opt.fine_grained
-    train_dataset, test_dataset = load_data(DATA_TYPE, FINE_GRAINED, encode=False)
+    train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=None, fine_grained=FINE_GRAINED, encode=False)
 
     if FINE_GRAINED:
         train_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_train.txt')
@@ -196,6 +204,7 @@ if __name__ == '__main__':
         test_file = os.path.join('data', DATA_TYPE, 'preprocessed_train.txt')
 
     # save files
+    print('Saving preprocessed {} dataset into {}... '.format(DATA_TYPE, os.path.join('data', DATA_TYPE)), end='')
     train_f = open(train_file, 'w')
     for data in train_dataset:
         train_f.write(data['label'] + '\t' + data['text'] + '\n')
@@ -205,3 +214,4 @@ if __name__ == '__main__':
     for data in test_dataset:
         test_f.write(data['label'] + '\t' + data['text'] + '\n')
     test_f.close()
+    print('Done.')

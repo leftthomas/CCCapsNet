@@ -62,13 +62,19 @@ def on_end_epoch(state):
     reset_meters()
 
     test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
-    test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn, pin_memory=True)
+    test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     engine.test(processor, test_iterator)
 
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
     confusion_logger.log(meter_confusion.value())
+
+    print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
+        state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
+
+    # scheduler routing iterations
+    routing_scheduler.step()
 
     # save best model
     # pay attention, it's a global value
@@ -79,12 +85,6 @@ def on_end_epoch(state):
             torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
         else:
             torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
-
-    print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
-        state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
-
-    # scheduler routing iterations
-    routing_scheduler.step()
 
 
 if __name__ == '__main__':
@@ -107,10 +107,11 @@ if __name__ == '__main__':
     NUM_EPOCHS = opt.num_epochs
 
     # prepare dataset
-    vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, FINE_GRAINED)
+    vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
+                                                                   fine_grained=FINE_GRAINED, verbose=True)
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
-    train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn, pin_memory=True)
+    train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
     loss_criterion = MarginLoss()
