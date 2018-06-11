@@ -263,20 +263,16 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
 
 def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
     """
-    Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
+    Load the Cade12 dataset (Version 1).
 
-    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide Knowledge Base
-    (Web->Kb) project of the CMU text learning group. These pages were collected from computer
-    science departments of various universities in 1997, manually classified into seven different
-    classes: student, faculty, staff, department, course, project, and other. The classes Department
-    and Staff is discarded, because there were only a few pages from each university. The class Other
-    is discarded, because pages were very different among this class. The total number of training
-    samples is 2,785 and testing 1,383.
+    The Cade12 dataset is corresponding to a subset of web pages extracted from the CADÊ Web Directory,
+    which points to Brazilian web pages classified by human experts. The total number of training
+    samples is 27,322 and testing 13,661.
     After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
     The min length of text about train data is 4, max length is 1199, average length is 96; the min
     length of text about test data is 4, max length is 1199, average length is 96.
 
-    **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
+    **Reference:** http://www.cade.com.br/
 
     Example:
         >>> train, test = cade_dataset(preprocessing=True)
@@ -302,20 +298,18 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
 
 def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
     """
-    Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
+    Load the Sogou News Topic Classification dataset (Version 3).
 
-    The World Wide Knowledge Base (Web->Kb) dataset is collected by the World Wide Knowledge Base
-    (Web->Kb) project of the CMU text learning group. These pages were collected from computer
-    science departments of various universities in 1997, manually classified into seven different
-    classes: student, faculty, staff, department, course, project, and other. The classes Department
-    and Staff is discarded, because there were only a few pages from each university. The class Other
-    is discarded, because pages were very different among this class. The total number of training
-    samples is 2,785 and testing 1,383.
+    The Sogou news topic classification dataset is constructed by manually labeling each news article
+    according to its URL, which represents roughly the categorization of news in their websites. We
+    chose 5 largest categories for the dataset, each having 90,000 samples for training and 12,000 for
+    testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
+    system. In total there are 450,000 training samples and 60,000 testing samples.
     After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
     The min length of text about train data is 4, max length is 1199, average length is 96; the min
     length of text about test data is 4, max length is 1199, average length is 96.
 
-    **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
+    **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
     Example:
         >>> train, test = sogou_dataset(preprocessing=True)
