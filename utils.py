@@ -93,7 +93,7 @@ if __name__ == '__main__':
         test_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_test.txt')
     else:
         train_file = os.path.join('data', DATA_TYPE, 'preprocessed_train.txt')
-        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_train.txt')
+        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_test.txt')
 
     # save files
     print('Saving preprocessed {} dataset into {}... '.format(DATA_TYPE, os.path.join('data', DATA_TYPE)), end='')

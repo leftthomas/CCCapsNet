@@ -1,6 +1,8 @@
 import os
 import sys
 
+import numpy as np
+import pandas as pd
 from torchnlp.datasets.dataset import Dataset
 
 from data_utils import GoogleDriveDownloader as gdd
@@ -68,9 +70,9 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
     else:
         gdd.download_file_from_google_drive(share_id, data_type + '_orginal.zip', directory + data_type)
         if fine_grained:
-            train_file, test_file = 'orginal_fine_grained_train.txt', 'orginal_fine_grained_test.txt'
+            train_file, test_file = 'orginal_fine_grained_train.csv', 'orginal_fine_grained_test.csv'
         else:
-            train_file, test_file = 'orginal_train.txt', 'orginal_test.txt'
+            train_file, test_file = 'orginal_train.csv', 'orginal_test.csv'
 
     if verbose:
         min_train_length, avg_train_length, max_train_length = sys.maxsize, 0, 0
@@ -78,32 +80,30 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
 
     ret = []
     for file_name in [train_file, test_file]:
-        with open(os.path.join(directory, data_type, file_name), 'r', encoding='utf-8') as f:
-            examples = []
-            for line in f.readlines():
-                label, text = line.split('\t')
-                text = text.rstrip('\n')
-                if preprocessing:
-                    if len(text.split()) > text_length:
-                        text = ' '.join(text.split()[:text_length])
-                elif preprocessing is None:
-                    text = text_preprocess(text)
-                    if len(text.split()) == 0:
-                        continue
-                if verbose:
-                    if file_name == train_file:
-                        avg_train_length += len(text.split())
-                        if len(text.split()) > max_train_length:
-                            max_train_length = len(text.split())
-                        if len(text.split()) < min_train_length:
-                            min_train_length = len(text.split())
-                    if file_name == test_file:
-                        avg_test_length += len(text.split())
-                        if len(text.split()) > max_test_length:
-                            max_test_length = len(text.split())
-                        if len(text.split()) < min_test_length:
-                            min_test_length = len(text.split())
-                examples.append({'label': label, 'text': text})
+        csv_file = np.array(pd.read_csv(os.path.join(directory, data_type, file_name), header=None)).tolist()
+        examples = []
+        for label, text in csv_file:
+            if preprocessing:
+                if len(text.split()) > text_length:
+                    text = ' '.join(text.split()[:text_length])
+            elif preprocessing is None:
+                text = text_preprocess(text)
+                if len(text.split()) == 0:
+                    continue
+            if verbose:
+                if file_name == train_file:
+                    avg_train_length += len(text.split())
+                    if len(text.split()) > max_train_length:
+                        max_train_length = len(text.split())
+                    if len(text.split()) < min_train_length:
+                        min_train_length = len(text.split())
+                if file_name == test_file:
+                    avg_test_length += len(text.split())
+                    if len(text.split()) > max_test_length:
+                        max_test_length = len(text.split())
+                    if len(text.split()) < min_test_length:
+                        min_test_length = len(text.split())
+            examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
 
     if verbose:
