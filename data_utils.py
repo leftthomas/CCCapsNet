@@ -86,7 +86,7 @@ class GoogleDriveDownloader:
             print('Done.')
 
             try:
-                print('Unzipping...', end='')
+                print('Unzipping... ', end='')
                 stdout.flush()
                 with zipfile.ZipFile(os.path.join(dest_path, file_name), 'r') as zip_file:
                     for member in zip_file.namelist():

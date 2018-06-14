@@ -78,7 +78,7 @@ def collate_fn(batch):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Preprocessed Data')
-    parser.add_argument('--data_type', default='yahoo', type=str,
+    parser.add_argument('--data_type', default='sogou', type=str,
                         choices=['imdb', 'newsgroups', 'reuters', 'webkb', 'cade', 'dbpedia', 'agnews', 'yahoo',
                                  'sogou', 'yelp', 'amazon'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '

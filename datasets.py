@@ -79,7 +79,6 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
         min_test_length, avg_test_length, max_test_length = sys.maxsize, 0, 0
 
     ret = []
-    print('Loading dataset... ', end='')
     for file_name in [train_file, test_file]:
         csv_file = np.array(pd.read_csv(os.path.join(directory, data_type, file_name), header=None)).tolist()
         examples = []
@@ -106,7 +105,6 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
                         min_test_length = len(text.split())
             examples.append({'label': label, 'text': text})
         ret.append(Dataset(examples))
-    print('Done.')
 
     if verbose:
         print('[!] train length--(min: {}, avg: {}, max: {})'.
