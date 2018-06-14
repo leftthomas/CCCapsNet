@@ -78,7 +78,7 @@ def collate_fn(batch):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Preprocessed Data')
-    parser.add_argument('--data_type', default='imdb', type=str,
+    parser.add_argument('--data_type', default='yahoo', type=str,
                         choices=['imdb', 'newsgroups', 'reuters', 'webkb', 'cade', 'dbpedia', 'agnews', 'yahoo',
                                  'sogou', 'yelp', 'amazon'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     FINE_GRAINED = opt.fine_grained
     train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=None, fine_grained=FINE_GRAINED, encode=False)
 
-    if FINE_GRAINED:
+    if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
         train_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_train.txt')
         test_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_test.txt')
     else:

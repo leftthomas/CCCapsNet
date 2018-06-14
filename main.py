@@ -81,7 +81,7 @@ def on_end_epoch(state):
     global best_acc
     if meter_accuracy.value()[0] > best_acc:
         best_acc = meter_accuracy.value()[0]
-        if FINE_GRAINED:
+        if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
             torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
         else:
             torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     # record current best test accuracy
     best_acc = 0
 
-    if FINE_GRAINED:
+    if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
         env_name = DATA_TYPE + '_fine_grained'
     else:
         env_name = DATA_TYPE
