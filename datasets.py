@@ -83,6 +83,7 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
         csv_file = np.array(pd.read_csv(os.path.join(directory, data_type, file_name), header=None)).tolist()
         examples = []
         for label, text in csv_file:
+            label, text = str(label), str(text)
             if preprocessing:
                 if len(text.split()) > text_length:
                     text = ' '.join(text.split()[:text_length])
