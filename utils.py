@@ -1,6 +1,7 @@
 import argparse
 import os
 
+import pandas as pd
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -89,21 +90,23 @@ if __name__ == '__main__':
     train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=None, fine_grained=FINE_GRAINED, encode=False)
 
     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-        train_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_train.txt')
-        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_test.txt')
+        train_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_train.csv')
+        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_fine_grained_test.csv')
     else:
-        train_file = os.path.join('data', DATA_TYPE, 'preprocessed_train.txt')
-        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_test.txt')
+        train_file = os.path.join('data', DATA_TYPE, 'preprocessed_train.csv')
+        test_file = os.path.join('data', DATA_TYPE, 'preprocessed_test.csv')
 
     # save files
     print('Saving preprocessed {} dataset into {}... '.format(DATA_TYPE, os.path.join('data', DATA_TYPE)), end='')
-    train_f = open(train_file, 'w')
+    train_label, train_text, test_label, test_text = [], [], [], []
     for data in train_dataset:
-        train_f.write(data['label'] + '\t' + data['text'] + '\n')
-    train_f.close()
-
-    test_f = open(test_file, 'w')
+        train_label.append(data['label'])
+        train_text.append(data['text'])
     for data in test_dataset:
-        test_f.write(data['label'] + '\t' + data['text'] + '\n')
-    test_f.close()
+        test_label.append(data['label'])
+        test_text.append(data['text'])
+    train_data_frame = pd.DataFrame({'label': train_label, 'text': train_text})
+    test_data_frame = pd.DataFrame({'label': test_label, 'text': test_text})
+    train_data_frame.to_csv(train_file, header=False, index=False)
+    test_data_frame.to_csv(test_file, header=False, index=False)
     print('Done.')

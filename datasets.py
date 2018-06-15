@@ -64,9 +64,9 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
     if preprocessing:
         gdd.download_file_from_google_drive(share_id, data_type + '_preprocessed.zip', directory + data_type)
         if fine_grained:
-            train_file, test_file = 'preprocessed_fine_grained_train.txt', 'preprocessed_fine_grained_test.txt'
+            train_file, test_file = 'preprocessed_fine_grained_train.csv', 'preprocessed_fine_grained_test.csv'
         else:
-            train_file, test_file = 'preprocessed_train.txt', 'preprocessed_test.txt'
+            train_file, test_file = 'preprocessed_train.csv', 'preprocessed_test.csv'
     else:
         gdd.download_file_from_google_drive(share_id, data_type + '_orginal.zip', directory + data_type)
         if fine_grained:
