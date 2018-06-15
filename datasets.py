@@ -194,9 +194,9 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
     The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents,
     partitioned (nearly) evenly across 20 different newsgroups. The total number of training
     samples is 11,293 and testing 7,527.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 11,293 and testing samples 7,527.
+    The min length of text about train data is 1, max length is 6,779, average length is 143; the
+    min length of text about test data is 1, max length is 6,142, average length is 139.
 
     **Reference:** http://qwone.com/~jason/20Newsgroups/
 
@@ -234,9 +234,9 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     and Staff is discarded, because there were only a few pages from each university. The class Other
     is discarded, because pages were very different among this class. The total number of training
     samples is 2,785 and testing 1,383.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 2,785 and testing samples 1,383.
+    The min length of text about train data is 1, max length is 20,628, average length is 134; the min
+    length of text about test data is 1, max length is 2,082, average length is 136.
 
     **Reference:** http://www.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/
 
@@ -269,9 +269,9 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
     The Cade12 dataset is corresponding to a subset of web pages extracted from the CADÊ Web Directory,
     which points to Brazilian web pages classified by human experts. The total number of training
     samples is 27,322 and testing 13,661.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 27,322 and testing samples 13,661.
+    The min length of text about train data is 2, max length is 22,352, average length is 119; the min
+    length of text about test data is 2, max length is 15,318, average length is 112.
 
     **Reference:** http://www.cade.com.br/
 
@@ -378,12 +378,12 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
     classes and 52 of the original 90. In total there are 5,485 trainig samples and 2,189 testing
     samples in R8 dataset. The total number of training samples is 6,532 and testing 2,568 in R52
     dataset.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96. (R8)
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96. (R52)
+    After preprocessing, the total number of training samples is 5,485 and testing samples 2,189.
+    The min length of text about train data is 4, max length is 533, average length is 66; the min
+    length of text about test data is 5, max length is 484, average length is 60. (R8)
+    After preprocessing, the total number of training samples is 6,532 and testing samples 2,568.
+    The min length of text about train data is 4, max length is 595, average length is 70; the min
+    length of text about test data is 5, max length is 484, average length is 64. (R52)
 
     **Reference:** http://www.daviddlewis.com/resources/testcollections/reuters21578/
 
