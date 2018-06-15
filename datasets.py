@@ -279,18 +279,18 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
         >>> train, test = cade_dataset(preprocessing=True)
         >>> train[0:2]
         [{
-          'label': 'student',
-          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic offic...'}
+          'label': '08_cultura',
+          'text': 'br br email arvores arvores http www apoio mascote natureza vida links foram...'}
          {
-          'label': 'student',
-          'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
+          'label': '02_sociedade',
+          'text': 'page frames browser support virtual araraquara shop '}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': '02_sociedade',
+          'text': 'dezembro envie mail br manutencao funcionarios funcionarios funcionarios...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': '07_internet',
+          'text': 'auto sao pagina br br computacao rede internet internet internet internet...'}]
     """
 
     share_id = '1XyP8Vjp3pjm4AGtiVMrRN6C6Nt-U-mRE' if preprocessing else '1GlxPC66_ECj4YRInkIYQXkmXCyOLFrsu'
