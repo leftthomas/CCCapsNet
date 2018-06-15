@@ -108,10 +108,10 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
         ret.append(Dataset(examples))
 
     if verbose:
-        print('[!] train length--(min: {}, avg: {}, max: {})'.
-              format(min_train_length, round(avg_train_length / len(ret[0])), max_train_length))
-        print('[!] test length--(min: {}, avg: {}, max: {})'.
-              format(min_test_length, round(avg_test_length / len(ret[1])), max_test_length))
+        print('[!] train samples: {} length--(min: {}, avg: {}, max: {})'.
+              format(len(ret[0]), min_train_length, round(avg_train_length / len(ret[0])), max_train_length))
+        print('[!] test samples: {} length--(min: {}, avg: {}, max: {})'.
+              format(len(ret[1]), min_test_length, round(avg_test_length / len(ret[1])), max_test_length))
     return tuple(ret)
 
 
