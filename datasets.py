@@ -398,11 +398,11 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
           'text': 'comput termin system cpml complet sale comput termin system inc complet...'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': 'trade',
+          'text': 'asian export fear damag japan rift mount trade friction and japan rais...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': 'grain',
+          'text': 'china daili vermin eat pct grain stock survei provinc and citi show...'}]
     """
 
     share_id = '1WczmYzHjE_qT5q9c31eng_mTNffLP-cI' if preprocessing else '18U0eEO31OlgG6IHIRO5D582yFqzG7JWX'
