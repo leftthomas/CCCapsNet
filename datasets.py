@@ -88,7 +88,7 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
                 if len(text.split()) > text_length:
                     text = ' '.join(text.split()[:text_length])
             elif preprocessing is None:
-                text = text_preprocess(text)
+                text = text_preprocess(text, data_type)
                 if len(text.split()) == 0:
                     continue
             if verbose:
