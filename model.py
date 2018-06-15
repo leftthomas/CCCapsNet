@@ -67,14 +67,17 @@ class Model(nn.Module):
         super().__init__()
 
         self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=64, num_codebook=8)
-        self.features = nn.GRU(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
+        self.features1 = nn.GRU(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
+        self.features2 = nn.GRU(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
 
         self.classifier = CapsuleLinear(out_capsules=num_class, in_length=16, out_length=8,
                                         num_iterations=num_iterations)
 
     def forward(self, x):
         embed = self.embedding(x)
-        out, _ = self.features(embed)
+        out1, _ = self.features1(embed)
+        out2, _ = self.features2(embed)
+        out = (out1 + out2) / 2
 
         out = out[:, -1, :].contiguous().view(out.size(0), -1, 16)
         out = self.classifier(out)
