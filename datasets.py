@@ -245,17 +245,17 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
         >>> train[0:2]
         [{
           'label': 'student',
-          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic offic...'}
+          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic...'}
          {
           'label': 'student',
           'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': 'student',
+          'text': 'eric homepag eric wei tsinghua physic fudan genet'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': 'course',
+          'text': 'comput system perform evalu model new sept assign due oct postscript text...'}]
     """
 
     share_id = '1ce_y8pBUpj1M0vbwUlbBAgWEYWNSvJg5' if preprocessing else '1rDpNXjbtKQzRepooh1QwEg2s_NgwnOOu'
