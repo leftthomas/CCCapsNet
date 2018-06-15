@@ -205,20 +205,20 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
         >>> train[0:2]
         [{
           'label': 'alt.atheism',
-          'text': 'alt atheism faq atheist resourc archiv name atheism resourc alt alt alt alt...'},
+          'text': 'alt atheism faq atheist resourc archiv name atheism resourc alt atheism...'},
          {
           'label': 'alt.atheism',
-          'text': 'alt atheism faq introduct atheism archiv name atheism introduct introduct...'}]
+          'text': 'alt atheism faq introduct atheism archiv name atheism introduct alt...'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': 'alt.atheism',
+          'text': 'bibl quiz answer articl healta saturn wwc edu healta saturn wwc edu...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': 'alt.atheism',
+          'text': 'amus atheist and agnost articl timmbak mcl timmbak mcl ucsb edu clam bake...'}]
     """
 
-    share_id = '' if preprocessing else '1tk8vB1RsptrFg-yLLxWAZazFLSoQOw7T'
+    share_id = '1APCy9kW7XHZTcTeh9x6hDcOAysfeP5e_' if preprocessing else '1tk8vB1RsptrFg-yLLxWAZazFLSoQOw7T'
     return imdb_dataset(directory, 'newsgroups', preprocessing, verbose=verbose, text_length=text_length,
                         share_id=share_id)
 
@@ -258,7 +258,7 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1rDpNXjbtKQzRepooh1QwEg2s_NgwnOOu'
+    share_id = '1ce_y8pBUpj1M0vbwUlbBAgWEYWNSvJg5' if preprocessing else '1rDpNXjbtKQzRepooh1QwEg2s_NgwnOOu'
     return imdb_dataset(directory, 'webkb', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -293,7 +293,7 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '1GlxPC66_ECj4YRInkIYQXkmXCyOLFrsu'
+    share_id = '1XyP8Vjp3pjm4AGtiVMrRN6C6Nt-U-mRE' if preprocessing else '1GlxPC66_ECj4YRInkIYQXkmXCyOLFrsu'
     return imdb_dataset(directory, 'cade', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -306,9 +306,9 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     chose 5 largest categories for the dataset, each having 90,000 samples for training and 12,000 for
     testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
     system. In total there are 450,000 training samples and 60,000 testing samples.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 450,000 and testing samples 60,000.
+    The min length of text about train data is 2, max length is 37,544, average length is 566; the min
+    length of text about test data is 2, max length is 43,737, average length is 570.
 
     **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
@@ -405,7 +405,7 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
           'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
     """
 
-    share_id = '' if preprocessing else '18U0eEO31OlgG6IHIRO5D582yFqzG7JWX'
+    share_id = '1WczmYzHjE_qT5q9c31eng_mTNffLP-cI' if preprocessing else '18U0eEO31OlgG6IHIRO5D582yFqzG7JWX'
     return imdb_dataset(directory, 'reuters', preprocessing, fine_grained, verbose, text_length, share_id)
 
 

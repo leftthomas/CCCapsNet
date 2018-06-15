@@ -53,6 +53,9 @@ def on_start_epoch(state):
 
 
 def on_end_epoch(state):
+    # pay attention, it's a global value
+    global best_acc
+
     print('[Epoch %d] Training Loss: %.4f Accuracy: %.2f%%' % (
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0]))
 
@@ -77,8 +80,6 @@ def on_end_epoch(state):
     routing_scheduler.step()
 
     # save best model
-    # pay attention, it's a global value
-    global best_acc
     if meter_accuracy.value()[0] > best_acc:
         best_acc = meter_accuracy.value()[0]
         if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
