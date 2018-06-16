@@ -40,6 +40,10 @@ def text_preprocess(text, data_type):
             print(text.count('\\t'))
         if text.count('\\r') > 0:
             print(text.count('\\r'))
+        if text.count('\\f') > 0:
+            print(text.count('\\f'))
+        if text.count('\\v') > 0:
+            print(text.count('\\v'))
         # Remove punctuation (that is, turn punctuation, etc. into SPACES).
         text = re.sub('[’!"#$¥，。【】？》《（）…！～·%&\'()*+,-./:;<=>?@[\\]^_`{|}~]+', ' ', text)
         # Turn all letters to lowercase.

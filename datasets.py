@@ -307,8 +307,8 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
     system. In total there are 450,000 training samples and 60,000 testing samples.
     After preprocessing, the total number of training samples is 450,000 and testing samples 60,000.
-    The min length of text about train data is 2, max length is 38,450, average length is 543; the min
-    length of text about test data is 3, max length is 56,222, average length is 547.
+    The min length of text about train data is 2, max length is 38,479, average length is 543; the min
+    length of text about test data is 3, max length is 56,265, average length is 546.
 
     **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
@@ -330,7 +330,7 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'da3o ha2ng du2 jia1 ti2 go1ng me3i ri4 ba4o jia4 re4 xia4n 0 1 0 6 4 4 3 8...'}]
     """
 
-    share_id = '1yYMrHP4eEeaYLOcqD45cQ4r5VF2Da-X3' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
+    share_id = '1vV2lZ5JuXHiYdhnGWNMtdgkKgA9TSzBb' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
     return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
