@@ -17,9 +17,9 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
     This is a dataset for binary sentiment classification containing substantially more data than
     previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for training,
     and 25,000 for testing.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 25,000 and testing samples 25,000.
+    The min length of text about train data is 10, max length is 2,505, average length is 240; the
+    min length of text about test data is 6, max length is 2,308, average length is 234.
 
     **Reference:** http://ai.stanford.edu/~amaas/data/sentiment/
 
@@ -44,22 +44,22 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
         >>> train[0:2]
         [{
           'label': 'pos',
-          'text': 'movi respect lot memor quot list gem imagin movi joe piscopo funni funni...'},
+          'text': 'for a movie that gets no respect there sure are a lot of memorable quotes...'},
          {
           'label': 'pos',
-          'text': 'bizarr horror movi fill famou face stolen cristina rain flamingo road road...'}]
+          'text': 'bizarre horror movie filled with famous faces but stolen by cristina raines...'}]
         >>> test[0:2]
         [{
           'label': 'pos',
-          'text': 'movi respect lot memor quot list gem imagin movi joe piscopo funni funni...'},
+          'text': 'based on an actual story john boorman shows the struggle of an american...'},
          {
           'label': 'pos',
-          'text': 'bizarr horror movi fill famou face stolen cristina rain flamingo road road...'}]
+          'text': 'this is a gem as a film four production the anticipated quality was indeed...'}]
     """
 
     # other dataset have been set before, only imdb should be set here
     if preprocessing and data_type == 'imdb':
-        share_id = ''
+        share_id = '1KVLlJiorCetcQ4H0DFSCai-b2P-pGnjJ'
 
     if preprocessing:
         gdd.download_file_from_google_drive(share_id, data_type + '_preprocessed.zip', directory + data_type)
