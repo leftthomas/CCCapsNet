@@ -307,8 +307,8 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
     system. In total there are 450,000 training samples and 60,000 testing samples.
     After preprocessing, the total number of training samples is 450,000 and testing samples 60,000.
-    The min length of text about train data is 2, max length is 37,544, average length is 566; the min
-    length of text about test data is 2, max length is 43,737, average length is 570.
+    The min length of text about train data is 2, max length is 38,450, average length is 543; the min
+    length of text about test data is 3, max length is 56,222, average length is 547.
 
     **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
@@ -316,21 +316,21 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
         >>> train, test = sogou_dataset(preprocessing=True)
         >>> train[0:2]
         [{
-          'label': 'student',
-          'text': 'brian comput scienc depart univers wisconsin dayton street madison offic offic...'}
+          'label': 'automobile',
+          'text': '2 0 0 8 di4 qi1 jie4 qi1ng da3o guo2 ji4 che1 zha3n me3i nv3 mo2 te4 2008di4...'}
          {
-          'label': 'student',
-          'text': 'denni swanson web page mail pop uki offic hour comput lab offic anderson...'}]
+          'label': 'automobile',
+          'text': 'zho1ng hua2 ju4n jie2 frv ya4o shi tu2 we2i zho1ng hua2 ju4n jie2 frv ya4o shi'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': 'sports',
+          'text': 'ti3 ca1o shi4 jie4 be1i che2ng fe1i na2 pi2ng he2ng mu4 zi4 yo2u ca1o ji1n...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': 'automobile',
+          'text': 'da3o ha2ng du2 jia1 ti2 go1ng me3i ri4 ba4o jia4 re4 xia4n 0 1 0 6 4 4 3 8...'}]
     """
 
-    share_id = '' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
+    share_id = '1yYMrHP4eEeaYLOcqD45cQ4r5VF2Da-X3' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
     return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
