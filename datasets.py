@@ -59,7 +59,7 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
 
     # other dataset have been set before, only imdb should be set here
     if preprocessing and data_type == 'imdb':
-        share_id = '1KVLlJiorCetcQ4H0DFSCai-b2P-pGnjJ'
+        share_id = '1qANsyabFZwY91rXcsqlkguCVSsy86LgL'
 
     if preprocessing:
         gdd.download_file_from_google_drive(share_id, data_type + '_preprocessed.zip', directory + data_type)
@@ -146,7 +146,7 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
           'text': 'the race is on second private team sets launch date for human spaceflight space...'}]
     """
 
-    share_id = '' if preprocessing else '1pSX-jbwlGX5tDNAjzmxlBeCwNwzPXf42'
+    share_id = '12AL_aCSecFqSahFU7U88hIpULC-cK7i4' if preprocessing else '1pSX-jbwlGX5tDNAjzmxlBeCwNwzPXf42'
     return imdb_dataset(directory, 'agnews', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -182,7 +182,7 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
           'text': 'odd lot entertainment oddlot entertainment founded in by longtime producers...'}]
     """
 
-    share_id = '' if preprocessing else '1oB5-fQWMEz6RgIL9R9fT9P7ZkLNrob9s'
+    share_id = '1AWhbdQyhaHxfEJeqRcQuxSq4vPzmq_i4' if preprocessing else '1oB5-fQWMEz6RgIL9R9fT9P7ZkLNrob9s'
     return imdb_dataset(directory, 'dbpedia', preprocessing, verbose=verbose, text_length=text_length,
                         share_id=share_id)
 
@@ -330,7 +330,7 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'da3o ha2ng du2 jia1 ti2 go1ng me3i ri4 ba4o jia4 re4 xia4n 0 1 0 6 4 4 3 8...'}]
     """
 
-    share_id = '1vV2lZ5JuXHiYdhnGWNMtdgkKgA9TSzBb' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
+    share_id = '1AQLylZDcMvhpaKKbDgSDTMhzkCGbFw6d' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
     return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -365,7 +365,7 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'why does zebras have stripes what is the purpose or those stripes who do they...'}]
     """
 
-    share_id = '' if preprocessing else '1REvRvHgeW5FQ3eHVgW3Hw7Mdoi2ZO4BK'
+    share_id = '17zC727Y5jhBSSdbHQ0ulss0QXeVCtoVb' if preprocessing else '1REvRvHgeW5FQ3eHVgW3Hw7Mdoi2ZO4BK'
     return imdb_dataset(directory, 'yahoo', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -447,7 +447,7 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
           'text': 'last summer i had an appointment to get new tires and had to wait a super long...'}]
     """
 
-    share_id = '' if preprocessing else '1GYu-TT-H_5jXJpWe_tvOHXTXCyxV55-J'
+    share_id = '1bJF_gT3hWseyh2DcsqgfusAyk23okHoz' if preprocessing else '1GYu-TT-H_5jXJpWe_tvOHXTXCyxV55-J'
     return imdb_dataset(directory, 'yelp', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
@@ -489,5 +489,5 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
           'text': 'one of the best game music soundtracks for a game i didn t really play despite...'}]
     """
 
-    share_id = '' if preprocessing else '1pYKd_h6OIzwVOVwocqEEOuuxYOe16HlU'
+    share_id = '1uuEhJkmkfIyHZBSq9rP8sETz31deFDCd' if preprocessing else '1pYKd_h6OIzwVOVwocqEEOuuxYOe16HlU'
     return imdb_dataset(directory, 'amazon', preprocessing, fine_grained, verbose, text_length, share_id)
