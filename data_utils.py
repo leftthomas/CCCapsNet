@@ -44,14 +44,19 @@ def text_preprocess(text, data_type):
             print(text.count('\\f'))
         if text.count('\\v') > 0:
             print(text.count('\\v'))
-        # Keep only letters and numbers (that is, turn punctuation, etc. into SPACES).
-        text = re.sub('[^a-zA-Z0-9]', ' ', text)
+        # Keep only letters (that is, turn punctuation, numbers, etc. into SPACES).
+        text = re.sub('[^a-zA-Z]', ' ', text)
         # Turn all letters to lowercase.
         text = text.lower()
-        # Turn all numbers to single number (that is, turn 789 into 7 8 9).
-        text = ' '.join(' '.join(w for w in word) if word.isdigit() else word for word in text.split())
         # Substitute multiple SPACES by a single SPACE.
         text = ' '.join(text.split())
+        # Remove words that are less than 3 characters long. For example, removing "he" but keeping "him"
+        text = ' '.join(word for word in text.split() if len(word) >= 3)
+        # Remove the 524 SMART stopwords (the original stop word list contains 571 words, but there are 47 words contain
+        # hyphens, so we removed them, and we found the word 'would' appears twice, so we also removed it, the final stop
+        # word list contains 523 words). Some of them had already been removed, because they were shorter than 3 characters.
+        # the original stop word list can be found from http://www.lextek.com/manuals/onix/stopwords2.html.
+        text = ' '.join(word for word in text.split() if word not in stopwords)
     return text
 
 
