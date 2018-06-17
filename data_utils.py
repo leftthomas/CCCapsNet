@@ -17,46 +17,19 @@ with open(os.path.join('data', 'stopwords.txt'), 'r', encoding='utf-8') as foo:
 
 
 def text_preprocess(text, data_type):
+    if data_type == 'sogou' or data_type == 'yahoo' or data_type == 'yelp':
+        # Remove \\n character
+        text = text.replace('\\n', ' ')
+    if data_type == 'imdb' or data_type == 'yahoo':
+        # Remove <br /> character
+        text = text.replace('<br />', ' ')
     if data_type not in ['newsgroups', 'reuters', 'webkb', 'cade']:
-        if data_type == 'sogou':
-            # Remove \\n character
-            text = text.replace('\\n', ' ')
-        elif data_type == 'imdb':
-            # Remove <br /> character
-            text = text.replace('<br />', ' ')
-        elif data_type == 'agnews':
-            text = ' '.join(text.split())
-        elif data_type == 'dbpedia':
-            text = ' '.join(text.split())
-        elif data_type == 'yahoo':
-            text = ' '.join(text.split())
-        elif data_type == 'yelp':
-            text = ' '.join(text.split())
-        elif data_type == 'amazon':
-            text = ' '.join(text.split())
-        if text.count('\\n') > 0:
-            print(text.count('\\n'))
-        if text.count('\\t') > 0:
-            print(text.count('\\t'))
-        if text.count('\\r') > 0:
-            print(text.count('\\r'))
-        if text.count('\\f') > 0:
-            print(text.count('\\f'))
-        if text.count('\\v') > 0:
-            print(text.count('\\v'))
         # Keep only letters (that is, turn punctuation, numbers, etc. into SPACES).
         text = re.sub('[^a-zA-Z]', ' ', text)
         # Turn all letters to lowercase.
         text = text.lower()
         # Substitute multiple SPACES by a single SPACE.
         text = ' '.join(text.split())
-        # Remove words that are less than 3 characters long. For example, removing "he" but keeping "him"
-        text = ' '.join(word for word in text.split() if len(word) >= 3)
-        # Remove the 524 SMART stopwords (the original stop word list contains 571 words, but there are 47 words contain
-        # hyphens, so we removed them, and we found the word 'would' appears twice, so we also removed it, the final stop
-        # word list contains 523 words). Some of them had already been removed, because they were shorter than 3 characters.
-        # the original stop word list can be found from http://www.lextek.com/manuals/onix/stopwords2.html.
-        text = ' '.join(word for word in text.split() if word not in stopwords)
     return text
 
 
