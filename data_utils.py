@@ -1,7 +1,6 @@
 import os
 import re
 import shutil
-import string
 import warnings
 import zipfile
 from os import makedirs
@@ -45,11 +44,8 @@ def text_preprocess(text, data_type):
             print(text.count('\\f'))
         if text.count('\\v') > 0:
             print(text.count('\\v'))
-        # Remove English punctuation (that is, turn punctuation, etc. into SPACES).
-        text = re.sub('[%s]+' % re.escape(string.punctuation), ' ', text)
-        # Remove Chinese punctuation.
-        punctuation = '！？｡。＂＃＄¥％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､、〃《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏'
-        text = re.sub(r'[%s]+' % punctuation, ' ', text)
+        # Keep only letters and numbers (that is, turn punctuation, etc. into SPACES).
+        text = re.sub('[^a-zA-Z0-9]', ' ', text)
         # Turn all letters to lowercase.
         text = text.lower()
         # Turn all numbers to single number (that is, turn 789 into 7 8 9).
