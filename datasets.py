@@ -18,8 +18,8 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
     previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for training,
     and 25,000 for testing.
     After preprocessing, the total number of training samples is 25,000 and testing samples 25,000.
-    The min length of text about train data is 10, max length is 2,505, average length is 240; the
-    min length of text about test data is 6, max length is 2,308, average length is 234.
+    The min length of text about train data is 10, max length is 2,494, average length is 237; the
+    min length of text about test data is 6, max length is 2,297, average length is 232.
 
     **Reference:** http://ai.stanford.edu/~amaas/data/sentiment/
 
@@ -122,9 +122,9 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
     The AG's news topic classification dataset is constructed by choosing 4 largest classes from
     the original corpus. Each class contains 30,000 training samples and 1,900 testing samples.
     The total number of training samples is 120,000 and testing 7,600.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 120,000 and testing samples 7,600.
+    The min length of text about train data is 12, max length is 180, average length is 38; the min
+    length of text about test data is 14, max length is 143, average length is 38.
 
     **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
 
@@ -133,17 +133,17 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
         >>> train[0:2]
         [{
           'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'text': 'wall st bears claw back into the black reuters reuters short sellers wall street...'},
          {
           'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'text': 'carlyle looks toward commercial aerospace reuters reuters private investment...'}]
         >>> test[0:2]
         [{
           'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'text': 'fears for t n pension after talks unions representing workers at turner newall...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': 'Sci/Tech',
+          'text': 'the race is on second private team sets launch date for human spaceflight space...'}]
     """
 
     share_id = '' if preprocessing else '1pSX-jbwlGX5tDNAjzmxlBeCwNwzPXf42'
@@ -158,9 +158,9 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
     from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we
     randomly choose 40,000 training samples and 5,000 testing samples. Therefore, the total size
     of the training dataset is 560,000 and testing dataset 70,000.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 560,000 and testing samples 70,000.
+    The min length of text about train data is 2, max length is 1,219, average length is 48; the min
+    length of text about test data is 3, max length is 407, average length is 48.
 
     **Reference:** http://dbpedia.org
 
@@ -169,17 +169,17 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
         >>> train[0:2]
         [{
           'label': 'Company',
-          'text': 'abbott abbott farnham abbott limit british coachbuild busi base farnham base...'},
+          'text': 'e d abbott ltd abbott of farnham e d abbott limited was a british coachbuilding...'},
          {
           'label': 'Company',
-          'text': 'schwan stabilo schwan stabilo german maker pen write colour cosmet marker...'}]
+          'text': 'schwan stabilo schwan stabilo is a german maker of pens for writing colouring...'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': 'Company',
+          'text': 'ty ku ty ku ta ku is an american alcoholic beverage company that specializes...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': 'Company',
+          'text': 'odd lot entertainment oddlot entertainment founded in by longtime producers...'}]
     """
 
     share_id = '' if preprocessing else '1oB5-fQWMEz6RgIL9R9fT9P7ZkLNrob9s'
@@ -307,8 +307,8 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
     system. In total there are 450,000 training samples and 60,000 testing samples.
     After preprocessing, the total number of training samples is 450,000 and testing samples 60,000.
-    The min length of text about train data is 2, max length is 38,479, average length is 543; the min
-    length of text about test data is 3, max length is 56,265, average length is 546.
+    The min length of text about train data is 2, max length is 38,450, average length is 543; the min
+    length of text about test data is 3, max length is 56,222, average length is 547.
 
     **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
@@ -341,9 +341,9 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     The Yahoo! Answers topic classification dataset is constructed using 10 largest main categories.
     Each class contains 140,000 training samples and 6,000 testing samples. Therefore, the total number
     of training samples is 1,400,000 and testing samples 60,000 in this dataset.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96.
+    After preprocessing, the total number of training samples is 1,399,983 and testing samples 60,000.
+    The min length of text about train data is 1, max length is 1,405, average length is 95; the min
+    length of text about test data is 1, max length is 1,046, average length is 95.
 
     **Reference:** https://webscope.sandbox.yahoo.com/catalog.php?datatype=l
 
@@ -352,17 +352,17 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
         >>> train[0:2]
         [{
           'label': 'Computers & Internet',
-          'text': 'doesn optic mous work glass tabl surfac optic mice led camera rapidli rapidli...'},
+          'text': 'why doesn t an optical mouse work on a glass table or even on some surfaces...'},
          {
           'label': 'Sports',
-          'text': 'road motorcycl trail long distanc trail hear mojav road amaz nsearch onlin'}]
+          'text': 'what is the best off road motorcycle trail long distance trail throughout...'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': 'Family & Relationships',
+          'text': 'what makes friendship click how does the spark keep going good communication...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': 'Science & Mathematics',
+          'text': 'why does zebras have stripes what is the purpose or those stripes who do they...'}]
     """
 
     share_id = '' if preprocessing else '1REvRvHgeW5FQ3eHVgW3Hw7Mdoi2ZO4BK'
@@ -420,12 +420,12 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
     The Yelp reviews full star dataset is constructed by randomly taking 130,000 training samples
     and 10,000 testing samples for each review star from 1 to 5. In total there are 650,000 training
     samples and 50,000 testing samples.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96. (polarity)
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96. (full)
+    After preprocessing, the total number of training samples is 559,976 and testing samples 38,000.
+    The min length of text about train data is 1, max length is 1,047, average length is 136; the min
+    length of text about test data is 1, max length is 1,000, average length is 135. (polarity)
+    After preprocessing, the total number of training samples is 649,973 and testing samples 49,999.
+    The min length of text about train data is 1, max length is 1,170, average length is 137; the min
+    length of text about test data is 1, max length is 1,050, average length is 137. (full)
 
     **Reference:** http://www.yelp.com/dataset_challenge
 
@@ -434,17 +434,17 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
         >>> train[0:2]
         [{
           'label': '1',
-          'text': "frustrat goldberg patient repeat experi doctor nyc good doctor terribl staff..."}
+          'text': 'unfortunately the frustration of being dr goldberg s patient is a repeat of the...'}
          {
           'label': '2',
-          'text': "goldberg year patient start mhmg great year big pictur gyn markoff found..."}]
+          'text': 'been going to dr goldberg for over years i think i was one of his st patients...'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': '2',
+          'text': 'contrary to other reviews i have zero complaints about the service or the prices...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': '1',
+          'text': 'last summer i had an appointment to get new tires and had to wait a super long...'}]
     """
 
     share_id = '' if preprocessing else '1GYu-TT-H_5jXJpWe_tvOHXTXCyxV55-J'
@@ -462,12 +462,12 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
     The Amazon reviews full score dataset is constructed by randomly taking 600,000 training samples
     and 130,000 testing samples for each review score from 1 to 5. In total there are 3,000,000
     training samples and 650,000 testing samples.
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96. (polarity)
-    After preprocessing, the total number of training samples is 1,399,272 and testing samples 59,969.
-    The min length of text about train data is 4, max length is 1199, average length is 96; the min
-    length of text about test data is 4, max length is 1199, average length is 96. (full)
+    After preprocessing, the total number of training samples is 3,599,988 and testing samples 399,999.
+    The min length of text about train data is 1, max length is 255, average length is 80; the min
+    length of text about test data is 1, max length is 234, average length is 80. (polarity)
+    After preprocessing, the total number of training samples is 2,999,989 and testing samples 649,994.
+    The min length of text about train data is 1, max length is 441, average length is 82; the min
+    length of text about test data is 1, max length is 242, average length is 82. (full)
 
     **Reference:** http://jmcauley.ucsd.edu/data/amazon/
 
@@ -476,17 +476,17 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
         >>> train[0:2]
         [{
           'label': '2',
-          'text': 'stune gamer sound track beauti paint seneri mind recomend peopl hate vid...'}
+          'text': 'stuning even for the non gamer this sound track was beautiful it paints the...'}
          {
           'label': '2',
-          'text': 'soundtrack read lot review game soundtrack figur write review disagre bit...'}]
+          'text': 'the best soundtrack ever to anything i m reading a lot of reviews saying that...'}]
         >>> test[0:2]
         [{
-          'label': 'Business',
-          'text': 'wall bear claw back black reuter reuter short seller wall street dwindl band...'},
+          'label': '2',
+          'text': 'great cd my lovely pat has one of the great voices of her generation i have...'},
          {
-          'label': 'Business',
-          'text': 'carlyl commerci aerospac reuter reuter privat invest firm carlyl group reput...'}]
+          'label': '2',
+          'text': 'one of the best game music soundtracks for a game i didn t really play despite...'}]
     """
 
     share_id = '' if preprocessing else '1pYKd_h6OIzwVOVwocqEEOuuxYOe16HlU'

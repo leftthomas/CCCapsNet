@@ -24,8 +24,14 @@ def text_preprocess(text, data_type):
         # Remove <br /> character
         text = text.replace('<br />', ' ')
     if data_type not in ['newsgroups', 'reuters', 'webkb', 'cade']:
-        # Keep only letters (that is, turn punctuation, numbers, etc. into SPACES).
-        text = re.sub('[^a-zA-Z]', ' ', text)
+        if data_type == 'sogou':
+            # Keep only letters and numbers.
+            text = re.sub('[^a-zA-Z0-9]', ' ', text)
+            # Turn all numbers to single number (that is, turn 789 into 7 8 9).
+            text = ' '.join(' '.join(w for w in word) if word.isdigit() else word for word in text.split())
+        else:
+            # Keep only letters (that is, turn punctuation, numbers, etc. into SPACES).
+            text = re.sub('[^a-zA-Z]', ' ', text)
         # Turn all letters to lowercase.
         text = text.lower()
         # Substitute multiple SPACES by a single SPACE.
