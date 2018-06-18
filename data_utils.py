@@ -9,12 +9,6 @@ from sys import stdout
 
 import requests
 
-stopwords = []
-with open(os.path.join('data', 'stopwords.txt'), 'r', encoding='utf-8') as foo:
-    for line in foo.readlines():
-        line = line.rstrip('\n')
-        stopwords.append(line)
-
 
 def text_preprocess(text, data_type):
     if data_type == 'sogou' or data_type == 'yahoo' or data_type == 'yelp':
@@ -34,8 +28,8 @@ def text_preprocess(text, data_type):
             text = re.sub('[^a-zA-Z]', ' ', text)
         # Turn all letters to lowercase.
         text = text.lower()
-        # Substitute multiple SPACES by a single SPACE.
-        text = ' '.join(text.split())
+    # Substitute multiple SPACES by a single SPACE.
+    text = ' '.join(text.split())
     return text
 
 
