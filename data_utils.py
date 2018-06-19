@@ -9,6 +9,9 @@ from sys import stdout
 
 import requests
 
+re_letter_number = re.compile('[^a-zA-Z0-9]')
+re_number_letter = re.compile(r'^(\d+)([a-z]\w*)$')
+
 
 def text_preprocess(text, data_type):
     if data_type == 'sogou' or data_type == 'yahoo' or data_type == 'yelp':
@@ -18,16 +21,15 @@ def text_preprocess(text, data_type):
         # Remove <br /> character
         text = text.replace('<br />', ' ')
     if data_type not in ['newsgroups', 'reuters', 'webkb', 'cade']:
-        if data_type == 'sogou':
-            # Keep only letters and numbers.
-            text = re.sub('[^a-zA-Z0-9]', ' ', text)
-            # Turn all numbers to single number (that is, turn 789 into 7 8 9).
-            text = ' '.join(' '.join(w for w in word) if word.isdigit() else word for word in text.split())
-        else:
-            # Keep only letters (that is, turn punctuation, numbers, etc. into SPACES).
-            text = re.sub('[^a-zA-Z]', ' ', text)
+        # Keep only letters and numbers (such as turn punctuation, foreign word, etc. into SPACES).
+        text = re_letter_number.sub(' ', text)
         # Turn all letters to lowercase.
         text = text.lower()
+        # Turn the number-letter word to single number and word (such as turn 2008year into 2008 year).
+        text = ' '.join(' '.join(w for w in re_number_letter.match(word).groups())
+                        if re_number_letter.match(word) else word for word in text.split())
+        # Turn all numbers to single number (such as turn 789 into 7 8 9).
+        text = ' '.join(' '.join(w for w in word) if word.isdigit() else word for word in text.split())
     # Substitute multiple SPACES by a single SPACE.
     text = ' '.join(text.split())
     return text
