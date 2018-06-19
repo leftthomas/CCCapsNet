@@ -70,7 +70,7 @@ class Model(nn.Module):
         self.features = nn.GRU(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
 
         self.classifier = CapsuleLinear(out_capsules=num_class, in_length=16, out_length=8,
-                                        num_iterations=num_iterations)
+                                        num_iterations=num_iterations, dropout=0.5)
 
     def forward(self, x):
         embed = self.embedding(x)
