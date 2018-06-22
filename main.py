@@ -2,7 +2,7 @@ import argparse
 
 import torch
 import torchnet as tnt
-from capsule_layer.optim import MultiStepRI
+from capsule_layer.optim import MultiStepRI, MultiStepDropout
 from torch.autograd import Variable
 from torch.optim import Adam
 from torch.utils.data import DataLoader
@@ -75,6 +75,8 @@ def on_end_epoch(state):
 
     # scheduler routing iterations
     routing_scheduler.step()
+    # scheduler dropout
+    dropout_scheduler.step()
 
     # save best model
     if meter_accuracy.value()[0] > best_acc:
@@ -126,6 +128,7 @@ if __name__ == '__main__':
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     routing_scheduler = MultiStepRI(model, milestones=[10, 30, 70], verbose=True)
+    dropout_scheduler = MultiStepDropout(model, milestones=[10, 30, 70], addition=[0.1, 0.3, 0.5], verbose=True)
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
