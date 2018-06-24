@@ -18,8 +18,8 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
     previous benchmark datasets. Provided a set of 25,000 highly polar movie reviews for training,
     and 25,000 for testing.
     After preprocessing, the total number of training samples is 25,000 and testing samples 25,000.
-    The min length of text about train data is 10, max length is 2,494, average length is 237; the
-    min length of text about test data is 6, max length is 2,297, average length is 232.
+    The min length of text about train data is 10, max length is 2,505, average length is 240; the
+    min length of text about test data is 6, max length is 2,310, average length is 235.
 
     **Reference:** http://ai.stanford.edu/~amaas/data/sentiment/
 
@@ -59,7 +59,7 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
 
     # other dataset have been set before, only imdb should be set here
     if preprocessing and data_type == 'imdb':
-        share_id = '1qANsyabFZwY91rXcsqlkguCVSsy86LgL'
+        share_id = '11BMedFUORisCzG9kFTYvIFy5yavFxhQA'
 
     if preprocessing:
         gdd.download_file_from_google_drive(share_id, data_type + '_preprocessed.zip', directory + data_type)
@@ -123,8 +123,8 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
     the original corpus. Each class contains 30,000 training samples and 1,900 testing samples.
     The total number of training samples is 120,000 and testing 7,600.
     After preprocessing, the total number of training samples is 120,000 and testing samples 7,600.
-    The min length of text about train data is 12, max length is 180, average length is 38; the min
-    length of text about test data is 14, max length is 143, average length is 38.
+    The min length of text about train data is 12, max length is 228, average length is 41; the min
+    length of text about test data is 14, max length is 157, average length is 41.
 
     **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
 
@@ -146,7 +146,7 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
           'text': 'the race is on second private team sets launch date for human spaceflight space...'}]
     """
 
-    share_id = '12AL_aCSecFqSahFU7U88hIpULC-cK7i4' if preprocessing else '1pSX-jbwlGX5tDNAjzmxlBeCwNwzPXf42'
+    share_id = '13_1K7vmzlF-u70Z0BJEWw4o5ZhKL51yx' if preprocessing else '1pSX-jbwlGX5tDNAjzmxlBeCwNwzPXf42'
     return imdb_dataset(directory, 'agnews', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -159,8 +159,8 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
     randomly choose 40,000 training samples and 5,000 testing samples. Therefore, the total size
     of the training dataset is 560,000 and testing dataset 70,000.
     After preprocessing, the total number of training samples is 560,000 and testing samples 70,000.
-    The min length of text about train data is 2, max length is 1,219, average length is 48; the min
-    length of text about test data is 3, max length is 407, average length is 48.
+    The min length of text about train data is 2, max length is 2,647, average length is 56; the min
+    length of text about test data is 3, max length is 895, average length is 56.
 
     **Reference:** http://dbpedia.org
 
@@ -179,10 +179,10 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
           'text': 'ty ku ty ku ta ku is an american alcoholic beverage company that specializes...'},
          {
           'label': 'Company',
-          'text': 'odd lot entertainment oddlot entertainment founded in by longtime producers...'}]
+          'text': 'odd lot entertainment oddlot entertainment founded in 2 0 0 1 by longtime...'}]
     """
 
-    share_id = '1AWhbdQyhaHxfEJeqRcQuxSq4vPzmq_i4' if preprocessing else '1oB5-fQWMEz6RgIL9R9fT9P7ZkLNrob9s'
+    share_id = '1zyMdF5VcuH7Zu3gloYkjQ6Hp4E4u7hOI' if preprocessing else '1oB5-fQWMEz6RgIL9R9fT9P7ZkLNrob9s'
     return imdb_dataset(directory, 'dbpedia', preprocessing, verbose=verbose, text_length=text_length,
                         share_id=share_id)
 
@@ -218,7 +218,7 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
           'text': 'amus atheist and agnost articl timmbak mcl timmbak mcl ucsb edu clam bake...'}]
     """
 
-    share_id = '1APCy9kW7XHZTcTeh9x6hDcOAysfeP5e_' if preprocessing else '1tk8vB1RsptrFg-yLLxWAZazFLSoQOw7T'
+    share_id = '1-CNb8E1taNjpsKAc9OVQynkG8XDrF_Vb' if preprocessing else '1tk8vB1RsptrFg-yLLxWAZazFLSoQOw7T'
     return imdb_dataset(directory, 'newsgroups', preprocessing, verbose=verbose, text_length=text_length,
                         share_id=share_id)
 
@@ -258,7 +258,7 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'comput system perform evalu model new sept assign due oct postscript text...'}]
     """
 
-    share_id = '1ce_y8pBUpj1M0vbwUlbBAgWEYWNSvJg5' if preprocessing else '1rDpNXjbtKQzRepooh1QwEg2s_NgwnOOu'
+    share_id = '1FhUHezTfcAobRYaSZihXVMBeLIjEGc7f' if preprocessing else '1rDpNXjbtKQzRepooh1QwEg2s_NgwnOOu'
     return imdb_dataset(directory, 'webkb', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -283,7 +283,7 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
           'text': 'br br email arvores arvores http www apoio mascote natureza vida links foram...'}
          {
           'label': '02_sociedade',
-          'text': 'page frames browser support virtual araraquara shop '}]
+          'text': 'page frames browser support virtual araraquara shop'}]
         >>> test[0:2]
         [{
           'label': '02_sociedade',
@@ -293,7 +293,7 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
           'text': 'auto sao pagina br br computacao rede internet internet internet internet...'}]
     """
 
-    share_id = '1XyP8Vjp3pjm4AGtiVMrRN6C6Nt-U-mRE' if preprocessing else '1GlxPC66_ECj4YRInkIYQXkmXCyOLFrsu'
+    share_id = '1bLHV2DeuAaCPXnQQdWxENoYB36YhV4MG' if preprocessing else '1GlxPC66_ECj4YRInkIYQXkmXCyOLFrsu'
     return imdb_dataset(directory, 'cade', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -307,8 +307,8 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
     system. In total there are 450,000 training samples and 60,000 testing samples.
     After preprocessing, the total number of training samples is 450,000 and testing samples 60,000.
-    The min length of text about train data is 2, max length is 38,450, average length is 543; the min
-    length of text about test data is 3, max length is 56,222, average length is 547.
+    The min length of text about train data is 2, max length is 38,497, average length is 548; the min
+    length of text about test data is 3, max length is 56,222, average length is 552.
 
     **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
@@ -317,7 +317,7 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
         >>> train[0:2]
         [{
           'label': 'automobile',
-          'text': '2 0 0 8 di4 qi1 jie4 qi1ng da3o guo2 ji4 che1 zha3n me3i nv3 mo2 te4 2008di4...'}
+          'text': '2 0 0 8 di4 qi1 jie4 qi1ng da3o guo2 ji4 che1 zha3n me3i nv3 mo2 te4 2 0 0 8...'}
          {
           'label': 'automobile',
           'text': 'zho1ng hua2 ju4n jie2 frv ya4o shi tu2 we2i zho1ng hua2 ju4n jie2 frv ya4o shi'}]
@@ -330,7 +330,7 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'da3o ha2ng du2 jia1 ti2 go1ng me3i ri4 ba4o jia4 re4 xia4n 0 1 0 6 4 4 3 8...'}]
     """
 
-    share_id = '1AQLylZDcMvhpaKKbDgSDTMhzkCGbFw6d' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
+    share_id = '1YgE_mSkMDcREblzAEb29JbCLAdLduNSi' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
     return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -341,9 +341,9 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     The Yahoo! Answers topic classification dataset is constructed using 10 largest main categories.
     Each class contains 140,000 training samples and 6,000 testing samples. Therefore, the total number
     of training samples is 1,400,000 and testing samples 60,000 in this dataset.
-    After preprocessing, the total number of training samples is 1,399,983 and testing samples 60,000.
-    The min length of text about train data is 1, max length is 1,405, average length is 95; the min
-    length of text about test data is 1, max length is 1,046, average length is 95.
+    After preprocessing, the total number of training samples is 1,399,999 and testing samples 60,000.
+    The min length of text about train data is 1, max length is 4,033, average length is 99; the min
+    length of text about test data is 2, max length is 1,521, average length is 99.
 
     **Reference:** https://webscope.sandbox.yahoo.com/catalog.php?datatype=l
 
@@ -365,7 +365,7 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
           'text': 'why does zebras have stripes what is the purpose or those stripes who do they...'}]
     """
 
-    share_id = '17zC727Y5jhBSSdbHQ0ulss0QXeVCtoVb' if preprocessing else '1REvRvHgeW5FQ3eHVgW3Hw7Mdoi2ZO4BK'
+    share_id = '1WI8Pykg_ikoeOPKmSONucG5YIU9DqCLB' if preprocessing else '1REvRvHgeW5FQ3eHVgW3Hw7Mdoi2ZO4BK'
     return imdb_dataset(directory, 'yahoo', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
@@ -405,7 +405,7 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
           'text': 'china daili vermin eat pct grain stock survei provinc and citi show...'}]
     """
 
-    share_id = '1WczmYzHjE_qT5q9c31eng_mTNffLP-cI' if preprocessing else '18U0eEO31OlgG6IHIRO5D582yFqzG7JWX'
+    share_id = '1zOa18dfqhC92vRI7gzJm9VzAK_ro7o_l' if preprocessing else '18U0eEO31OlgG6IHIRO5D582yFqzG7JWX'
     return imdb_dataset(directory, 'reuters', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
@@ -420,12 +420,12 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
     The Yelp reviews full star dataset is constructed by randomly taking 130,000 training samples
     and 10,000 testing samples for each review star from 1 to 5. In total there are 650,000 training
     samples and 50,000 testing samples.
-    After preprocessing, the total number of training samples is 559,976 and testing samples 38,000.
-    The min length of text about train data is 1, max length is 1,047, average length is 136; the min
-    length of text about test data is 1, max length is 1,000, average length is 135. (polarity)
-    After preprocessing, the total number of training samples is 649,973 and testing samples 49,999.
-    The min length of text about train data is 1, max length is 1,170, average length is 137; the min
-    length of text about test data is 1, max length is 1,050, average length is 137. (full)
+    After preprocessing, the total number of training samples is 559,979 and testing samples 38,000.
+    The min length of text about train data is 1, max length is 1,068, average length is 138; the min
+    length of text about test data is 1, max length is 1,029, average length is 138. (polarity)
+    After preprocessing, the total number of training samples is 649,977 and testing samples 50,000.
+    The min length of text about train data is 1, max length is 1,081, average length is 140; the min
+    length of text about test data is 1, max length is 1,049, average length is 140. (full)
 
     **Reference:** http://www.yelp.com/dataset_challenge
 
@@ -437,7 +437,7 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
           'text': 'unfortunately the frustration of being dr goldberg s patient is a repeat of the...'}
          {
           'label': '2',
-          'text': 'been going to dr goldberg for over years i think i was one of his st patients...'}]
+          'text': 'been going to dr goldberg for over 1 0 years i think i was one of his 1 st...'}]
         >>> test[0:2]
         [{
           'label': '2',
@@ -447,7 +447,7 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
           'text': 'last summer i had an appointment to get new tires and had to wait a super long...'}]
     """
 
-    share_id = '1bJF_gT3hWseyh2DcsqgfusAyk23okHoz' if preprocessing else '1GYu-TT-H_5jXJpWe_tvOHXTXCyxV55-J'
+    share_id = '1DggGabu5cJL3jmOqNB3AUVX-zk1utfZc' if preprocessing else '1GYu-TT-H_5jXJpWe_tvOHXTXCyxV55-J'
     return imdb_dataset(directory, 'yelp', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
@@ -462,12 +462,12 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
     The Amazon reviews full score dataset is constructed by randomly taking 600,000 training samples
     and 130,000 testing samples for each review score from 1 to 5. In total there are 3,000,000
     training samples and 650,000 testing samples.
-    After preprocessing, the total number of training samples is 3,599,988 and testing samples 399,999.
-    The min length of text about train data is 1, max length is 255, average length is 80; the min
-    length of text about test data is 1, max length is 234, average length is 80. (polarity)
-    After preprocessing, the total number of training samples is 2,999,989 and testing samples 649,994.
-    The min length of text about train data is 1, max length is 441, average length is 82; the min
-    length of text about test data is 1, max length is 242, average length is 82. (full)
+    After preprocessing, the total number of training samples is 3,599,998 and testing samples 400,000.
+    The min length of text about train data is 1, max length is 565, average length is 82; the min
+    length of text about test data is 6, max length is 572, average length is 82. (polarity)
+    After preprocessing, the total number of training samples is 2,999,996 and testing samples 650,000.
+    The min length of text about train data is 1, max length is 485, average length is 83; the min
+    length of text about test data is 4, max length is 540, average length is 84. (full)
 
     **Reference:** http://jmcauley.ucsd.edu/data/amazon/
 
@@ -489,5 +489,5 @@ def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, v
           'text': 'one of the best game music soundtracks for a game i didn t really play despite...'}]
     """
 
-    share_id = '1uuEhJkmkfIyHZBSq9rP8sETz31deFDCd' if preprocessing else '1pYKd_h6OIzwVOVwocqEEOuuxYOe16HlU'
+    share_id = '1QJlbuzb4Buu-4cG69u6inGJN6EoqbuvC' if preprocessing else '1pYKd_h6OIzwVOVwocqEEOuuxYOe16HlU'
     return imdb_dataset(directory, 'amazon', preprocessing, fine_grained, verbose, text_length, share_id)
