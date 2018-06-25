@@ -115,78 +115,6 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
     return tuple(ret)
 
 
-def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
-    """
-    Load the AG's News Topic Classification dataset (Version 3).
-
-    The AG's news topic classification dataset is constructed by choosing 4 largest classes from
-    the original corpus. Each class contains 30,000 training samples and 1,900 testing samples.
-    The total number of training samples is 120,000 and testing 7,600.
-    After preprocessing, the total number of training samples is 120,000 and testing samples 7,600.
-    The min length of text about train data is 12, max length is 228, average length is 41; the min
-    length of text about test data is 14, max length is 157, average length is 41.
-
-    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
-
-    Example:
-        >>> train, test = agnews_dataset(preprocessing=True)
-        >>> train[0:2]
-        [{
-          'label': 'Business',
-          'text': 'wall st bears claw back into the black reuters reuters short sellers wall street...'},
-         {
-          'label': 'Business',
-          'text': 'carlyle looks toward commercial aerospace reuters reuters private investment...'}]
-        >>> test[0:2]
-        [{
-          'label': 'Business',
-          'text': 'fears for t n pension after talks unions representing workers at turner newall...'},
-         {
-          'label': 'Sci/Tech',
-          'text': 'the race is on second private team sets launch date for human spaceflight space...'}]
-    """
-
-    share_id = '13_1K7vmzlF-u70Z0BJEWw4o5ZhKL51yx' if preprocessing else '1pSX-jbwlGX5tDNAjzmxlBeCwNwzPXf42'
-    return imdb_dataset(directory, 'agnews', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
-
-
-def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
-    """
-    Load the DBPedia Ontology Classification dataset (Version 2).
-
-    The DBpedia ontology classification dataset is constructed by picking 14 non-overlapping classes
-    from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we
-    randomly choose 40,000 training samples and 5,000 testing samples. Therefore, the total size
-    of the training dataset is 560,000 and testing dataset 70,000.
-    After preprocessing, the total number of training samples is 560,000 and testing samples 70,000.
-    The min length of text about train data is 2, max length is 2,647, average length is 56; the min
-    length of text about test data is 3, max length is 895, average length is 56.
-
-    **Reference:** http://dbpedia.org
-
-    Example:
-        >>> train, test = dbpedia_dataset(preprocessing=True)
-        >>> train[0:2]
-        [{
-          'label': 'Company',
-          'text': 'e d abbott ltd abbott of farnham e d abbott limited was a british coachbuilding...'},
-         {
-          'label': 'Company',
-          'text': 'schwan stabilo schwan stabilo is a german maker of pens for writing colouring...'}]
-        >>> test[0:2]
-        [{
-          'label': 'Company',
-          'text': 'ty ku ty ku ta ku is an american alcoholic beverage company that specializes...'},
-         {
-          'label': 'Company',
-          'text': 'odd lot entertainment oddlot entertainment founded in 2 0 0 1 by longtime...'}]
-    """
-
-    share_id = '1zyMdF5VcuH7Zu3gloYkjQ6Hp4E4u7hOI' if preprocessing else '1oB5-fQWMEz6RgIL9R9fT9P7ZkLNrob9s'
-    return imdb_dataset(directory, 'dbpedia', preprocessing, verbose=verbose, text_length=text_length,
-                        share_id=share_id)
-
-
 def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
     """
     Load the 20 Newsgroups dataset (Version 'bydate').
@@ -221,6 +149,46 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
     share_id = '1-CNb8E1taNjpsKAc9OVQynkG8XDrF_Vb' if preprocessing else '1tk8vB1RsptrFg-yLLxWAZazFLSoQOw7T'
     return imdb_dataset(directory, 'newsgroups', preprocessing, verbose=verbose, text_length=text_length,
                         share_id=share_id)
+
+
+def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
+    """
+    Load the Reuters-21578 R8 or Reuters-21578 R52 dataset (Version 'modApté').
+
+    The Reuters-21578 dataset considers only the documents with a single topic and the classes
+    which still have at least one train and one test example, we have 8 of the 10 most frequent
+    classes and 52 of the original 90. In total there are 5,485 trainig samples and 2,189 testing
+    samples in R8 dataset. The total number of training samples is 6,532 and testing 2,568 in R52
+    dataset.
+    After preprocessing, the total number of training samples is 5,485 and testing samples 2,189.
+    The min length of text about train data is 4, max length is 533, average length is 66; the min
+    length of text about test data is 5, max length is 484, average length is 60. (R8)
+    After preprocessing, the total number of training samples is 6,532 and testing samples 2,568.
+    The min length of text about train data is 4, max length is 595, average length is 70; the min
+    length of text about test data is 5, max length is 484, average length is 64. (R52)
+
+    **Reference:** http://www.daviddlewis.com/resources/testcollections/reuters21578/
+
+    Example:
+        >>> train, test = reuters_dataset(preprocessing=True)
+        >>> train[0:2]
+        [{
+          'label': 'earn',
+          'text': 'champion product approv stock split champion product inc board director...'}
+         {
+          'label': 'acq',
+          'text': 'comput termin system cpml complet sale comput termin system inc complet...'}]
+        >>> test[0:2]
+        [{
+          'label': 'trade',
+          'text': 'asian export fear damag japan rift mount trade friction and japan rais...'},
+         {
+          'label': 'grain',
+          'text': 'china daili vermin eat pct grain stock survei provinc and citi show...'}]
+    """
+
+    share_id = '1zOa18dfqhC92vRI7gzJm9VzAK_ro7o_l' if preprocessing else '18U0eEO31OlgG6IHIRO5D582yFqzG7JWX'
+    return imdb_dataset(directory, 'reuters', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
 def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
@@ -297,41 +265,76 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
     return imdb_dataset(directory, 'cade', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
-def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
     """
-    Load the Sogou News Topic Classification dataset (Version 3).
+    Load the DBPedia Ontology Classification dataset (Version 2).
 
-    The Sogou news topic classification dataset is constructed by manually labeling each news article
-    according to its URL, which represents roughly the categorization of news in their websites. We
-    chose 5 largest categories for the dataset, each having 90,000 samples for training and 12,000 for
-    testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
-    system. In total there are 450,000 training samples and 60,000 testing samples.
-    After preprocessing, the total number of training samples is 450,000 and testing samples 60,000.
-    The min length of text about train data is 2, max length is 38,497, average length is 548; the min
-    length of text about test data is 3, max length is 56,222, average length is 552.
+    The DBpedia ontology classification dataset is constructed by picking 14 non-overlapping classes
+    from DBpedia 2014. They are listed in classes.txt. From each of these 14 ontology classes, we
+    randomly choose 40,000 training samples and 5,000 testing samples. Therefore, the total size
+    of the training dataset is 560,000 and testing dataset 70,000.
+    After preprocessing, the total number of training samples is 560,000 and testing samples 70,000.
+    The min length of text about train data is 2, max length is 2,647, average length is 56; the min
+    length of text about test data is 3, max length is 895, average length is 56.
 
-    **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
+    **Reference:** http://dbpedia.org
 
     Example:
-        >>> train, test = sogou_dataset(preprocessing=True)
+        >>> train, test = dbpedia_dataset(preprocessing=True)
         >>> train[0:2]
         [{
-          'label': 'automobile',
-          'text': '2 0 0 8 di4 qi1 jie4 qi1ng da3o guo2 ji4 che1 zha3n me3i nv3 mo2 te4 2 0 0 8...'}
+          'label': 'Company',
+          'text': 'e d abbott ltd abbott of farnham e d abbott limited was a british coachbuilding...'},
          {
-          'label': 'automobile',
-          'text': 'zho1ng hua2 ju4n jie2 frv ya4o shi tu2 we2i zho1ng hua2 ju4n jie2 frv ya4o shi'}]
+          'label': 'Company',
+          'text': 'schwan stabilo schwan stabilo is a german maker of pens for writing colouring...'}]
         >>> test[0:2]
         [{
-          'label': 'sports',
-          'text': 'ti3 ca1o shi4 jie4 be1i che2ng fe1i na2 pi2ng he2ng mu4 zi4 yo2u ca1o ji1n...'},
+          'label': 'Company',
+          'text': 'ty ku ty ku ta ku is an american alcoholic beverage company that specializes...'},
          {
-          'label': 'automobile',
-          'text': 'da3o ha2ng du2 jia1 ti2 go1ng me3i ri4 ba4o jia4 re4 xia4n 0 1 0 6 4 4 3 8...'}]
+          'label': 'Company',
+          'text': 'odd lot entertainment oddlot entertainment founded in 2 0 0 1 by longtime...'}]
     """
 
-    share_id = '1YgE_mSkMDcREblzAEb29JbCLAdLduNSi' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
-    return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
+    share_id = '1zyMdF5VcuH7Zu3gloYkjQ6Hp4E4u7hOI' if preprocessing else '1oB5-fQWMEz6RgIL9R9fT9P7ZkLNrob9s'
+    return imdb_dataset(directory, 'dbpedia', preprocessing, verbose=verbose, text_length=text_length,
+                        share_id=share_id)
+
+
+def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+    """
+    Load the AG's News Topic Classification dataset (Version 3).
+
+    The AG's news topic classification dataset is constructed by choosing 4 largest classes from
+    the original corpus. Each class contains 30,000 training samples and 1,900 testing samples.
+    The total number of training samples is 120,000 and testing 7,600.
+    After preprocessing, the total number of training samples is 120,000 and testing samples 7,600.
+    The min length of text about train data is 12, max length is 228, average length is 41; the min
+    length of text about test data is 14, max length is 157, average length is 41.
+
+    **Reference:** http://www.di.unipi.it/~gulli/AG_corpus_of_news_articles.html
+
+    Example:
+        >>> train, test = agnews_dataset(preprocessing=True)
+        >>> train[0:2]
+        [{
+          'label': 'Business',
+          'text': 'wall st bears claw back into the black reuters reuters short sellers wall street...'},
+         {
+          'label': 'Business',
+          'text': 'carlyle looks toward commercial aerospace reuters reuters private investment...'}]
+        >>> test[0:2]
+        [{
+          'label': 'Business',
+          'text': 'fears for t n pension after talks unions representing workers at turner newall...'},
+         {
+          'label': 'Sci/Tech',
+          'text': 'the race is on second private team sets launch date for human spaceflight space...'}]
+    """
+
+    share_id = '13_1K7vmzlF-u70Z0BJEWw4o5ZhKL51yx' if preprocessing else '1pSX-jbwlGX5tDNAjzmxlBeCwNwzPXf42'
+    return imdb_dataset(directory, 'agnews', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
 def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
@@ -369,44 +372,41 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     return imdb_dataset(directory, 'yahoo', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
-def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
+def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
     """
-    Load the Reuters-21578 R8 or Reuters-21578 R52 dataset (Version 'modApté').
+    Load the Sogou News Topic Classification dataset (Version 3).
 
-    The Reuters-21578 dataset considers only the documents with a single topic and the classes
-    which still have at least one train and one test example, we have 8 of the 10 most frequent
-    classes and 52 of the original 90. In total there are 5,485 trainig samples and 2,189 testing
-    samples in R8 dataset. The total number of training samples is 6,532 and testing 2,568 in R52
-    dataset.
-    After preprocessing, the total number of training samples is 5,485 and testing samples 2,189.
-    The min length of text about train data is 4, max length is 533, average length is 66; the min
-    length of text about test data is 5, max length is 484, average length is 60. (R8)
-    After preprocessing, the total number of training samples is 6,532 and testing samples 2,568.
-    The min length of text about train data is 4, max length is 595, average length is 70; the min
-    length of text about test data is 5, max length is 484, average length is 64. (R52)
+    The Sogou news topic classification dataset is constructed by manually labeling each news article
+    according to its URL, which represents roughly the categorization of news in their websites. We
+    chose 5 largest categories for the dataset, each having 90,000 samples for training and 12,000 for
+    testing. The Pinyin texts are converted using pypinyin combined with jieba Chinese segmentation
+    system. In total there are 450,000 training samples and 60,000 testing samples.
+    After preprocessing, the total number of training samples is 450,000 and testing samples 60,000.
+    The min length of text about train data is 2, max length is 38,497, average length is 548; the min
+    length of text about test data is 3, max length is 56,222, average length is 552.
 
-    **Reference:** http://www.daviddlewis.com/resources/testcollections/reuters21578/
+    **Reference:** http://www.sogou.com/labs/dl/ca.html and http://www.sogou.com/labs/dl/cs.html
 
     Example:
-        >>> train, test = reuters_dataset(preprocessing=True)
+        >>> train, test = sogou_dataset(preprocessing=True)
         >>> train[0:2]
         [{
-          'label': 'earn',
-          'text': 'champion product approv stock split champion product inc board director...'}
+          'label': 'automobile',
+          'text': '2 0 0 8 di4 qi1 jie4 qi1ng da3o guo2 ji4 che1 zha3n me3i nv3 mo2 te4 2 0 0 8...'}
          {
-          'label': 'acq',
-          'text': 'comput termin system cpml complet sale comput termin system inc complet...'}]
+          'label': 'automobile',
+          'text': 'zho1ng hua2 ju4n jie2 frv ya4o shi tu2 we2i zho1ng hua2 ju4n jie2 frv ya4o shi'}]
         >>> test[0:2]
         [{
-          'label': 'trade',
-          'text': 'asian export fear damag japan rift mount trade friction and japan rais...'},
+          'label': 'sports',
+          'text': 'ti3 ca1o shi4 jie4 be1i che2ng fe1i na2 pi2ng he2ng mu4 zi4 yo2u ca1o ji1n...'},
          {
-          'label': 'grain',
-          'text': 'china daili vermin eat pct grain stock survei provinc and citi show...'}]
+          'label': 'automobile',
+          'text': 'da3o ha2ng du2 jia1 ti2 go1ng me3i ri4 ba4o jia4 re4 xia4n 0 1 0 6 4 4 3 8...'}]
     """
 
-    share_id = '1zOa18dfqhC92vRI7gzJm9VzAK_ro7o_l' if preprocessing else '18U0eEO31OlgG6IHIRO5D582yFqzG7JWX'
-    return imdb_dataset(directory, 'reuters', preprocessing, fine_grained, verbose, text_length, share_id)
+    share_id = '1YgE_mSkMDcREblzAEb29JbCLAdLduNSi' if preprocessing else '10ue65ROxzrr0RN2QHNLNx_qerYEm4j-Z'
+    return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
 def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
