@@ -10,7 +10,7 @@ from data_utils import text_preprocess
 
 
 def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_grained=False,
-                 verbose=False, text_length=1200, share_id='1IuhDyB9D0PpSrmRjjcmSPpQbcb22HVTe'):
+                 verbose=False, text_length=2700, share_id='1IuhDyB9D0PpSrmRjjcmSPpQbcb22HVTe'):
     """
     Load the IMDB dataset (Large Movie Review Dataset v1.0).
 
@@ -115,7 +115,7 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
     return tuple(ret)
 
 
-def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, text_length=2700):
     """
     Load the 20 Newsgroups dataset (Version 'bydate').
 
@@ -151,7 +151,7 @@ def newsgroups_dataset(directory='data/', preprocessing=False, verbose=False, te
                         share_id=share_id)
 
 
-def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
+def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=2700):
     """
     Load the Reuters-21578 R8 or Reuters-21578 R52 dataset (Version 'modApté').
 
@@ -191,7 +191,7 @@ def reuters_dataset(directory='data/', preprocessing=False, fine_grained=False, 
     return imdb_dataset(directory, 'reuters', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
-def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_length=2700):
     """
     Load the World Wide Knowledge Base (Web->Kb) dataset (Version 1).
 
@@ -230,7 +230,7 @@ def webkb_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     return imdb_dataset(directory, 'webkb', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
-def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_length=2700):
     """
     Load the Cade12 dataset (Version 1).
 
@@ -265,7 +265,7 @@ def cade_dataset(directory='data/', preprocessing=False, verbose=False, text_len
     return imdb_dataset(directory, 'cade', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
-def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_length=2700):
     """
     Load the DBPedia Ontology Classification dataset (Version 2).
 
@@ -302,7 +302,7 @@ def dbpedia_dataset(directory='data/', preprocessing=False, verbose=False, text_
                         share_id=share_id)
 
 
-def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_length=2700):
     """
     Load the AG's News Topic Classification dataset (Version 3).
 
@@ -337,7 +337,7 @@ def agnews_dataset(directory='data/', preprocessing=False, verbose=False, text_l
     return imdb_dataset(directory, 'agnews', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
-def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_length=2700):
     """
     Load the Yahoo! Answers Topic Classification dataset (Version 2).
 
@@ -372,7 +372,7 @@ def yahoo_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     return imdb_dataset(directory, 'yahoo', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
-def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_length=1200):
+def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_length=2700):
     """
     Load the Sogou News Topic Classification dataset (Version 3).
 
@@ -409,7 +409,7 @@ def sogou_dataset(directory='data/', preprocessing=False, verbose=False, text_le
     return imdb_dataset(directory, 'sogou', preprocessing, verbose=verbose, text_length=text_length, share_id=share_id)
 
 
-def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
+def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=2700):
     """
     Load the Yelp Review Full Star or Yelp Review Polarity dataset (Version 1).
 
@@ -451,7 +451,7 @@ def yelp_dataset(directory='data/', preprocessing=False, fine_grained=False, ver
     return imdb_dataset(directory, 'yelp', preprocessing, fine_grained, verbose, text_length, share_id)
 
 
-def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=1200):
+def amazon_dataset(directory='data/', preprocessing=False, fine_grained=False, verbose=False, text_length=2700):
     """
     Load the Amazon Review Full Score or Amazon Review Polaridy dataset (Version 3).
 

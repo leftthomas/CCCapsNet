@@ -25,7 +25,7 @@ class MarginLoss(nn.Module):
         return loss.sum(dim=-1).mean()
 
 
-def load_data(data_type, preprocessing=False, fine_grained=False, verbose=False, text_length=1200, encode=True):
+def load_data(data_type, preprocessing=False, fine_grained=False, verbose=False, text_length=2700, encode=True):
     if data_type == 'imdb':
         train_data, test_data = imdb_dataset(preprocessing=preprocessing, verbose=verbose, text_length=text_length)
     elif data_type == 'newsgroups':
