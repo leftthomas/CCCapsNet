@@ -99,7 +99,7 @@ if __name__ == '__main__':
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
     parser.add_argument('--text_length', default=2700, type=int, help='the number of words about the text to load')
-    parser.add_argument('--num_iterations', default=1, type=int, help='initial routing iterations number')
+    parser.add_argument('--init_iterations', default=1, type=int, help='initial routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     DATA_TYPE = opt.data_type
     FINE_GRAINED = opt.fine_grained
     TEXT_LENGTH = opt.text_length
-    NUM_ITERATIONS = opt.num_iterations
+    INIT_ITERATIONS = opt.init_iterations
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
 
-    model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
+    model = Model(vocab_size, num_class=num_class, num_iterations=INIT_ITERATIONS)
     loss_criterion = MarginLoss()
     if torch.cuda.is_available():
         model.cuda()
