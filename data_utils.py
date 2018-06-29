@@ -12,6 +12,12 @@ import requests
 re_letter_number = re.compile(r'[^a-zA-Z0-9 ]')
 re_number_letter = re.compile(r'^(\d+)([a-z]\w*)$')
 
+specific_characters = []
+with open(os.path.join('data', 'specific_words.txt'), 'r', encoding='utf-8') as foo:
+    for line in foo.readlines():
+        line = line.rstrip('\n')
+        specific_characters.append(line)
+
 
 def text_preprocess(text, data_type):
     if data_type == 'sogou' or data_type == 'yahoo' or data_type == 'yelp':
@@ -21,10 +27,16 @@ def text_preprocess(text, data_type):
         # Remove <br /> character
         text = text.replace('<br />', ' ')
     if data_type not in ['newsgroups', 'reuters', 'webkb', 'cade']:
-        # Keep only letters and numbers (such as turn punctuation, foreign word, etc. into SPACES).
-        text = re_letter_number.sub(' ', text)
+        # Turn punctuation, foreign word, etc. into SPACES word SPACES).
+        replace_text = ''
+        for index in range(len(text)):
+            if text[index] in specific_characters:
+                word = ' ' + text[index] + ' '
+            else:
+                word = text[index]
+            replace_text += word
         # Turn all letters to lowercase.
-        text = text.lower()
+        text = replace_text.lower()
         # Turn the number-letter word to single number and word (such as turn 2008year into 2008 year).
         text = ' '.join(' '.join(w for w in re_number_letter.match(word).groups())
                         if re_number_letter.match(word) else word for word in text.split())
@@ -142,7 +154,7 @@ if __name__ == '__main__':
     print('Done.')
     # save specific_words
     print('Saving specific words into {}... '.format(os.path.join('data', 'specific_words.txt')), end='')
-    with open('data/specific_words.txt', 'w') as fw:
+    with open('data/specific_words.txt', 'w', encoding='utf-8') as fw:
         for word in specific_words:
-            fw.write('%s' % '\n'.join(word))
+            fw.write(word + '\n')
     print('Done.')
