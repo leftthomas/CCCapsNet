@@ -47,8 +47,8 @@ and extract them into `data` directory.
 python data_utils.py
 ```
 This step is not required, and it takes a while to execute. So I have generated the specific words before, and uploaded 
-the `specific_words.txt` into the `data` directory. You could skip this step, and just do the next step, the code will 
-use the `specific_words.txt` automatically.
+`specific_words.txt` into the `data` directory. You could skip this step, and just do the next step, the code will 
+use this file automatically.
 
 ```
 python utils.py --data_type yelp --fine_grained
