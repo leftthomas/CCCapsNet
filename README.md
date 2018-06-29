@@ -44,13 +44,6 @@ and extract them into `data` directory.
 
 ### Generate Preprocessed Data
 ```
-python data_utils.py
-```
-This step is not required, and it takes a while to execute. So I have generated the specific words before, and uploaded 
-`specific_words.txt` into the `data` directory. You could skip this step, and just do the next step, the code will 
-use this file automatically.
-
-```
 python utils.py --data_type yelp --fine_grained
 optional arguments:
 --data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
