@@ -9,7 +9,7 @@ from sys import stdout
 
 import requests
 
-re_letter_number = re.compile('[^a-zA-Z0-9]')
+re_letter_number = re.compile(r'[^a-zA-Z0-9 ]')
 re_number_letter = re.compile(r'^(\d+)([a-z]\w*)$')
 
 
@@ -110,3 +110,39 @@ class GoogleDriveDownloader:
             for chunk in response.iter_content(GoogleDriveDownloader.CHUNK_SIZE):
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
+
+
+if __name__ == '__main__':
+    from utils import load_data
+
+    data_types = ['imdb', 'newsgroups', 'reuters', 'webkb', 'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp',
+                  'amazon', 'reuters-fine_grained', 'yelp-fine_grained', 'amazon-fine_grained']
+    specific_words = set()
+    print('Obtaining specific words... ', end='')
+    for data_type in data_types:
+        if data_type.endswith('-fine_grained'):
+            data_type = data_type.split('-')[0]
+            fine_grained = True
+        else:
+            fine_grained = False
+        train_dataset, test_dataset = load_data(data_type, preprocessing=False, fine_grained=fine_grained, encode=False)
+        datasets = [train_dataset, test_dataset]
+        for dataset in datasets:
+            for data in dataset:
+                text = data['text']
+                if data_type == 'sogou' or data_type == 'yahoo' or data_type == 'yelp':
+                    # Remove \\n character
+                    text = text.replace('\\n', ' ')
+                if data_type == 'imdb' or data_type == 'yahoo':
+                    # Remove <br /> character
+                    text = text.replace('<br />', ' ')
+                if re_letter_number.search(text):
+                    for word in re_letter_number.findall(text):
+                        specific_words.add(word)
+    print('Done.')
+    # save specific_words
+    print('Saving specific words into {}... '.format(os.path.join('data', 'specific_words.txt')), end='')
+    with open('data/specific_words.txt', 'w') as fw:
+        for word in specific_words:
+            fw.write('%s' % '\n'.join(word))
+    print('Done.')
