@@ -10,7 +10,7 @@ from sys import stdout
 import requests
 
 re_letter_number = re.compile('[^a-zA-Z0-9]')
-re_number_letter = re.compile(r'^(\d+)([a-zA-Z]\w*)$')
+re_number_letter = re.compile(r'^(\d+)([a-z]\w*)$')
 
 
 def text_preprocess(text, data_type):
@@ -23,6 +23,8 @@ def text_preprocess(text, data_type):
     if data_type not in ['newsgroups', 'reuters', 'webkb', 'cade']:
         # Keep only letters and numbers (such as turn punctuation, foreign word, etc. into SPACES).
         text = re_letter_number.sub(' ', text)
+        # Turn all letters to lowercase.
+        text = text.lower()
         # Turn the number-letter word to single number and word (such as turn 2008year into 2008 year).
         text = ' '.join(' '.join(w for w in re_number_letter.match(word).groups())
                         if re_number_letter.match(word) else word for word in text.split())
