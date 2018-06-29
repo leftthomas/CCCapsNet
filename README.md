@@ -44,15 +44,22 @@ and extract them into `data` directory.
 
 ### Generate Preprocessed Data
 ```
+python data_utils.py
+```
+This step is not required, and it takes a while to execute. So I have generated the specific words before, and uploaded 
+the `specific_words.txt` into the `data` directory. You could skip this step, and just do the next step, the code will 
+use the `specific_words.txt` automatically.
+
+```
 python utils.py --data_type yelp --fine_grained
 optional arguments:
 --data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 ```
-This step is not required, and it takes a long time to execute. So I have generated them before, and uploaded the 
-preprocessed data to the aforementioned cloud storage webs. You could skip this step, and just do the next step, the 
-code will download the data automatically.
+This step is not required, and it takes a long time to execute. So I have generated the preprocessed data before, and 
+uploaded them to the aforementioned cloud storage webs. You could skip this step, and just do the next step, the code will 
+download the data automatically.
 
 ### Train Text Classification
 ```
@@ -66,10 +73,10 @@ optional arguments:
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 100]
 ```
-Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, 
-`$data_type` means the dataset type which you are training.
+Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
+type which you are training.
 
 ## Results
-The train loss、accuracy, test loss、accuracy, and confusion matrix are showed with visdom,
-the best test accuracy is ~ 99.64%.
+The train loss、accuracy, test loss、accuracy, and confusion matrix are showed with visdom, the best test accuracy is ~ 
+99.64%.
 ![result](results/result.png)
