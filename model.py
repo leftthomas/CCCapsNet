@@ -66,10 +66,10 @@ class Model(nn.Module):
     def __init__(self, vocab_size, num_class, num_iterations):
         super().__init__()
 
-        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=96, num_codebook=8)
-        self.features = nn.GRU(96, 256, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
+        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=64, num_codebook=8)
+        self.features = nn.GRU(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
 
-        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=64,
+        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=32,
                                         share_weight=False, num_iterations=num_iterations)
 
     def forward(self, x):
