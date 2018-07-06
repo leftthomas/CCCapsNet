@@ -104,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--routing_milestones', nargs='+', default=[10, 30], type=int,
                         help='routing iterations milestones')
-    parser.add_argument('--learning_milestones', nargs='+', default=[20, 40], type=int, help='learning rate milestones')
+    parser.add_argument('--learning_milestones', nargs='+', default=[60], type=int, help='learning rate milestones')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
     opt = parser.parse_args()
