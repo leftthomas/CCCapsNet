@@ -5,7 +5,6 @@ import torchnet as tnt
 from capsule_layer.optim import MultiStepRI
 from torch.autograd import Variable
 from torch.optim import Adam
-from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.data import DataLoader
 from torchnet.engine import Engine
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
@@ -76,8 +75,6 @@ def on_end_epoch(state):
 
     # scheduler routing iterations
     routing_scheduler.step()
-    # scheduler learning rate
-    learning_scheduler.step()
 
     # save best model
     if meter_accuracy.value()[0] > best_acc:
@@ -104,7 +101,6 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--routing_milestones', nargs='+', default=[10, 30], type=int,
                         help='routing iterations milestones')
-    parser.add_argument('--learning_milestones', nargs='+', default=[60], type=int, help='learning rate milestones')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
     opt = parser.parse_args()
@@ -114,7 +110,6 @@ if __name__ == '__main__':
     INIT_ITERATIONS = opt.init_iterations
     BATCH_SIZE = opt.batch_size
     ROUTING_MILESTONES = opt.routing_milestones
-    LEARNING_MILESTONES = opt.learning_milestones
     NUM_EPOCHS = opt.num_epochs
 
     # prepare dataset
@@ -134,7 +129,6 @@ if __name__ == '__main__':
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     routing_scheduler = MultiStepRI(model, milestones=ROUTING_MILESTONES, verbose=True)
-    learning_scheduler = MultiStepLR(optimizer, milestones=LEARNING_MILESTONES, gamma=0.3)
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
