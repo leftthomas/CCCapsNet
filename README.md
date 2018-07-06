@@ -64,6 +64,8 @@ optional arguments:
 --text_length            the number of words about the text to load [default value is 2700]
 --init_iterations        initial routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
+--routing_milestones     routing iterations milestones [default value is [10, 30]]
+--learning_milestones    learning rate milestones [default value is [20, 40]]
 --num_epochs             train epochs number [default value is 100]
 ```
 Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
