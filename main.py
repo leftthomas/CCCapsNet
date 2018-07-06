@@ -134,7 +134,7 @@ if __name__ == '__main__':
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     routing_scheduler = MultiStepRI(model, milestones=ROUTING_MILESTONES, verbose=True)
-    learning_scheduler = MultiStepLR(optimizer, milestones=LEARNING_MILESTONES)
+    learning_scheduler = MultiStepLR(optimizer, milestones=LEARNING_MILESTONES, gamma=0.3)
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
