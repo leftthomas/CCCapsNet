@@ -56,7 +56,7 @@ download the data automatically.
 
 ### Train Text Classification
 ```
-python -m visdom.server -logging_level WARNING & python main.py --data_type newsgroups --num_epochs 300
+python -m visdom.server -logging_level WARNING & python main.py --data_type newsgroups --routing_milestones 10, 40 --num_epochs 300
 optional arguments:
 --data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
