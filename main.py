@@ -73,9 +73,6 @@ def on_end_epoch(state):
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
     confusion_logger.log(meter_confusion.value())
 
-    # scheduler routing iterations
-    routing_scheduler.step()
-
     # save best model
     if meter_accuracy.value()[0] > best_acc:
         best_acc = meter_accuracy.value()[0]
@@ -86,6 +83,9 @@ def on_end_epoch(state):
 
     print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
+
+    # scheduler routing iterations
+    routing_scheduler.step()
 
 
 if __name__ == '__main__':
