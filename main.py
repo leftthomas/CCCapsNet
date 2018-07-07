@@ -1,5 +1,6 @@
 import argparse
 
+import pandas as pd
 import torch
 import torchnet as tnt
 from capsule_layer.optim import MultiStepRI
@@ -58,6 +59,8 @@ def on_end_epoch(state):
 
     train_loss_logger.log(state['epoch'], meter_loss.value()[0])
     train_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
+    results['train_loss'].append(meter_loss.value()[0])
+    results['train_accuracy'].append(meter_accuracy.value()[0])
 
     print('[Epoch %d] Training Loss: %.4f Accuracy: %.2f%%' % (
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0]))
@@ -72,6 +75,8 @@ def on_end_epoch(state):
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
     confusion_logger.log(meter_confusion.value())
+    results['test_loss'].append(meter_loss.value()[0])
+    results['test_accuracy'].append(meter_accuracy.value()[0])
 
     # save best model
     if meter_accuracy.value()[0] > best_acc:
@@ -86,6 +91,18 @@ def on_end_epoch(state):
 
     # scheduler routing iterations
     routing_scheduler.step()
+
+    # save statistics at every 10 epochs
+    if state['epoch'] % 10 == 0:
+        out_path = 'statistics/'
+        data_frame = pd.DataFrame(
+            data={'train_loss': results['train_loss'], 'train_accuracy': results['train_accuracy'],
+                  'test_loss': results['test_loss'], 'test_accuracy': results['test_accuracy']},
+            index=range(1, state['epoch'] + 1))
+        if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
+            data_frame.to_csv(out_path + DATA_TYPE + '_fine_grained' + '_results.csv', index_label='epoch')
+        else:
+            data_frame.to_csv(out_path + DATA_TYPE + '_results.csv', index_label='epoch')
 
 
 if __name__ == '__main__':
@@ -111,6 +128,9 @@ if __name__ == '__main__':
     BATCH_SIZE = opt.batch_size
     ROUTING_MILESTONES = opt.routing_milestones
     NUM_EPOCHS = opt.num_epochs
+
+    # record statistics
+    results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
 
     # prepare dataset
     vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
