@@ -61,7 +61,7 @@ optional arguments:
 --data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
---text_length            the number of words about the text to load [default value is 2700]
+--text_length            the number of words about the text to load [default value is 2810]
 --init_iterations        initial routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
 --routing_milestones     routing iterations milestones [default value is [10, 30]]

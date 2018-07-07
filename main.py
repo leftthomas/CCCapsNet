@@ -96,7 +96,7 @@ if __name__ == '__main__':
                                  'sogou', 'yelp', 'amazon'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
-    parser.add_argument('--text_length', default=2700, type=int, help='the number of words about the text to load')
+    parser.add_argument('--text_length', default=2810, type=int, help='the number of words about the text to load')
     parser.add_argument('--init_iterations', default=1, type=int, help='initial routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--routing_milestones', nargs='+', default=[10, 30], type=int,
