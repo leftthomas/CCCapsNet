@@ -15,10 +15,6 @@ pip install git+https://github.com/pytorch/tnt.git@master
 ```
 pip install pytorch-nlp
 ```
-* PorterStemmer
-```
-pip install PorterStemmer
-```
 * tqdm
 ```
 conda install tqdm
