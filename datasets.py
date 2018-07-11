@@ -68,11 +68,11 @@ def imdb_dataset(directory='data/', data_type='imdb', preprocessing=False, fine_
         else:
             train_file, test_file = 'preprocessed_train.csv', 'preprocessed_test.csv'
     else:
-        gdd.download_file_from_google_drive(share_id, data_type + '_orginal.zip', directory + data_type)
+        gdd.download_file_from_google_drive(share_id, data_type + '_original.zip', directory + data_type)
         if fine_grained:
-            train_file, test_file = 'orginal_fine_grained_train.csv', 'orginal_fine_grained_test.csv'
+            train_file, test_file = 'original_fine_grained_train.csv', 'original_fine_grained_test.csv'
         else:
-            train_file, test_file = 'orginal_train.csv', 'orginal_test.csv'
+            train_file, test_file = 'original_train.csv', 'original_test.csv'
 
     if verbose:
         min_train_length, avg_train_length, max_train_length = sys.maxsize, 0, 0
