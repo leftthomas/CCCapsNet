@@ -3,7 +3,6 @@ import argparse
 import pandas as pd
 import torch
 import torchnet as tnt
-from capsule_layer.optim import MultiStepRI
 from torch.autograd import Variable
 from torch.optim import Adam
 from torch.utils.data import DataLoader
@@ -89,9 +88,6 @@ def on_end_epoch(state):
     print('[Epoch %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
 
-    # scheduler routing iterations
-    routing_scheduler.step()
-
     # save statistics at every 10 epochs
     if state['epoch'] % 10 == 0:
         out_path = 'statistics/'
@@ -114,19 +110,16 @@ if __name__ == '__main__':
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
     parser.add_argument('--text_length', default=2810, type=int, help='the number of words about the text to load')
-    parser.add_argument('--init_iterations', default=1, type=int, help='initial routing iterations number')
+    parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
-    parser.add_argument('--routing_milestones', nargs='+', default=[10, 30], type=int,
-                        help='routing iterations milestones')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
 
     opt = parser.parse_args()
     DATA_TYPE = opt.data_type
     FINE_GRAINED = opt.fine_grained
     TEXT_LENGTH = opt.text_length
-    INIT_ITERATIONS = opt.init_iterations
+    NUM_ITERATIONS = opt.num_iterations
     BATCH_SIZE = opt.batch_size
-    ROUTING_MILESTONES = opt.routing_milestones
     NUM_EPOCHS = opt.num_epochs
 
     # record statistics
@@ -140,7 +133,7 @@ if __name__ == '__main__':
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
 
-    model = Model(vocab_size, num_class=num_class, num_iterations=INIT_ITERATIONS)
+    model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
     loss_criterion = MarginLoss()
     if torch.cuda.is_available():
         model.cuda()
@@ -148,7 +141,6 @@ if __name__ == '__main__':
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
-    routing_scheduler = MultiStepRI(model, milestones=ROUTING_MILESTONES, verbose=True)
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
