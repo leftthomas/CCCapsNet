@@ -52,15 +52,14 @@ download the data automatically.
 
 ### Train Text Classification
 ```
-python -m visdom.server -logging_level WARNING & python main.py --data_type newsgroups --routing_milestones 10, 40 --num_epochs 300
+python -m visdom.server -logging_level WARNING & python main.py --data_type newsgroups --num_epochs 300
 optional arguments:
 --data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --text_length            the number of words about the text to load [default value is 2810]
---init_iterations        initial routing iterations number [default value is 1]
+--num_iterations         routing iterations number [default value is 3]
 --batch_size             train batch size [default value is 30]
---routing_milestones     routing iterations milestones [default value is [10, 30]]
 --num_epochs             train epochs number [default value is 100]
 ```
 Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
