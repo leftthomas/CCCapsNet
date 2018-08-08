@@ -76,7 +76,7 @@ class Model(nn.Module):
         embed = self.embedding(x)
         out, _ = self.features(embed)
 
-        out = out[:, -1, :].contiguous().view(out.size(0), -1, 8)
+        out = out.sum(dim=1).contiguous().view(out.size(0), -1, 8)
         out = self.classifier(out)
         classes = out.norm(dim=-1)
         return classes
