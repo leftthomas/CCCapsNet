@@ -3,7 +3,6 @@ import argparse
 import pandas as pd
 import torch
 import torchnet as tnt
-from capsule_layer.optim import MultiStepRI
 from torch.autograd import Variable
 from torch.optim import Adam
 from torch.optim.lr_scheduler import MultiStepLR
@@ -102,8 +101,6 @@ def on_end_epoch(state):
         data_frame.to_csv(out_path + DATA_TYPE + '_fine_grained' + '_results.csv', index_label='epoch')
     else:
         data_frame.to_csv(out_path + DATA_TYPE + '_results.csv', index_label='epoch')
-    # scheduler routing iterations
-    ri_scheduler.step()
 
 
 if __name__ == '__main__':
@@ -146,8 +143,7 @@ if __name__ == '__main__':
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
-    lr_scheduler = MultiStepLR(optimizer, milestones=[5, 10, 20])
-    ri_scheduler = MultiStepRI(model, milestones=[5, 10, 20])
+    lr_scheduler = MultiStepLR(optimizer, milestones=[7, 10, 15])
 
     engine = Engine()
     meter_loss = tnt.meter.AverageValueMeter()
