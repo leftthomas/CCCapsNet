@@ -58,7 +58,7 @@ optional arguments:
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --text_length            the number of words about the text to load [default value is 2810]
---num_iterations         routing iterations number [default value is 3]
+--num_iterations         routing iterations number [default value is 1]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 100]
 ```
