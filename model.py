@@ -66,8 +66,13 @@ class Model(nn.Module):
     def __init__(self, vocab_size, num_class, num_iterations):
         super().__init__()
 
-        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=64, num_codebook=8)
-        self.features = nn.GRU(64, 128, num_layers=2, dropout=0.5, batch_first=True, bidirectional=True)
+        self.embedding_size = 100
+        self.hidden_size = 256
+
+        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=self.embedding_size,
+                                                num_codebook=8)
+        self.features = nn.GRU(self.embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,
+                               bidirectional=True)
 
         self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=32,
                                         share_weight=False, num_iterations=num_iterations, similarity='cosine')
@@ -76,7 +81,8 @@ class Model(nn.Module):
         embed = self.embedding(x)
         out, _ = self.features(embed)
 
-        out = out.mean(dim=1).contiguous().view(out.size(0), -1, 8)
+        out = out[:, :, :self.hidden_size] + out[:, :, self.hidden_size:]
+        out = out.sum(dim=1).contiguous().view(out.size(0), -1, 8)
         out = self.classifier(out)
         classes = out.norm(dim=-1)
         return classes
