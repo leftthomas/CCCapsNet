@@ -7,33 +7,11 @@ from torch.autograd import Variable
 from torch.optim import Adam
 from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.data import DataLoader
-from torchnet.engine import Engine
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from torchnlp.samplers import BucketBatchSampler
-from tqdm import tqdm
 
 from model import Model
 from utils import load_data, MarginLoss, collate_fn
-
-
-def processor(sample):
-    data, label, training = sample
-    label = torch.eye(num_class).index_select(dim=0, index=label)
-    if torch.cuda.is_available():
-        data = data.cuda()
-        label = label.cuda()
-    data = Variable(data)
-    label = Variable(label)
-
-    model.train(training)
-
-    classes = model(data)
-    loss = loss_criterion(classes, label)
-    return loss, classes
-
-
-def on_sample(state):
-    state['sample'].append(state['train'])
 
 
 def reset_meters():
@@ -42,22 +20,7 @@ def reset_meters():
     meter_confusion.reset()
 
 
-def on_forward(state):
-    meter_accuracy.add(state['output'].data, state['sample'][1])
-    meter_confusion.add(state['output'].data, state['sample'][1])
-    meter_loss.add(state['loss'].data[0])
-
-
-def on_start_epoch(state):
-    # scheduler learning rate
-    lr_scheduler.step()
-    reset_meters()
-    state['iterator'] = tqdm(state['iterator'])
-
-
 def on_end_epoch(state):
-    # pay attention, it's a global value
-    global best_acc
 
     train_loss_logger.log(state['epoch'], meter_loss.value()[0])
     train_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
@@ -68,11 +31,6 @@ def on_end_epoch(state):
         state['epoch'], meter_loss.value()[0], meter_accuracy.value()[0]))
 
     reset_meters()
-
-    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
-    test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
-
-    engine.test(processor, test_iterator)
 
     test_loss_logger.log(state['epoch'], meter_loss.value()[0])
     test_accuracy_logger.log(state['epoch'], meter_accuracy.value()[0])
@@ -124,9 +82,6 @@ if __name__ == '__main__':
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
 
-    # record statistics
-    results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
-
     # prepare dataset
     vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
                                                                    fine_grained=FINE_GRAINED, verbose=True,
@@ -134,6 +89,8 @@ if __name__ == '__main__':
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
+    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
+    test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
     loss_criterion = MarginLoss()
@@ -144,28 +101,42 @@ if __name__ == '__main__':
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     lr_scheduler = MultiStepLR(optimizer, milestones=[5, 10, 15])
-
-    engine = Engine()
+    # record statistics
+    results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
+    # record current best test accuracy
+    best_acc = 0
     meter_loss = tnt.meter.AverageValueMeter()
     meter_accuracy = tnt.meter.ClassErrorMeter(accuracy=True)
     meter_confusion = tnt.meter.ConfusionMeter(num_class, normalized=True)
 
-    # record current best test accuracy
-    best_acc = 0
-
+    # config the visdom figures
     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
         env_name = DATA_TYPE + '_fine_grained'
     else:
         env_name = DATA_TYPE
     train_loss_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Train Loss'})
     train_accuracy_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Train Accuracy'})
+    train_confusion_logger = VisdomLogger('heatmap', env=env_name, opts={'title': 'Train Confusion Matrix'})
     test_loss_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Test Loss'})
     test_accuracy_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Test Accuracy'})
-    confusion_logger = VisdomLogger('heatmap', env=env_name, opts={'title': 'Confusion Matrix'})
+    test_confusion_logger = VisdomLogger('heatmap', env=env_name, opts={'title': 'Test Confusion Matrix'})
 
-    engine.hooks['on_sample'] = on_sample
-    engine.hooks['on_forward'] = on_forward
-    engine.hooks['on_start_epoch'] = on_start_epoch
-    engine.hooks['on_end_epoch'] = on_end_epoch
-
-    engine.train(processor, train_iterator, maxepoch=NUM_EPOCHS, optimizer=optimizer)
+    for epoch in range(1, NUM_EPOCHS + 1):
+        # scheduler learning rate
+        lr_scheduler.step()
+        for batch_idx, data, target in enumerate(train_iterator):
+            label = torch.eye(num_class).index_select(dim=0, index=target)
+            if torch.cuda.is_available():
+                data, label = data.cuda(), label.cuda()
+            data, label = Variable(data), Variable(label)
+            # train model
+            model.train()
+            optimizer.zero_grad()
+            classes = model(data)
+            loss = loss_criterion(classes, label)
+            loss.backward()
+            optimizer.step()
+            # save the metrics
+            meter_loss.add(loss.data[0])
+            meter_accuracy.add(classes.data, target)
+            meter_confusion.add(classes.data, target)
