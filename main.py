@@ -90,16 +90,15 @@ if __name__ == '__main__':
             # scheduler learning rate
             lr_scheduler.step()
             current_step += 1
-            # label = torch.eye(num_class).index_select(dim=0, index=target)
-            label = target
+            focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
             if torch.cuda.is_available():
-                data, label = data.cuda(), label.cuda()
-            data, label = Variable(data), Variable(label)
+                data, focal_label, margin_label = data.cuda(), focal_label.cuda(), margin_label.cuda()
+            data, focal_label, margin_label = Variable(data), Variable(focal_label), Variable(margin_label)
             # train model
             model.train()
             optimizer.zero_grad()
             classes = model(data)
-            loss = focal_loss(classes, label)
+            loss = focal_loss(classes, focal_label) + margin_loss(classes, margin_label)
             loss.backward()
             optimizer.step()
             # save the metrics
@@ -121,13 +120,12 @@ if __name__ == '__main__':
                 # test model periodically
                 model.eval()
                 for data, target in test_iterator:
-                    # label = torch.eye(num_class).index_select(dim=0, index=target)
-                    label = target
+                    focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
                     if torch.cuda.is_available():
-                        data, label = data.cuda(), label.cuda()
-                    data, label = Variable(data), Variable(label)
+                        data, focal_label, margin_label = data.cuda(), focal_label.cuda(), margin_label.cuda()
+                    data, focal_label, margin_label = Variable(data), Variable(focal_label), Variable(margin_label)
                     classes = model(data)
-                    loss = focal_loss(classes, label)
+                    loss = focal_loss(classes, focal_label) + margin_loss(classes, margin_label)
                     # save the metrics
                     meter_loss.add(loss.data[0])
                     meter_accuracy.add(classes.data, target)
