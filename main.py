@@ -11,7 +11,7 @@ from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from torchnlp.samplers import BucketBatchSampler
 
 from model import Model
-from utils import load_data, MarginLoss, collate_fn
+from utils import load_data, MarginLoss, collate_fn, FocalLoss
 
 
 def reset_meters():
@@ -54,10 +54,12 @@ if __name__ == '__main__':
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
-    loss_criterion = MarginLoss()
+    margin_loss = MarginLoss()
+    focal_loss = FocalLoss()
     if torch.cuda.is_available():
         model.cuda()
-        loss_criterion.cuda()
+        margin_loss.cuda()
+        focal_loss.cuda()
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
@@ -88,7 +90,8 @@ if __name__ == '__main__':
             # scheduler learning rate
             lr_scheduler.step()
             current_step += 1
-            label = torch.eye(num_class).index_select(dim=0, index=target)
+            # label = torch.eye(num_class).index_select(dim=0, index=target)
+            label = target
             if torch.cuda.is_available():
                 data, label = data.cuda(), label.cuda()
             data, label = Variable(data), Variable(label)
@@ -96,7 +99,7 @@ if __name__ == '__main__':
             model.train()
             optimizer.zero_grad()
             classes = model(data)
-            loss = loss_criterion(classes, label)
+            loss = focal_loss(classes, label)
             loss.backward()
             optimizer.step()
             # save the metrics
@@ -118,12 +121,13 @@ if __name__ == '__main__':
                 # test model periodically
                 model.eval()
                 for data, target in test_iterator:
-                    label = torch.eye(num_class).index_select(dim=0, index=target)
+                    # label = torch.eye(num_class).index_select(dim=0, index=target)
+                    label = target
                     if torch.cuda.is_available():
                         data, label = data.cuda(), label.cuda()
                     data, label = Variable(data), Variable(label)
                     classes = model(data)
-                    loss = loss_criterion(classes, label)
+                    loss = focal_loss(classes, label)
                     # save the metrics
                     meter_loss.add(loss.data[0])
                     meter_accuracy.add(classes.data, target)
