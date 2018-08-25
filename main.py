@@ -28,7 +28,7 @@ if __name__ == '__main__':
                                  'sogou', 'yelp', 'amazon'], help='dataset type')
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
-    parser.add_argument('--text_length', default=2810, type=int, help='the number of words about the text to load')
+    parser.add_argument('--text_length', default=3000, type=int, help='the number of words about the text to load')
     parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
-    lr_scheduler = MultiStepLR(optimizer, milestones=[7000, 15000])
+    lr_scheduler = MultiStepLR(optimizer, milestones=[40000, 70000, 100000])
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
     # record current best test accuracy
