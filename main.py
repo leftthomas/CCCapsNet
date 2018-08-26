@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
-    lr_scheduler = MultiStepLR(optimizer, milestones=[20000, 40000, 70000])
+    lr_scheduler = MultiStepLR(optimizer, milestones=[30000, 70000, 100000])
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
     # record current best test accuracy
