@@ -5,7 +5,6 @@ import torch
 import torchnet as tnt
 from torch.autograd import Variable
 from torch.optim import Adam
-from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.data import DataLoader
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from torchnlp.samplers import BucketBatchSampler
@@ -63,7 +62,6 @@ if __name__ == '__main__':
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
-    lr_scheduler = MultiStepLR(optimizer, milestones=[30000, 70000, 100000])
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
     # record current best test accuracy
@@ -87,8 +85,6 @@ if __name__ == '__main__':
     current_step = 0
     for epoch in range(1, NUM_EPOCHS + 1):
         for data, target in train_iterator:
-            # scheduler learning rate
-            lr_scheduler.step()
             current_step += 1
             focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
             if torch.cuda.is_available():
