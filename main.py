@@ -32,6 +32,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
+    parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
     opt = parser.parse_args()
     DATA_TYPE = opt.data_type
@@ -41,6 +42,7 @@ if __name__ == '__main__':
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
     NUM_STEPS = opt.num_steps
+    MODEL_WEIGHT = opt.load_model_weight
 
     # prepare dataset
     vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
@@ -53,6 +55,8 @@ if __name__ == '__main__':
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
+    if MODEL_WEIGHT is not None:
+        model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
     margin_loss = MarginLoss()
     focal_loss = FocalLoss()
     if torch.cuda.is_available():
