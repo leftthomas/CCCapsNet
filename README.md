@@ -63,6 +63,36 @@ Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your b
 type which you are training.
 
 ## Results
-The train loss、accuracy, test loss、accuracy, and confusion matrix are showed with visdom, the best test accuracy is ~ 
-99.64%.
-![result](results/result.png)
+The train/test loss、accuracy and confusion matrix are showed with visdom.
+
+**agnews**
+
+![result](results/agnews.png)
+
+**dbpedia**
+
+![result](results/dbpedia.png)
+
+**yahoo**
+
+![result](results/yahoo.png)
+
+**sogou**
+
+![result](results/sogou.png)
+
+**yelp**
+
+![result](results/yelp.png)
+
+**yelp fine grained**
+
+![result](results/yelp_fine_grained.png)
+
+**amazon**
+
+![result](results/amazon.png)
+
+**amazon fine grained**
+
+![result](results/amazon_fine_grained.png)
