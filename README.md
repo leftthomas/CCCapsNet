@@ -3,9 +3,9 @@ A PyTorch implementation of Compositional coding Capsule Network based on the pa
 
 ## Requirements
 * [Anaconda](https://www.anaconda.com/download/)
-* PyTorch
+* PyTorch 0.3.1
 ```
-conda install pytorch torchvision -c pytorch
+conda install pytorch=0.3.1 torchvision -c pytorch
 ```
 * PyTorchNet
 ```
