@@ -15,6 +15,10 @@ pip install git+https://github.com/pytorch/tnt.git@master
 ```
 pip install pytorch-nlp
 ```
+* capsule-layer 0.1.6
+```
+pip install git+https://github.com/leftthomas/CapsuleLayer.git@master
+```
 
 ## Datasets
 The original `AGNews`, `AmazonReview`, `DBPedia`, `YahooAnswers`, `SogouNews` and `YelpReview` datasets are coming from [here](http://goo.gl/JyCnZq).
