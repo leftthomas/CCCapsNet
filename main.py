@@ -100,9 +100,9 @@ if __name__ == '__main__':
             loss.backward()
             optimizer.step()
             # save the metrics
-            meter_loss.add(loss.data[0])
-            meter_accuracy.add(classes.data, target)
-            meter_confusion.add(classes.data, target)
+            meter_loss.add(loss.detach().cpu().item())
+            meter_accuracy.add(classes.detach().cpu(), target)
+            meter_confusion.add(classes.detach().cpu(), target)
 
             if current_step % NUM_STEPS == 0:
                 # print the information about train
@@ -126,9 +126,9 @@ if __name__ == '__main__':
                         classes = model(data)
                         loss = focal_loss(classes, focal_label) + margin_loss(classes, margin_label)
                         # save the metrics
-                        meter_loss.add(loss.data[0])
-                        meter_accuracy.add(classes.data, target)
-                        meter_confusion.add(classes.data, target)
+                        meter_loss.add(loss.detach().cpu().item())
+                        meter_accuracy.add(classes.detach().cpu(), target)
+                        meter_confusion.add(classes.detach().cpu(), target)
                     # print the information about test
                     test_loss_logger.log(current_step // NUM_STEPS, meter_loss.value()[0])
                     test_accuracy_logger.log(current_step // NUM_STEPS, meter_accuracy.value()[0])
