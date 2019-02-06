@@ -3,7 +3,6 @@ import argparse
 import pandas as pd
 import torch
 import torchnet as tnt
-from torch.autograd import Variable
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
@@ -28,6 +27,8 @@ if __name__ == '__main__':
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
     parser.add_argument('--text_length', default=5000, type=int, help='the number of words about the text to load')
+    parser.add_argument('--routing_type', default='k_means', type=str, choices=['k_means', 'dynamic'],
+                        help='routing type')
     parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
@@ -38,6 +39,7 @@ if __name__ == '__main__':
     DATA_TYPE = opt.data_type
     FINE_GRAINED = opt.fine_grained
     TEXT_LENGTH = opt.text_length
+    ROUTING_TYPE = opt.routing_type
     NUM_ITERATIONS = opt.num_iterations
     BATCH_SIZE = opt.batch_size
     NUM_EPOCHS = opt.num_epochs
@@ -54,15 +56,12 @@ if __name__ == '__main__':
     test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
-    model = Model(vocab_size, num_class=num_class, num_iterations=NUM_ITERATIONS)
+    model = Model(vocab_size, num_class=num_class, routing_type=ROUTING_TYPE, num_iterations=NUM_ITERATIONS)
     if MODEL_WEIGHT is not None:
         model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
-    margin_loss = MarginLoss()
-    focal_loss = FocalLoss()
+    margin_loss, focal_loss = MarginLoss(), FocalLoss()
     if torch.cuda.is_available():
-        model.cuda()
-        margin_loss.cuda()
-        focal_loss.cuda()
+        model, margin_loss, focal_loss = model.to('cuda'), margin_loss.to('cuda'), focal_loss.to('cuda')
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
@@ -92,8 +91,7 @@ if __name__ == '__main__':
             current_step += 1
             focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
             if torch.cuda.is_available():
-                data, focal_label, margin_label = data.cuda(), focal_label.cuda(), margin_label.cuda()
-            data, focal_label, margin_label = Variable(data), Variable(focal_label), Variable(margin_label)
+                data, focal_label, margin_label = data.to('cuda'), focal_label.to('cuda'), margin_label.to('cuda')
             # train model
             model.train()
             optimizer.zero_grad()
@@ -119,23 +117,24 @@ if __name__ == '__main__':
 
                 # test model periodically
                 model.eval()
-                for data, target in test_iterator:
-                    focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
-                    if torch.cuda.is_available():
-                        data, focal_label, margin_label = data.cuda(), focal_label.cuda(), margin_label.cuda()
-                    data, focal_label, margin_label = Variable(data), Variable(focal_label), Variable(margin_label)
-                    classes = model(data)
-                    loss = focal_loss(classes, focal_label) + margin_loss(classes, margin_label)
-                    # save the metrics
-                    meter_loss.add(loss.data[0])
-                    meter_accuracy.add(classes.data, target)
-                    meter_confusion.add(classes.data, target)
-                # print the information about test
-                test_loss_logger.log(current_step // NUM_STEPS, meter_loss.value()[0])
-                test_accuracy_logger.log(current_step // NUM_STEPS, meter_accuracy.value()[0])
-                test_confusion_logger.log(meter_confusion.value())
-                results['test_loss'].append(meter_loss.value()[0])
-                results['test_accuracy'].append(meter_accuracy.value()[0])
+                with torch.no_grad():
+                    for data, target in test_iterator:
+                        focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
+                        if torch.cuda.is_available():
+                            data, focal_label, margin_label = data.to('cuda'), focal_label.to('cuda'), margin_label.to(
+                                'cuda')
+                        classes = model(data)
+                        loss = focal_loss(classes, focal_label) + margin_loss(classes, margin_label)
+                        # save the metrics
+                        meter_loss.add(loss.data[0])
+                        meter_accuracy.add(classes.data, target)
+                        meter_confusion.add(classes.data, target)
+                    # print the information about test
+                    test_loss_logger.log(current_step // NUM_STEPS, meter_loss.value()[0])
+                    test_accuracy_logger.log(current_step // NUM_STEPS, meter_accuracy.value()[0])
+                    test_confusion_logger.log(meter_confusion.value())
+                    results['test_loss'].append(meter_loss.value()[0])
+                    results['test_accuracy'].append(meter_accuracy.value()[0])
 
                 # save best model
                 if meter_accuracy.value()[0] > best_acc:

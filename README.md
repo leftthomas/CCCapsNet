@@ -3,9 +3,9 @@ A PyTorch implementation of Compositional coding Capsule Network based on the pa
 
 ## Requirements
 * [Anaconda](https://www.anaconda.com/download/)
-* PyTorch 0.3.1
+* PyTorch
 ```
-conda install pytorch=0.3.1 torchvision -c pytorch
+conda install pytorch torchvision -c pytorch
 ```
 * PyTorchNet
 ```
@@ -15,7 +15,7 @@ pip install git+https://github.com/pytorch/tnt.git@master
 ```
 pip install pytorch-nlp
 ```
-* capsule-layer 0.1.6
+* capsule-layer
 ```
 pip install git+https://github.com/leftthomas/CapsuleLayer.git@master
 ```
@@ -58,6 +58,7 @@ optional arguments:
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --text_length            the number of words about the text to load [default value is 5000]
+--routing_type           routing type [default value is 'k_means'](choices:['k_means', 'dynamic'])
 --num_iterations         routing iterations number [default value is 3]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 100]

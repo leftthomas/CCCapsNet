@@ -27,10 +27,9 @@ class CompositionalEmbedding(nn.Module):
               (num_codebook, num_codeword, embedding_dim)
 
      Examples::
-         >>> from torch.autograd import Variable
          >>> m = CompositionalEmbedding(20000, 64, 16, 32)
-         >>> input = Variable(torch.randperm(128).view(16, -1))
-         >>> output = m(input)
+         >>> a = torch.randperm(128).view(16, -1)
+         >>> output = m(a)
          >>> print(output.size())
          torch.Size([16, 8, 64])
      """
@@ -63,7 +62,7 @@ class CompositionalEmbedding(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, vocab_size, num_class, num_iterations):
+    def __init__(self, vocab_size, num_class, routing_type, num_iterations):
         super().__init__()
 
         self.embedding_size = 64
@@ -75,7 +74,8 @@ class Model(nn.Module):
                                bidirectional=True)
 
         self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=16,
-                                        share_weight=False, num_iterations=num_iterations, similarity='cosine')
+                                        share_weight=False, routing_type=routing_type, num_iterations=num_iterations,
+                                        similarity='cosine')
 
     def forward(self, x):
         embed = self.embedding(x)
