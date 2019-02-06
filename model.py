@@ -72,10 +72,12 @@ class Model(nn.Module):
                                                 num_codebook=8)
         self.features = nn.GRU(self.embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,
                                bidirectional=True)
-
-        self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=16,
-                                        share_weight=False, routing_type=routing_type, num_iterations=num_iterations,
-                                        similarity='cosine')
+        if routing_type == 'k_means':
+            self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=16,
+                                            share_weight=False, num_iterations=num_iterations, similarity='cosine')
+        else:
+            self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=16,
+                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations)
 
     def forward(self, x):
         embed = self.embedding(x)
