@@ -69,7 +69,8 @@ Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your b
 type which you are training.
 
 ## Results
-The train/test loss、accuracy and confusion matrix are showed with visdom.
+The train/test loss、accuracy and confusion matrix are showed with visdom. The pretrained models and more results can be found in [BaiduYun](https://pan.baidu.com/s/1mpIXTfuECiSFVxJcLR1j3A)(access code:xer4) and 
+[GoogleDrive](https://drive.google.com/drive/folders/1AsP9irE1tQisK2H_nLHJERqxMro_mRUb?usp=sharing).
 
 **agnews**
 
