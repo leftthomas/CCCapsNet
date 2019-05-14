@@ -77,7 +77,8 @@ class Model(nn.Module):
                                             share_weight=False, num_iterations=num_iterations, similarity='cosine')
         else:
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=16,
-                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations)
+                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations,
+                                            bias=False)
 
     def forward(self, x):
         embed = self.embedding(x)
