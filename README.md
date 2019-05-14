@@ -52,7 +52,7 @@ download the data automatically.
 
 ### Train Text Classification
 ```
-visdom -logging_level WARNING & python main.py --data_type newsgroups --num_epochs 300
+visdom -logging_level WARNING & python main.py --data_type newsgroups --num_epochs 20
 optional arguments:
 --data_type              dataset type [default value is 'imdb'](choices:['imdb', 'newsgroups', 'reuters', 'webkb', 
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
@@ -62,7 +62,7 @@ optional arguments:
 --loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross'])
 --num_iterations         routing iterations number [default value is 3]
 --batch_size             train batch size [default value is 30]
---num_epochs             train epochs number [default value is 100]
+--num_epochs             train epochs number [default value is 10]
 --num_steps              test steps number [default value is 100]
 --load_model_weight      saved model weight to load [default value is None]
 ```

@@ -37,7 +37,7 @@ if __name__ == '__main__':
                         help='loss type')
     parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
-    parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
+    parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
     parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         cudnn.benchmark = True
 
     optimizer = Adam(model.parameters(), weight_decay=5e-4)
-    scheduler = MultiStepLR(optimizer, milestones=[50, 70])
+    scheduler = MultiStepLR(optimizer, milestones=[4, 7])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
