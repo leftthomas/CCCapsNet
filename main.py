@@ -36,8 +36,8 @@ if __name__ == '__main__':
     parser.add_argument('--loss_type', default='margin', type=str, choices=['margin', 'focal', 'cross'],
                         help='loss type')
     parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
-    parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
-    parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
+    parser.add_argument('--batch_size', default=60, type=int, help='train batch size')
+    parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
     parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
-    test_sampler = BucketBatchSampler(test_dataset, 100, False, sort_key=lambda row: len(row['text']))
+    test_sampler = BucketBatchSampler(test_dataset, 200, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, routing_type=ROUTING_TYPE, num_iterations=NUM_ITERATIONS)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         cudnn.benchmark = True
 
     optimizer = Adam(model.parameters(), weight_decay=5e-4)
-    scheduler = MultiStepLR(optimizer, milestones=[4, 7])
+    scheduler = MultiStepLR(optimizer, milestones=[50, 70])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
