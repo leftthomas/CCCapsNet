@@ -2,8 +2,12 @@ import argparse
 
 import pandas as pd
 import torch
+import torch.backends.cudnn as cudnn
 import torchnet as tnt
+from torch.nn import CrossEntropyLoss
+from torch.nn import DataParallel
 from torch.optim import Adam
+from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.data import DataLoader
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from torchnlp.samplers import BucketBatchSampler
@@ -29,6 +33,8 @@ if __name__ == '__main__':
     parser.add_argument('--text_length', default=5000, type=int, help='the number of words about the text to load')
     parser.add_argument('--routing_type', default='k_means', type=str, choices=['k_means', 'dynamic'],
                         help='routing type')
+    parser.add_argument('--loss_type', default='margin', type=str, choices=['margin', 'focal', 'cross'],
+                        help='loss type')
     parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=100, type=int, help='train epochs number')
@@ -36,14 +42,9 @@ if __name__ == '__main__':
     parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
     opt = parser.parse_args()
-    DATA_TYPE = opt.data_type
-    FINE_GRAINED = opt.fine_grained
-    TEXT_LENGTH = opt.text_length
-    ROUTING_TYPE = opt.routing_type
-    NUM_ITERATIONS = opt.num_iterations
-    BATCH_SIZE = opt.batch_size
-    NUM_EPOCHS = opt.num_epochs
-    NUM_STEPS = opt.num_steps
+    DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
+    ROUTING_TYPE, LOSS_TYPE, NUM_ITERATIONS = opt.routing_type, opt.loss_type, opt.num_iterations
+    BATCH_SIZE, NUM_EPOCHS, NUM_STEPS = opt.batch_size, opt.num_epochs, opt.num_steps
     MODEL_WEIGHT = opt.load_model_weight
 
     # prepare dataset
@@ -53,17 +54,24 @@ if __name__ == '__main__':
     print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
-    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
+    test_sampler = BucketBatchSampler(test_dataset, 100, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(vocab_size, num_class=num_class, routing_type=ROUTING_TYPE, num_iterations=NUM_ITERATIONS)
     if MODEL_WEIGHT is not None:
         model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
-    margin_loss, focal_loss = MarginLoss(), FocalLoss()
+    if LOSS_TYPE == 'margin':
+        loss_criterion = MarginLoss()
+    elif LOSS_TYPE == 'focal':
+        loss_criterion = FocalLoss()
+    else:
+        loss_criterion = CrossEntropyLoss()
     if torch.cuda.is_available():
-        model, margin_loss, focal_loss = model.to('cuda'), margin_loss.to('cuda'), focal_loss.to('cuda')
+        model, loss_criterion = DataParallel(model.to('cuda')), loss_criterion.to('cuda')
+        cudnn.benchmark = True
 
-    optimizer = Adam(model.parameters())
+    optimizer = Adam(model.parameters(), weight_decay=5e-4)
+    scheduler = MultiStepLR(optimizer, milestones=[50, 70])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
@@ -89,14 +97,17 @@ if __name__ == '__main__':
     for epoch in range(1, NUM_EPOCHS + 1):
         for data, target in train_iterator:
             current_step += 1
-            focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
+            if LOSS_TYPE == 'margin':
+                label = torch.eye(num_class).index_select(dim=0, index=target)
+            else:
+                label = target
             if torch.cuda.is_available():
-                data, focal_label, margin_label = data.to('cuda'), focal_label.to('cuda'), margin_label.to('cuda')
+                data, label = data.to('cuda'), label.to('cuda')
             # train model
             model.train()
             optimizer.zero_grad()
             classes = model(data)
-            loss = focal_loss(classes, focal_label) + margin_loss(classes, margin_label)
+            loss = loss_criterion(classes, label)
             loss.backward()
             optimizer.step()
             # save the metrics
@@ -119,12 +130,14 @@ if __name__ == '__main__':
                 model.eval()
                 with torch.no_grad():
                     for data, target in test_iterator:
-                        focal_label, margin_label = target, torch.eye(num_class).index_select(dim=0, index=target)
+                        if LOSS_TYPE == 'margin':
+                            label = torch.eye(num_class).index_select(dim=0, index=target)
+                        else:
+                            label = target
                         if torch.cuda.is_available():
-                            data, focal_label, margin_label = data.to('cuda'), focal_label.to('cuda'), margin_label.to(
-                                'cuda')
+                            data, label = data.to('cuda'), label.to('cuda')
                         classes = model(data)
-                        loss = focal_loss(classes, focal_label) + margin_loss(classes, margin_label)
+                        loss = loss_criterion(classes, label)
                         # save the metrics
                         meter_loss.add(loss.detach().cpu().item())
                         meter_accuracy.add(classes.detach().cpu(), target)
@@ -140,9 +153,15 @@ if __name__ == '__main__':
                 if meter_accuracy.value()[0] > best_acc:
                     best_acc = meter_accuracy.value()[0]
                     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                        torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
+                        if torch.cuda.is_available():
+                            torch.save(model.module.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
+                        else:
+                            torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
                     else:
-                        torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
+                        if torch.cuda.is_available():
+                            torch.save(model.module.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
+                        else:
+                            torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
                 print('[Step %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
                     current_step // NUM_STEPS, meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
                 reset_meters()
@@ -157,3 +176,4 @@ if __name__ == '__main__':
                     data_frame.to_csv(out_path + DATA_TYPE + '_fine_grained' + '_results.csv', index_label='step')
                 else:
                     data_frame.to_csv(out_path + DATA_TYPE + '_results.csv', index_label='step')
+        scheduler.step(epoch - 1)

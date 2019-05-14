@@ -5,13 +5,68 @@ import pandas as pd
 import torch
 import torch.nn.functional as F
 from torch import nn
-from torchnlp.text_encoders import WhitespaceEncoder, IdentityEncoder
-from torchnlp.text_encoders.reserved_tokens import PADDING_TOKEN, UNKNOWN_TOKEN
+from torchnlp.encoders.text import WhitespaceEncoder, StaticTokenizerEncoder
+from torchnlp.encoders.text.default_reserved_tokens import DEFAULT_PADDING_TOKEN, DEFAULT_UNKNOWN_TOKEN, \
+    DEFAULT_PADDING_INDEX
+from torchnlp.encoders.text.text_encoder import pad_tensor
 from torchnlp.utils import datasets_iterator
-from torchnlp.utils import pad_batch
 
 from datasets import imdb_dataset, agnews_dataset, amazon_dataset, dbpedia_dataset, newsgroups_dataset, reuters_dataset, \
     webkb_dataset, yahoo_dataset, yelp_dataset, cade_dataset, sogou_dataset
+
+
+def pad_batch(batch, padding_index=DEFAULT_PADDING_INDEX):
+    """ Pad a :class:`list` of ``tensors`` (``batch``) with ``padding_index``.
+    Args:
+        batch (:class:`list` of :class:`torch.Tensor`): Batch of tensors to pad.
+        padding_index (int, optional): Index to pad tensors with.
+    Returns
+        torch.Tensor, list of int: Padded tensors and original lengths of tensors.
+    """
+    lengths = [tensor.shape[0] for tensor in batch]
+    max_len = max(lengths)
+    padded = [pad_tensor(tensor, max_len, padding_index) for tensor in batch]
+    padded = torch.stack(padded, dim=0).contiguous()
+    return padded, lengths
+
+
+def _tokenize(s):
+    return s if isinstance(s, list) else [s]
+
+
+class IdentityEncoder(StaticTokenizerEncoder):
+    """ Encodes the text without tokenization.
+
+    Args:
+        sample (list of strings): Sample of data to build dictionary on
+        min_occurrences (int, optional): Minimum number of occurrences for a token to be added to
+          dictionary.
+        append_eos (bool, optional): If `True` append EOS token onto the end to the encoded vector.
+
+    Example:
+        >>> encoder = IdentityEncoder(['token_a', 'token_b', 'token_c'])
+        >>> encoder.encode(['token_a', 'token_b'])
+         5
+         6
+        [torch.LongTensor of size 2]
+        >>> encoder.vocab
+        ['<pad>', '<unk>', '</s>', '<s>', '<copy>', 'token_a', 'token_b', 'token_c']
+    """
+
+    def __init__(self, *args, **kwargs):
+        if 'tokenize' in kwargs:
+            raise TypeError('IdentityEncoder defines a identity tokenization')
+        super().__init__(*args, tokenize=_tokenize, **kwargs)
+
+    def decode(self, tensor):
+        if len(tensor.shape) == 0:
+            tensor = tensor.unsqueeze(0)
+
+        tokens = [self.itos[index] for index in tensor]
+        if len(tokens) == 1:
+            return tokens[0]
+        else:
+            return tokens
 
 
 class MarginLoss(nn.Module):
@@ -80,7 +135,8 @@ def load_data(data_type, preprocessing=False, fine_grained=False, verbose=False,
 
     if encode:
         sentence_corpus = [row['text'] for row in datasets_iterator(train_data, )]
-        sentence_encoder = WhitespaceEncoder(sentence_corpus, reserved_tokens=[PADDING_TOKEN, UNKNOWN_TOKEN])
+        sentence_encoder = WhitespaceEncoder(sentence_corpus,
+                                             reserved_tokens=[DEFAULT_PADDING_TOKEN, DEFAULT_UNKNOWN_TOKEN])
         label_corpus = [row['label'] for row in datasets_iterator(train_data, )]
         label_encoder = IdentityEncoder(label_corpus, reserved_tokens=[])
 
@@ -108,8 +164,7 @@ if __name__ == '__main__':
     parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
                                                                     'reuters, yelp and amazon')
     opt = parser.parse_args()
-    DATA_TYPE = opt.data_type
-    FINE_GRAINED = opt.fine_grained
+    DATA_TYPE, FINE_GRAINED = opt.data_type, opt.fine_grained
     train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=None, fine_grained=FINE_GRAINED, encode=False)
 
     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:

@@ -7,8 +7,8 @@ from torch import nn
 from torch.nn.parameter import Parameter
 
 
-class CompositionalEmbedding(nn.Module):
-    r"""A simple compositional codeword and codebook that store embeddings.
+class CompositionalWeightedEmbedding(nn.Module):
+    r"""A simple compositional weighted codeword and codebook that store embeddings.
 
      Args:
         num_embeddings (int): size of the dictionary of embeddings
@@ -27,7 +27,7 @@ class CompositionalEmbedding(nn.Module):
               (num_codebook, num_codeword, embedding_dim)
 
      Examples::
-         >>> m = CompositionalEmbedding(20000, 64, 16, 32)
+         >>> m = CompositionalWeightedEmbedding(20000, 64, 16, 32)
          >>> a = torch.randperm(128).view(16, -1)
          >>> output = m(a)
          >>> print(output.size())
@@ -35,7 +35,7 @@ class CompositionalEmbedding(nn.Module):
      """
 
     def __init__(self, num_embeddings, embedding_dim, num_codebook, num_codeword=None):
-        super(CompositionalEmbedding, self).__init__()
+        super(CompositionalWeightedEmbedding, self).__init__()
         self.num_embeddings = num_embeddings
         self.embedding_dim = embedding_dim
 
@@ -68,8 +68,8 @@ class Model(nn.Module):
         self.embedding_size = 64
         self.hidden_size = 128
 
-        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=self.embedding_size,
-                                                num_codebook=8)
+        self.embedding = CompositionalWeightedEmbedding(num_embeddings=vocab_size, embedding_dim=self.embedding_size,
+                                                        num_codebook=8)
         self.features = nn.GRU(self.embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,
                                bidirectional=True)
         if routing_type == 'k_means':

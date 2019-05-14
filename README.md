@@ -59,6 +59,7 @@ optional arguments:
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --text_length            the number of words about the text to load [default value is 5000]
 --routing_type           routing type [default value is 'k_means'](choices:['k_means', 'dynamic'])
+--loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross'])
 --num_iterations         routing iterations number [default value is 3]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 100]
