@@ -44,8 +44,8 @@ class CompositionalWeightedEmbedding(nn.Module):
         self.code = Parameter(torch.Tensor(num_embeddings, num_codebook, num_codeword))
         self.codebook = Parameter(torch.Tensor(num_codebook, num_codeword, embedding_dim))
 
-        nn.init.xavier_uniform_(self.code)
-        nn.init.xavier_uniform_(self.codebook)
+        nn.init.xavier_normal_(self.code)
+        nn.init.xavier_normal_(self.codebook)
 
     def forward(self, input):
         batch_size = input.size(0)
