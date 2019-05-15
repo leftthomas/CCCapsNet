@@ -70,7 +70,7 @@ if __name__ == '__main__':
         model, loss_criterion = DataParallel(model.to('cuda')), loss_criterion.to('cuda')
         cudnn.benchmark = True
 
-    optimizer = Adam(model.parameters(), weight_decay=5e-4)
+    optimizer = Adam(model.parameters())
     scheduler = MultiStepLR(optimizer, milestones=[50, 70])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
