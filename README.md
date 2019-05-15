@@ -58,14 +58,15 @@ optional arguments:
                          'cade', 'dbpedia', 'agnews', 'yahoo', 'sogou', 'yelp', 'amazon'])
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --text_length            the number of words about the text to load [default value is 5000]
---routing_type           routing type [default value is 'k_means'](choices:['k_means', 'dynamic'])
+--routing_type           routing type, it only works for capsule classifier [default value is 'k_means'](choices:['k_means', 'dynamic'])
 --loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross'])
+--embedding_type         embedding type [default value is 'cwc'](choices:['cwc', 'cc', 'normal'])
 --classifier_type        classifier type [default value is 'capsule'](choices:['capsule', 'linear'])
 --embedding_size         embedding size [default value is 64]
 --hidden_size            hidden size [default value is 128]
---in_length              in capsule length [default value is 8]
---out_length             out capsule length [default value is 16]
---num_iterations         routing iterations number [default value is 3]
+--in_length              in capsule length, it only works for capsule classifier [default value is 8]
+--out_length             out capsule length, it only works for capsule classifier [default value is 16]
+--num_iterations         routing iterations number, it only works for capsule classifier [default value is 3]
 --batch_size             train batch size [default value is 60]
 --num_epochs             train epochs number [default value is 20]
 --num_steps              test steps number [default value is 100]

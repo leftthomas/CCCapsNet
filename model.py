@@ -76,7 +76,7 @@ class CompositionalEmbedding(nn.Module):
 
 class Model(nn.Module):
     def __init__(self, vocab_size, embedding_size, hidden_size, in_length, out_length, num_class, routing_type,
-                 classifier_type, num_iterations):
+                 embedding_type, classifier_type, num_iterations):
         super().__init__()
 
         self.in_length, self.out_length = in_length, out_length
