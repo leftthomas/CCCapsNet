@@ -36,6 +36,7 @@ if __name__ == '__main__':
     parser.add_argument('--loss_type', default='margin', type=str, choices=['margin', 'focal', 'cross'],
                         help='loss type')
     parser.add_argument('--embedding_size', default=64, type=int, help='embedding size')
+    parser.add_argument('--hidden_size', default=128, type=int, help='hidden size')
     parser.add_argument('--in_length', default=8, type=int, help='in capsule length')
     parser.add_argument('--out_length', default=16, type=int, help='out capsule length')
     parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
@@ -47,9 +48,9 @@ if __name__ == '__main__':
     opt = parser.parse_args()
     DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
     ROUTING_TYPE, LOSS_TYPE, EMBEDDING_SIZE = opt.routing_type, opt.loss_type, opt.embedding_size
-    IN_LENGTH, OUT_ENGTH, NUM_ITERATIONS = opt.in_length, opt.out_length, opt.num_iterations
-    BATCH_SIZE, NUM_EPOCHS, NUM_STEPS = opt.batch_size, opt.num_epochs, opt.num_steps
-    MODEL_WEIGHT = opt.load_model_weight
+    HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH = opt.hidden_size, opt.in_length, opt.out_length
+    NUM_ITERATIONS, BATCH_SIZE, NUM_EPOCHS = opt.num_iterations, opt.batch_size, opt.num_epochs
+    NUM_STEPS, MODEL_WEIGHT = opt.num_steps, opt.load_model_weight
 
     # prepare dataset
     VOCAB_SIZE, NUM_CLASS, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
@@ -61,7 +62,8 @@ if __name__ == '__main__':
     test_sampler = BucketBatchSampler(test_dataset, 200, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
-    model = Model(VOCAB_SIZE, EMBEDDING_SIZE, IN_LENGTH, OUT_ENGTH, NUM_CLASS, ROUTING_TYPE, NUM_ITERATIONS)
+    model = Model(VOCAB_SIZE, EMBEDDING_SIZE, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH, NUM_CLASS, ROUTING_TYPE,
+                  NUM_ITERATIONS)
     if MODEL_WEIGHT is not None:
         model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
     if LOSS_TYPE == 'margin':

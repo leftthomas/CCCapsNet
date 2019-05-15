@@ -62,12 +62,13 @@ class CompositionalWeightedEmbedding(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, vocab_size, embedding_size, in_length, out_length, num_class, routing_type, num_iterations):
+    def __init__(self, vocab_size, embedding_size, hidden_size, in_length, out_length, num_class, routing_type,
+                 num_iterations):
         super().__init__()
 
         self.in_length = in_length
         self.out_length = out_length
-        self.hidden_size = 128
+        self.hidden_size = hidden_size
 
         self.embedding = CompositionalWeightedEmbedding(num_embeddings=vocab_size, embedding_dim=embedding_size,
                                                         num_codebook=8)

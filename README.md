@@ -61,6 +61,7 @@ optional arguments:
 --routing_type           routing type [default value is 'k_means'](choices:['k_means', 'dynamic'])
 --loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross'])
 --embedding_size         embedding size [default value is 64]
+--hidden_size            hidden size [default value is 128]
 --in_length              in capsule length [default value is 8]
 --out_length             out capsule length [default value is 16]
 --num_iterations         routing iterations number [default value is 3]
