@@ -98,7 +98,7 @@ def load_data(data_type, preprocessing=False, fine_grained=False, verbose=False,
 def collate_fn(batch):
     """ list of tensors to a batch tensors """
     text_batch, _ = stack_and_pad_tensors([row['text'] for row in batch])
-    label_batch = [row['label'] for row in batch]
+    label_batch = [row['label'].unsqueeze(0) for row in batch]
     return [text_batch, torch.cat(label_batch)]
 
 
