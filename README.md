@@ -63,6 +63,8 @@ optional arguments:
 --embedding_type         embedding type [default value is 'cwc'](choices:['cwc', 'cc', 'normal'])
 --classifier_type        classifier type [default value is 'capsule'](choices:['capsule', 'linear'])
 --embedding_size         embedding size [default value is 64]
+--num_codebook           codebook number, it only works for cwc and cc embedding [default value is 8]
+--num_codeword           codeword number, it only works for cwc and cc embedding [default value is None]
 --hidden_size            hidden size [default value is 128]
 --in_length              in capsule length, it only works for capsule classifier [default value is 8]
 --out_length             out capsule length, it only works for capsule classifier [default value is 16]

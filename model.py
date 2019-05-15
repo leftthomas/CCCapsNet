@@ -75,17 +75,19 @@ class CompositionalEmbedding(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, vocab_size, embedding_size, hidden_size, in_length, out_length, num_class, routing_type,
-                 embedding_type, classifier_type, num_iterations):
+    def __init__(self, vocab_size, embedding_size, num_codebook, num_codeword, hidden_size, in_length, out_length,
+                 num_class, routing_type, embedding_type, classifier_type, num_iterations):
         super().__init__()
 
         self.in_length, self.out_length = in_length, out_length
         self.hidden_size, self.classifier_type = hidden_size, classifier_type
 
         if embedding_type == 'cwc':
-            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook=8, weighted=True)
+            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook, num_codeword,
+                                                    weighted=True)
         elif embedding_type == 'cc':
-            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook=8, weighted=False)
+            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook, num_codeword,
+                                                    weighted=False)
         else:
             self.embedding = nn.Embedding(vocab_size, embedding_size)
         self.features = nn.GRU(embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,

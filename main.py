@@ -40,6 +40,10 @@ if __name__ == '__main__':
     parser.add_argument('--classifier_type', default='capsule', type=str, choices=['capsule', 'linear'],
                         help='classifier type')
     parser.add_argument('--embedding_size', default=64, type=int, help='embedding size')
+    parser.add_argument('--num_codebook', default=8, type=int,
+                        help='codebook number, it only works for cwc and cc embedding')
+    parser.add_argument('--num_codeword', default=None, type=int,
+                        help='codeword number, it only works for cwc and cc embedding')
     parser.add_argument('--hidden_size', default=128, type=int, help='hidden size')
     parser.add_argument('--in_length', default=8, type=int,
                         help='in capsule length, it only works for capsule classifier')
@@ -55,10 +59,10 @@ if __name__ == '__main__':
     opt = parser.parse_args()
     DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
     ROUTING_TYPE, LOSS_TYPE, EMBEDDING_TYPE = opt.routing_type, opt.loss_type, opt.embedding_type
-    CLASSIFIER_TYPE, EMBEDDING_SIZE, HIDDEN_SIZE = opt.classifier_type, opt.embedding_size, opt.hidden_size
-    IN_LENGTH, OUT_LENGTH, NUM_ITERATIONS = opt.in_length, opt.out_length, opt.num_iterations
-    BATCH_SIZE, NUM_EPOCHS, NUM_STEPS = opt.batch_size, opt.num_epochs, opt.num_steps
-    MODEL_WEIGHT = opt.load_model_weight
+    CLASSIFIER_TYPE, EMBEDDING_SIZE, NUM_CODEBOOK = opt.classifier_type, opt.embedding_size, opt.num_codebook
+    NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH = opt.num_codeword, opt.hidden_size, opt.in_length
+    OUT_LENGTH, NUM_ITERATIONS, BATCH_SIZE = opt.out_length, opt.num_iterations, opt.batch_size
+    NUM_EPOCHS, NUM_STEPS, MODEL_WEIGHT = opt.num_epochs, opt.num_steps, opt.load_model_weight
 
     # prepare dataset
     VOCAB_SIZE, NUM_CLASS, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
@@ -70,8 +74,8 @@ if __name__ == '__main__':
     test_sampler = BucketBatchSampler(test_dataset, 200, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
-    model = Model(VOCAB_SIZE, EMBEDDING_SIZE, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH, NUM_CLASS, ROUTING_TYPE,
-                  EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS)
+    model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH, NUM_CLASS,
+                  ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS)
     if MODEL_WEIGHT is not None:
         model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
     if LOSS_TYPE == 'margin':
