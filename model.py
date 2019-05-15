@@ -75,12 +75,14 @@ class Model(nn.Module):
                                bidirectional=True)
         if routing_type == 'k_means':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
-                                            out_length=self.out_length, in_capsules=16, share_weight=False,
-                                            num_iterations=num_iterations, bias=False, similarity='cosine')
+                                            out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
+                                            share_weight=False, num_iterations=num_iterations, bias=False,
+                                            similarity='cosine')
         else:
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
-                                            out_length=self.out_length, in_capsules=16, share_weight=False,
-                                            routing_type='dynamic', num_iterations=num_iterations, bias=False)
+                                            out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
+                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations,
+                                            bias=False)
 
     def forward(self, x):
         embed = self.embedding(x)
