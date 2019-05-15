@@ -82,7 +82,12 @@ class Model(nn.Module):
         self.in_length, self.out_length = in_length, out_length
         self.hidden_size, self.classifier_type = hidden_size, classifier_type
 
-        self.embedding = CompositionalEmbedding(num_embeddings=vocab_size, embedding_dim=embedding_size, num_codebook=8)
+        if embedding_type == 'cwc':
+            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook=8, weighted=True)
+        elif embedding_type == 'cc':
+            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook=8, weighted=False)
+        else:
+            self.embedding = nn.Embedding(vocab_size, embedding_size)
         self.features = nn.GRU(embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,
                                bidirectional=True)
         if classifier_type == 'capsule' and routing_type == 'k_means':
