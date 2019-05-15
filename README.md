@@ -60,9 +60,12 @@ optional arguments:
 --text_length            the number of words about the text to load [default value is 5000]
 --routing_type           routing type [default value is 'k_means'](choices:['k_means', 'dynamic'])
 --loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross'])
+--embedding_size         embedding size [default value is 64]
+--in_length              in capsule length [default value is 8]
+--out_length             out capsule length [default value is 16]
 --num_iterations         routing iterations number [default value is 3]
 --batch_size             train batch size [default value is 60]
---num_epochs             train epochs number [default value is 10]
+--num_epochs             train epochs number [default value is 20]
 --num_steps              test steps number [default value is 100]
 --load_model_weight      saved model weight to load [default value is None]
 ```

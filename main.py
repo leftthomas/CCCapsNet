@@ -35,29 +35,33 @@ if __name__ == '__main__':
                         help='routing type')
     parser.add_argument('--loss_type', default='margin', type=str, choices=['margin', 'focal', 'cross'],
                         help='loss type')
+    parser.add_argument('--embedding_size', default=64, type=int, help='embedding size')
+    parser.add_argument('--in_length', default=8, type=int, help='in capsule length')
+    parser.add_argument('--out_length', default=16, type=int, help='out capsule length')
     parser.add_argument('--num_iterations', default=3, type=int, help='routing iterations number')
     parser.add_argument('--batch_size', default=60, type=int, help='train batch size')
-    parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
+    parser.add_argument('--num_epochs', default=20, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
     parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
     opt = parser.parse_args()
     DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
-    ROUTING_TYPE, LOSS_TYPE, NUM_ITERATIONS = opt.routing_type, opt.loss_type, opt.num_iterations
+    ROUTING_TYPE, LOSS_TYPE, EMBEDDING_SIZE = opt.routing_type, opt.loss_type, opt.embedding_size
+    IN_LENGTH, OUT_ENGTH, NUM_ITERATIONS = opt.in_length, opt.out_length, opt.num_iterations
     BATCH_SIZE, NUM_EPOCHS, NUM_STEPS = opt.batch_size, opt.num_epochs, opt.num_steps
     MODEL_WEIGHT = opt.load_model_weight
 
     # prepare dataset
-    vocab_size, num_class, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
+    VOCAB_SIZE, NUM_CLASS, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
                                                                    fine_grained=FINE_GRAINED, verbose=True,
                                                                    text_length=TEXT_LENGTH)
-    print("[!] vocab_size: {}, num_class: {}".format(vocab_size, num_class))
+    print("[!] vocab_size: {}, num_class: {}".format(VOCAB_SIZE, NUM_CLASS))
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
     test_sampler = BucketBatchSampler(test_dataset, 200, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
-    model = Model(vocab_size, num_class=num_class, routing_type=ROUTING_TYPE, num_iterations=NUM_ITERATIONS)
+    model = Model(VOCAB_SIZE, EMBEDDING_SIZE, IN_LENGTH, OUT_ENGTH, NUM_CLASS, ROUTING_TYPE, NUM_ITERATIONS)
     if MODEL_WEIGHT is not None:
         model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
     if LOSS_TYPE == 'margin':
@@ -71,7 +75,7 @@ if __name__ == '__main__':
         cudnn.benchmark = True
 
     optimizer = Adam(model.parameters())
-    scheduler = MultiStepLR(optimizer, milestones=[6, 8])
+    scheduler = MultiStepLR(optimizer, milestones=[12, 16])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
@@ -79,7 +83,7 @@ if __name__ == '__main__':
     best_acc = 0
     meter_loss = tnt.meter.AverageValueMeter()
     meter_accuracy = tnt.meter.ClassErrorMeter(accuracy=True)
-    meter_confusion = tnt.meter.ConfusionMeter(num_class, normalized=True)
+    meter_confusion = tnt.meter.ConfusionMeter(NUM_CLASS, normalized=True)
 
     # config the visdom figures
     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
@@ -98,7 +102,7 @@ if __name__ == '__main__':
         for data, target in train_iterator:
             current_step += 1
             if LOSS_TYPE == 'margin':
-                label = torch.eye(num_class).index_select(dim=0, index=target)
+                label = torch.eye(NUM_CLASS).index_select(dim=0, index=target)
             else:
                 label = target
             if torch.cuda.is_available():
@@ -131,7 +135,7 @@ if __name__ == '__main__':
                 with torch.no_grad():
                     for data, target in test_iterator:
                         if LOSS_TYPE == 'margin':
-                            label = torch.eye(num_class).index_select(dim=0, index=target)
+                            label = torch.eye(NUM_CLASS).index_select(dim=0, index=target)
                         else:
                             label = target
                         if torch.cuda.is_available():

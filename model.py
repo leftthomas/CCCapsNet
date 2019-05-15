@@ -62,30 +62,32 @@ class CompositionalWeightedEmbedding(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, vocab_size, num_class, routing_type, num_iterations):
+    def __init__(self, vocab_size, embedding_size, in_length, out_length, num_class, routing_type, num_iterations):
         super().__init__()
 
-        self.embedding_size = 64
+        self.in_length = in_length
+        self.out_length = out_length
         self.hidden_size = 128
 
-        self.embedding = CompositionalWeightedEmbedding(num_embeddings=vocab_size, embedding_dim=self.embedding_size,
+        self.embedding = CompositionalWeightedEmbedding(num_embeddings=vocab_size, embedding_dim=embedding_size,
                                                         num_codebook=8)
-        self.features = nn.GRU(self.embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,
+        self.features = nn.GRU(embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,
                                bidirectional=True)
         if routing_type == 'k_means':
-            self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=16,
-                                            share_weight=False, num_iterations=num_iterations, similarity='cosine')
+            self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
+                                            out_length=self.out_length, in_capsules=16, share_weight=False,
+                                            num_iterations=num_iterations, bias=False, similarity='cosine')
         else:
-            self.classifier = CapsuleLinear(out_capsules=num_class, in_length=8, out_length=16, in_capsules=16,
-                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations,
-                                            bias=False)
+            self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
+                                            out_length=self.out_length, in_capsules=16, share_weight=False,
+                                            routing_type='dynamic', num_iterations=num_iterations, bias=False)
 
     def forward(self, x):
         embed = self.embedding(x)
         out, _ = self.features(embed)
 
         out = out[:, :, :self.hidden_size] + out[:, :, self.hidden_size:]
-        out = out.mean(dim=1).contiguous().view(out.size(0), -1, 8)
+        out = out.mean(dim=1).contiguous().view(out.size(0), -1, self.in_length)
         out = self.classifier(out)
         classes = out.norm(dim=-1)
         return classes
