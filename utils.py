@@ -84,7 +84,7 @@ def load_data(data_type, preprocessing=False, fine_grained=False, verbose=False,
         sentence_encoder = WhitespaceEncoder(sentence_corpus,
                                              reserved_tokens=[DEFAULT_PADDING_TOKEN, DEFAULT_UNKNOWN_TOKEN])
         label_corpus = [row['label'] for row in datasets_iterator(train_data, )]
-        label_encoder = LabelEncoder(label_corpus, reserved_tokens=[])
+        label_encoder = LabelEncoder(label_corpus, reserved_labels=[])
 
         # Encode
         for row in datasets_iterator(train_data, test_data):
