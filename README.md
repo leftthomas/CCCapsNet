@@ -60,6 +60,7 @@ optional arguments:
 --text_length            the number of words about the text to load [default value is 5000]
 --routing_type           routing type [default value is 'k_means'](choices:['k_means', 'dynamic'])
 --loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross'])
+--classifier_type        classifier type [default value is 'capsule'](choices:['capsule', 'linear'])
 --embedding_size         embedding size [default value is 64]
 --hidden_size            hidden size [default value is 128]
 --in_length              in capsule length [default value is 8]

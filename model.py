@@ -63,34 +63,40 @@ class CompositionalWeightedEmbedding(nn.Module):
 
 class Model(nn.Module):
     def __init__(self, vocab_size, embedding_size, hidden_size, in_length, out_length, num_class, routing_type,
-                 num_iterations):
+                 classifier_type, num_iterations):
         super().__init__()
 
-        self.in_length = in_length
-        self.out_length = out_length
-        self.hidden_size = hidden_size
+        self.in_length, self.out_length = in_length, out_length
+        self.hidden_size, self.classifier_type = hidden_size, classifier_type
 
         self.embedding = CompositionalWeightedEmbedding(num_embeddings=vocab_size, embedding_dim=embedding_size,
                                                         num_codebook=8)
         self.features = nn.GRU(embedding_size, self.hidden_size, num_layers=2, dropout=0.5, batch_first=True,
                                bidirectional=True)
-        if routing_type == 'k_means':
+        if classifier_type == 'capsule' and routing_type == 'k_means':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
                                             out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
                                             share_weight=False, num_iterations=num_iterations, bias=False,
                                             similarity='cosine')
-        else:
+        elif classifier_type == 'capsule' and routing_type == 'dynamic':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
                                             out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
                                             share_weight=False, routing_type='dynamic', num_iterations=num_iterations,
                                             bias=False)
+        else:
+            self.classifier = nn.Linear(in_features=self.hidden_size, out_features=num_class, bias=False)
 
     def forward(self, x):
         embed = self.embedding(x)
         out, _ = self.features(embed)
 
         out = out[:, :, :self.hidden_size] + out[:, :, self.hidden_size:]
-        out = out.mean(dim=1).contiguous().view(out.size(0), -1, self.in_length)
-        out = self.classifier(out)
-        classes = out.norm(dim=-1)
+        out = out.mean(dim=1).contiguous()
+        if self.classifier_type == 'capsule':
+            out = out.view(out.size(0), -1, self.in_length)
+            out = self.classifier(out)
+            classes = out.norm(dim=-1)
+        else:
+            out = out.view(out.size(0), -1)
+            classes = self.classifier(out)
         return classes
