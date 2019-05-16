@@ -6,7 +6,6 @@ import torch.backends.cudnn as cudnn
 import torch.nn.functional as F
 import torchnet as tnt
 from torch.nn import CrossEntropyLoss
-from torch.nn import DataParallel
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
@@ -85,7 +84,7 @@ if __name__ == '__main__':
     else:
         loss_criterion = CrossEntropyLoss()
     if torch.cuda.is_available():
-        model, loss_criterion = DataParallel(model.to('cuda')), loss_criterion.to('cuda')
+        model, loss_criterion = model.to('cuda'), loss_criterion.to('cuda')
         cudnn.benchmark = True
 
     optimizer = Adam(model.parameters())
@@ -170,15 +169,9 @@ if __name__ == '__main__':
                 if meter_accuracy.value()[0] > best_acc:
                     best_acc = meter_accuracy.value()[0]
                     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                        if torch.cuda.is_available():
-                            torch.save(model.module.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
-                        else:
-                            torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
+                        torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
                     else:
-                        if torch.cuda.is_available():
-                            torch.save(model.module.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
-                        else:
-                            torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
+                        torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
                 print('[Step %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
                     current_step // NUM_STEPS, meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
                 reset_meters()
