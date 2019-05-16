@@ -70,7 +70,7 @@ optional arguments:
 --out_length             out capsule length, it only works for capsule classifier [default value is 16]
 --num_iterations         routing iterations number, it only works for capsule classifier [default value is 3]
 --batch_size             train batch size [default value is 60]
---num_epochs             train epochs number [default value is 20]
+--num_epochs             train epochs number [default value is 10]
 --num_steps              test steps number [default value is 100]
 --load_model_weight      saved model weight to load [default value is None]
 ```
