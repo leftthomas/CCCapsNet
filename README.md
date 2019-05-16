@@ -59,7 +59,7 @@ optional arguments:
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --text_length            the number of words about the text to load [default value is 5000]
 --routing_type           routing type, it only works for capsule classifier [default value is 'k_means'](choices:['k_means', 'dynamic'])
---loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross'])
+--loss_type              loss type [default value is 'margin'](choices:['margin', 'focal', 'cross', 'mf', 'mc', 'fc', 'mfc'])
 --embedding_type         embedding type [default value is 'cwc'](choices:['cwc', 'cc', 'normal'])
 --classifier_type        classifier type [default value is 'capsule'](choices:['capsule', 'linear'])
 --embedding_size         embedding size [default value is 64]
