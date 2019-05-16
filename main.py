@@ -114,7 +114,7 @@ if __name__ == '__main__':
         for data, target in train_iterator:
             current_step += 1
             if LOSS_TYPE == 'margin':
-                label = F.one_hot(target, NUM_CLASS)
+                label = F.one_hot(target, NUM_CLASS).float()
             else:
                 label = target
             if torch.cuda.is_available():
@@ -147,7 +147,7 @@ if __name__ == '__main__':
                 with torch.no_grad():
                     for data, target in test_iterator:
                         if LOSS_TYPE == 'margin':
-                            label = F.one_hot(target, NUM_CLASS)
+                            label = F.one_hot(target, NUM_CLASS).float()
                         else:
                             label = target
                         if torch.cuda.is_available():
