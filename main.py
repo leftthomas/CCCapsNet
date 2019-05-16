@@ -3,11 +3,11 @@ import argparse
 import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
+import torch.nn.functional as F
 import torchnet as tnt
 from torch.nn import CrossEntropyLoss
 from torch.nn import DataParallel
 from torch.optim import Adam
-from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.data import DataLoader
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from torchnlp.samplers import BucketBatchSampler
@@ -89,7 +89,6 @@ if __name__ == '__main__':
         cudnn.benchmark = True
 
     optimizer = Adam(model.parameters())
-    scheduler = MultiStepLR(optimizer, milestones=[12, 16])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
@@ -116,7 +115,7 @@ if __name__ == '__main__':
         for data, target in train_iterator:
             current_step += 1
             if LOSS_TYPE == 'margin':
-                label = torch.eye(NUM_CLASS).index_select(dim=0, index=target)
+                label = F.one_hot(target, NUM_CLASS)
             else:
                 label = target
             if torch.cuda.is_available():
@@ -149,7 +148,7 @@ if __name__ == '__main__':
                 with torch.no_grad():
                     for data, target in test_iterator:
                         if LOSS_TYPE == 'margin':
-                            label = torch.eye(NUM_CLASS).index_select(dim=0, index=target)
+                            label = F.one_hot(target, NUM_CLASS)
                         else:
                             label = target
                         if torch.cuda.is_available():
@@ -194,4 +193,3 @@ if __name__ == '__main__':
                     data_frame.to_csv(out_path + DATA_TYPE + '_fine_grained' + '_results.csv', index_label='step')
                 else:
                     data_frame.to_csv(out_path + DATA_TYPE + '_results.csv', index_label='step')
-        scheduler.step(epoch - 1)
