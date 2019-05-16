@@ -3,7 +3,6 @@ import argparse
 import pandas as pd
 import torch
 import torch.backends.cudnn as cudnn
-import torch.nn.functional as F
 import torchnet as tnt
 from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
@@ -32,8 +31,8 @@ if __name__ == '__main__':
     parser.add_argument('--text_length', default=5000, type=int, help='the number of words about the text to load')
     parser.add_argument('--routing_type', default='k_means', type=str, choices=['k_means', 'dynamic'],
                         help='routing type, it only works for capsule classifier')
-    parser.add_argument('--loss_type', default='margin', type=str, choices=['margin', 'focal', 'cross'],
-                        help='loss type')
+    parser.add_argument('--loss_type', default='margin', type=str,
+                        choices=['margin', 'focal', 'cross', 'mf', 'mc', 'fc', 'mfc'], help='loss type')
     parser.add_argument('--embedding_type', default='cwc', type=str, choices=['cwc', 'cc', 'normal'],
                         help='embedding type')
     parser.add_argument('--classifier_type', default='capsule', type=str, choices=['capsule', 'linear'],
@@ -78,14 +77,21 @@ if __name__ == '__main__':
     if MODEL_WEIGHT is not None:
         model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
     if LOSS_TYPE == 'margin':
-        loss_criterion = MarginLoss()
+        loss_criterion = [MarginLoss(NUM_CLASS)]
     elif LOSS_TYPE == 'focal':
-        loss_criterion = FocalLoss()
+        loss_criterion = [FocalLoss()]
+    elif LOSS_TYPE == 'cross':
+        loss_criterion = [CrossEntropyLoss()]
+    elif LOSS_TYPE == 'mf':
+        loss_criterion = [MarginLoss(NUM_CLASS), FocalLoss()]
+    elif LOSS_TYPE == 'mc':
+        loss_criterion = [MarginLoss(NUM_CLASS), CrossEntropyLoss()]
+    elif LOSS_TYPE == 'fc':
+        loss_criterion = [FocalLoss(), CrossEntropyLoss()]
     else:
-        loss_criterion = CrossEntropyLoss()
+        loss_criterion = [MarginLoss(NUM_CLASS), FocalLoss(), CrossEntropyLoss()]
     if torch.cuda.is_available():
-        model, loss_criterion = model.to('cuda'), loss_criterion.to('cuda')
-        cudnn.benchmark = True
+        model, cudnn.benchmark = model.to('cuda'), True
 
     optimizer = Adam(model.parameters())
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
@@ -113,17 +119,14 @@ if __name__ == '__main__':
     for epoch in range(1, NUM_EPOCHS + 1):
         for data, target in train_iterator:
             current_step += 1
-            if LOSS_TYPE == 'margin':
-                label = F.one_hot(target, NUM_CLASS).float()
-            else:
-                label = target
+            label = target
             if torch.cuda.is_available():
                 data, label = data.to('cuda'), label.to('cuda')
             # train model
             model.train()
             optimizer.zero_grad()
             classes = model(data)
-            loss = loss_criterion(classes, label)
+            loss = sum([criterion(classes, label) for criterion in loss_criterion])
             loss.backward()
             optimizer.step()
             # save the metrics
@@ -146,14 +149,11 @@ if __name__ == '__main__':
                 model.eval()
                 with torch.no_grad():
                     for data, target in test_iterator:
-                        if LOSS_TYPE == 'margin':
-                            label = F.one_hot(target, NUM_CLASS).float()
-                        else:
-                            label = target
+                        label = target
                         if torch.cuda.is_available():
                             data, label = data.to('cuda'), label.to('cuda')
                         classes = model(data)
-                        loss = loss_criterion(classes, label)
+                        loss = sum([criterion(classes, label) for criterion in loss_criterion])
                         # save the metrics
                         meter_loss.add(loss.detach().cpu().item())
                         meter_accuracy.add(classes.detach().cpu(), target)

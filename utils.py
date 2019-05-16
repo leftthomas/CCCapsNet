@@ -16,11 +16,13 @@ from datasets import imdb_dataset, agnews_dataset, amazon_dataset, dbpedia_datas
 
 
 class MarginLoss(nn.Module):
-    def __init__(self, size_average=True):
+    def __init__(self, num_class, size_average=True):
         super(MarginLoss, self).__init__()
+        self.num_class = num_class
         self.size_average = size_average
 
     def forward(self, classes, labels):
+        labels = F.one_hot(labels, self.num_class).float()
         left = F.relu(0.9 - classes, inplace=True) ** 2
         right = F.relu(classes - 0.1, inplace=True) ** 2
         loss = labels * left + 0.5 * (1 - labels) * right
