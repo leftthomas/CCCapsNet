@@ -6,6 +6,7 @@ import torch.backends.cudnn as cudnn
 import torchnet as tnt
 from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
+from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.data import DataLoader
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from torchnlp.samplers import BucketBatchSampler
@@ -94,6 +95,7 @@ if __name__ == '__main__':
         model, cudnn.benchmark = model.to('cuda'), True
 
     optimizer = Adam(model.parameters())
+    scheduler = MultiStepLR(optimizer, milestones=[int(0.7 * NUM_EPOCHS), int(0.9 * NUM_EPOCHS)])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
@@ -186,3 +188,4 @@ if __name__ == '__main__':
                     data_frame.to_csv(out_path + DATA_TYPE + '_fine_grained' + '_results.csv', index_label='step')
                 else:
                     data_frame.to_csv(out_path + DATA_TYPE + '_results.csv', index_label='step')
+        scheduler.step()
