@@ -1,24 +1,9 @@
 import matplotlib.pyplot as plt
-import numpy as np
 from sklearn import manifold, datasets
 
 digits = datasets.load_digits(n_class=6)
 X, y = digits.data, digits.target
 n_samples, n_features = X.shape
-
-'''显示原始数据'''
-n = 20  # 每行20个数字，每列20个数字
-img = np.zeros((10 * n, 10 * n))
-for i in range(n):
-    ix = 10 * i + 1
-    for j in range(n):
-        iy = 10 * j + 1
-        img[ix:ix + 8, iy:iy + 8] = X[i * n + j].reshape((8, 8))
-plt.figure(figsize=(8, 8))
-plt.imshow(img, cmap=plt.cm.binary)
-plt.xticks([])
-plt.yticks([])
-plt.show()
 
 '''t-SNE'''
 tsne = manifold.TSNE(n_components=2, init='pca', random_state=501)
