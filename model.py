@@ -76,7 +76,7 @@ class CompositionalEmbedding(nn.Module):
 
 class Model(nn.Module):
     def __init__(self, vocab_size, embedding_size, num_codebook, num_codeword, hidden_size, in_length, out_length,
-                 num_class, routing_type, embedding_type, classifier_type, similarity_type, num_iterations):
+                 num_class, routing_type, embedding_type, classifier_type, num_iterations):
         super().__init__()
 
         self.in_length, self.out_length = in_length, out_length
@@ -95,8 +95,8 @@ class Model(nn.Module):
         if classifier_type == 'capsule' and routing_type == 'k_means':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
                                             out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
-                                            share_weight=False, num_iterations=num_iterations, bias=False,
-                                            similarity=similarity_type)
+                                            share_weight=False, routing_type='k_means', num_iterations=num_iterations,
+                                            bias=False)
         elif classifier_type == 'capsule' and routing_type == 'dynamic':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
                                             out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
