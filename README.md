@@ -62,6 +62,7 @@ optional arguments:
 --loss_type              loss type [default value is 'mf'](choices:['margin', 'focal', 'cross', 'mf', 'mc', 'fc', 'mfc'])
 --embedding_type         embedding type [default value is 'cwc'](choices:['cwc', 'cc', 'normal'])
 --classifier_type        classifier type [default value is 'capsule'](choices:['capsule', 'linear'])
+--similarity_type        similarity type, it only works for k-means capsule classifier [default value is 'dot'](choices:['dot', 'cosine', 'tonimoto', 'pearson'])
 --embedding_size         embedding size [default value is 64]
 --num_codebook           codebook number, it only works for cwc and cc embedding [default value is 8]
 --num_codeword           codeword number, it only works for cwc and cc embedding [default value is None]
