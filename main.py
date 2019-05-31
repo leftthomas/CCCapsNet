@@ -94,7 +94,14 @@ if __name__ == '__main__':
     if torch.cuda.is_available():
         model, cudnn.benchmark = model.to('cuda'), True
 
-    optimizer = Adam(model.parameters())
+    optim_configs = [{'params': model.embedding.parameters(), 'lr': 1e-4},
+                     {'params': model.features.parameters(), 'lr': 1e-4}]
+    if CLASSIFIER_TYPE == 'capsule':
+        optim_configs.append({'params': model.classifier.parameters(), 'lr': 1e-4 * NUM_ITERATIONS})
+    else:
+        optim_configs.append({'params': model.classifier.parameters(), 'lr': 1e-4})
+
+    optimizer = Adam(optim_configs, lr=1e-4, weight_decay=5e-4)
     scheduler = MultiStepLR(optimizer, milestones=[int(0.7 * NUM_EPOCHS), int(0.9 * NUM_EPOCHS)])
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
