@@ -170,20 +170,26 @@ if __name__ == '__main__':
                 if meter_accuracy.value()[0] > best_acc:
                     best_acc = meter_accuracy.value()[0]
                     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                        torch.save(model.state_dict(), 'epochs/%s.pth' % (DATA_TYPE + '_fine_grained'))
+                        torch.save(model.state_dict(),
+                                   'epochs/{}_{}_{}.pth'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
+                                                                CLASSIFIER_TYPE))
                     else:
-                        torch.save(model.state_dict(), 'epochs/%s.pth' % DATA_TYPE)
+                        torch.save(model.state_dict(),
+                                   'epochs/{}_{}_{}.pth'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE))
                 print('[Step %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
                     current_step // NUM_STEPS, meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
                 reset_meters()
 
                 # save statistics
-                out_path = 'statistics/'
                 data_frame = pd.DataFrame(
                     data={'train_loss': results['train_loss'], 'train_accuracy': results['train_accuracy'],
                           'test_loss': results['test_loss'], 'test_accuracy': results['test_accuracy']},
                     index=range(1, current_step // NUM_STEPS + 1))
                 if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                    data_frame.to_csv(out_path + DATA_TYPE + '_fine_grained' + '_results.csv', index_label='step')
+                    data_frame.to_csv(
+                        'statistics/{}_{}_{}_results.csv'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
+                                                                 CLASSIFIER_TYPE), index_label='step')
                 else:
-                    data_frame.to_csv(out_path + DATA_TYPE + '_results.csv', index_label='step')
+                    data_frame.to_csv(
+                        'statistics/{}_{}_{}_results.csv'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE),
+                        index_label='step')
