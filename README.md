@@ -69,6 +69,7 @@ optional arguments:
 --in_length              in capsule length, it only works for capsule classifier [default value is 8]
 --out_length             out capsule length, it only works for capsule classifier [default value is 16]
 --num_iterations         routing iterations number, it only works for capsule classifier [default value is 3]
+--drop_out               drop_out rate of GRU layer [default value is 0.5]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 10]
 --num_steps              test steps number [default value is 100]

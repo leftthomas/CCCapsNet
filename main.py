@@ -49,6 +49,7 @@ if __name__ == '__main__':
                         help='out capsule length, it only works for capsule classifier')
     parser.add_argument('--num_iterations', default=3, type=int,
                         help='routing iterations number, it only works for capsule classifier')
+    parser.add_argument('--drop_out', default=0.5, type=float, help='drop_out rate of GRU layer')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
@@ -59,7 +60,7 @@ if __name__ == '__main__':
     ROUTING_TYPE, LOSS_TYPE, EMBEDDING_TYPE = opt.routing_type, opt.loss_type, opt.embedding_type
     CLASSIFIER_TYPE, EMBEDDING_SIZE, NUM_CODEBOOK = opt.classifier_type, opt.embedding_size, opt.num_codebook
     NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH = opt.num_codeword, opt.hidden_size, opt.in_length
-    OUT_LENGTH, NUM_ITERATIONS, BATCH_SIZE = opt.out_length, opt.num_iterations, opt.batch_size
+    OUT_LENGTH, NUM_ITERATIONS, DROP_OUT, BATCH_SIZE = opt.out_length, opt.num_iterations, opt.drop_out, opt.batch_size
     NUM_EPOCHS, NUM_STEPS, MODEL_WEIGHT = opt.num_epochs, opt.num_steps, opt.load_model_weight
 
     # prepare dataset
@@ -73,7 +74,7 @@ if __name__ == '__main__':
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH, NUM_CLASS,
-                  ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS)
+                  ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, DROP_OUT)
     if MODEL_WEIGHT is not None:
         model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
     if LOSS_TYPE == 'margin':
