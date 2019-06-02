@@ -94,14 +94,11 @@ if __name__ == '__main__':
     if torch.cuda.is_available():
         model, cudnn.benchmark = model.to('cuda'), True
 
-    optim_configs = [{'params': model.embedding.parameters(), 'lr': 1e-4},
-                     {'params': model.features.parameters(), 'lr': 1e-4}]
     if CLASSIFIER_TYPE == 'capsule':
-        optim_configs.append({'params': model.classifier.parameters(), 'lr': 1e-4 * NUM_ITERATIONS})
+        optimizer = Adam(model.parameters(), lr=1e-4 * NUM_ITERATIONS, weight_decay=5e-4)
     else:
-        optim_configs.append({'params': model.classifier.parameters(), 'lr': 1e-4})
+        optimizer = Adam(model.parameters(), lr=1e-4, weight_decay=5e-4)
 
-    optimizer = Adam(optim_configs, lr=1e-4, weight_decay=5e-4)
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
