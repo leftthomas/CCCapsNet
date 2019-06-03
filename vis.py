@@ -1,23 +1,35 @@
-import matplotlib.pyplot as plt
-from sklearn import manifold, datasets
+import argparse
 
-digits = datasets.load_digits(n_class=6)
-X, y = digits.data, digits.target
-n_samples, n_features = X.shape
-
-'''t-SNE'''
-tsne = manifold.TSNE(n_components=2, init='pca', random_state=501)
-X_tsne = tsne.fit_transform(X)
-
-print("Org data dimension is {}. Embedded data dimension is {}".format(X.shape[-1], X_tsne.shape[-1]))
-
-'''嵌入空间可视化'''
-x_min, x_max = X_tsne.min(0), X_tsne.max(0)
-X_norm = (X_tsne - x_min) / (x_max - x_min)  # 归一化
-plt.figure(figsize=(8, 8))
-for i in range(X_norm.shape[0]):
-    plt.text(X_norm[i, 0], X_norm[i, 1], str(y[i]), color=plt.cm.Set1(y[i]),
-             fontdict={'weight': 'bold', 'size': 9})
-plt.xticks([])
-plt.yticks([])
-plt.show()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Vis Embedding')
+    parser.add_argument('--data_type', default='imdb', type=str,
+                        choices=['imdb', 'newsgroups', 'reuters', 'webkb', 'cade', 'dbpedia', 'agnews', 'yahoo',
+                                 'sogou', 'yelp', 'amazon'], help='dataset type')
+    parser.add_argument('--fine_grained', action='store_true', help='use fine grained class or not, it only works for '
+                                                                    'reuters, yelp and amazon')
+    parser.add_argument('--text_length', default=5000, type=int, help='the number of words about the text to load')
+    parser.add_argument('--routing_type', default='k_means', type=str, choices=['k_means', 'dynamic'],
+                        help='routing type, it only works for capsule classifier')
+    parser.add_argument('--loss_type', default='mf', type=str,
+                        choices=['margin', 'focal', 'cross', 'mf', 'mc', 'fc', 'mfc'], help='loss type')
+    parser.add_argument('--embedding_type', default='cwc', type=str, choices=['cwc', 'cc', 'normal'],
+                        help='embedding type')
+    parser.add_argument('--classifier_type', default='capsule', type=str, choices=['capsule', 'linear'],
+                        help='classifier type')
+    parser.add_argument('--embedding_size', default=64, type=int, help='embedding size')
+    parser.add_argument('--num_codebook', default=8, type=int,
+                        help='codebook number, it only works for cwc and cc embedding')
+    parser.add_argument('--num_codeword', default=None, type=int,
+                        help='codeword number, it only works for cwc and cc embedding')
+    parser.add_argument('--hidden_size', default=128, type=int, help='hidden size')
+    parser.add_argument('--in_length', default=8, type=int,
+                        help='in capsule length, it only works for capsule classifier')
+    parser.add_argument('--out_length', default=16, type=int,
+                        help='out capsule length, it only works for capsule classifier')
+    parser.add_argument('--num_iterations', default=3, type=int,
+                        help='routing iterations number, it only works for capsule classifier')
+    parser.add_argument('--drop_out', default=0.5, type=float, help='drop_out rate of GRU layer')
+    parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
+    parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
+    parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
+    parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')

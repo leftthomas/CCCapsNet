@@ -73,10 +73,11 @@ if __name__ == '__main__':
     test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
-    model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH, NUM_CLASS,
-                  ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, DROP_OUT)
     if MODEL_WEIGHT is not None:
-        model.load_state_dict(torch.load('epochs/' + MODEL_WEIGHT))
+        model = torch.load('epochs/' + MODEL_WEIGHT)
+    else:
+        model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH,
+                      NUM_CLASS, ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, DROP_OUT)
     if LOSS_TYPE == 'margin':
         loss_criterion = [MarginLoss(NUM_CLASS)]
     elif LOSS_TYPE == 'focal':
@@ -174,12 +175,10 @@ if __name__ == '__main__':
                 if meter_accuracy.value()[0] > best_acc:
                     best_acc = meter_accuracy.value()[0]
                     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                        torch.save(model.state_dict(),
-                                   'epochs/{}_{}_{}.pth'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
-                                                                CLASSIFIER_TYPE))
+                        torch.save(model, 'epochs/{}_{}_{}.pth'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
+                                                                       CLASSIFIER_TYPE))
                     else:
-                        torch.save(model.state_dict(),
-                                   'epochs/{}_{}_{}.pth'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE))
+                        torch.save(model, 'epochs/{}_{}_{}.pth'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE))
                 print('[Step %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
                     current_step // NUM_STEPS, meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
                 reset_meters()
