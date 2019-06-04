@@ -19,10 +19,22 @@ if __name__ == '__main__':
     DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
     MODEL_WEIGHT = opt.load_model_weight
     # prepare dataset
-    VOCAB_SIZE, NUM_CLASS, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
-                                                                   fine_grained=FINE_GRAINED, verbose=True,
-                                                                   text_length=TEXT_LENGTH)
-    print("[!] vocab_size: {}, num_class: {}".format(VOCAB_SIZE, NUM_CLASS))
+    sentence_encoder, label_encoder, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
+                                                                             fine_grained=FINE_GRAINED, verbose=True,
+                                                                             text_length=TEXT_LENGTH)
     model = torch.load('epochs/' + MODEL_WEIGHT)
     if torch.cuda.is_available():
         model, cudnn.benchmark = model.to('cuda'), True
+
+    vocabs, codes = [], []
+    if model.embedding_type == 'normal':
+        embedding = model.embedding.weight
+        for index, vocab in enumerate(sentence_encoder.vocab):
+            vocabs.append({vocab: embedding[index]})
+    else:
+        embedding = model.embedding
+        embedding.return_code = True
+        for vocab in sentence_encoder.vocab:
+            out, code = embedding(torch.Tensor([[vocab]]))
+            vocabs.append({vocab: out.squeeze()})
+            codes.append({vocab: code.squeeze()})

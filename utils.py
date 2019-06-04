@@ -92,7 +92,7 @@ def load_data(data_type, preprocessing=False, fine_grained=False, verbose=False,
         for row in datasets_iterator(train_data, test_data):
             row['text'] = sentence_encoder.encode(row['text'])
             row['label'] = label_encoder.encode(row['label'])
-        return sentence_encoder.vocab_size, label_encoder.vocab_size, train_data, test_data
+        return sentence_encoder, label_encoder, train_data, test_data
     else:
         return train_data, test_data
 

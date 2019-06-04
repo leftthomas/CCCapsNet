@@ -64,9 +64,10 @@ if __name__ == '__main__':
     NUM_EPOCHS, NUM_STEPS, MODEL_WEIGHT = opt.num_epochs, opt.num_steps, opt.load_model_weight
 
     # prepare dataset
-    VOCAB_SIZE, NUM_CLASS, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
-                                                                   fine_grained=FINE_GRAINED, verbose=True,
-                                                                   text_length=TEXT_LENGTH)
+    sentence_encoder, label_encoder, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
+                                                                             fine_grained=FINE_GRAINED, verbose=True,
+                                                                             text_length=TEXT_LENGTH)
+    VOCAB_SIZE, NUM_CLASS = sentence_encoder.vocab_size, label_encoder.vocab_size
     print("[!] vocab_size: {}, num_class: {}".format(VOCAB_SIZE, NUM_CLASS))
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)

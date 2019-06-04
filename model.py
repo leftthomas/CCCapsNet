@@ -16,6 +16,7 @@ class CompositionalEmbedding(nn.Module):
         num_codebook (int): size of the codebook of embeddings
         num_codeword (int, optional): size of the codeword of embeddings
         weighted (bool, optional): weighted version of unweighted version
+        return_code (bool, optional): return code or not
 
      Shape:
          - Input: (LongTensor): (N, W), W = number of indices to extract per mini-batch
@@ -35,12 +36,14 @@ class CompositionalEmbedding(nn.Module):
          torch.Size([16, 8, 64])
      """
 
-    def __init__(self, num_embeddings, embedding_dim, num_codebook, num_codeword=None, weighted=True):
+    def __init__(self, num_embeddings, embedding_dim, num_codebook, num_codeword=None, weighted=True,
+                 return_code=False):
         super(CompositionalEmbedding, self).__init__()
         self.num_embeddings = num_embeddings
         self.embedding_dim = embedding_dim
         self.num_codebook = num_codebook
         self.weighted = weighted
+        self.return_code = return_code
 
         if num_codeword is None:
             num_codeword = math.ceil(math.pow(num_embeddings, 1 / num_codebook))
@@ -68,7 +71,11 @@ class CompositionalEmbedding(nn.Module):
             out = torch.sum(torch.stack(out), dim=0)
 
         out = out.view(batch_size, -1, self.embedding_dim)
-        return out
+        code = code.view(batch_size, -1)
+        if self.return_code:
+            return out, code
+        else:
+            return out
 
     def __repr__(self):
         return self.__class__.__name__ + ' (' + str(self.num_embeddings) + ', ' + str(self.embedding_dim) + ')'
@@ -81,6 +88,7 @@ class Model(nn.Module):
 
         self.in_length, self.out_length = in_length, out_length
         self.hidden_size, self.classifier_type = hidden_size, classifier_type
+        self.embedding_type = embedding_type
 
         if embedding_type == 'cwc':
             self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook, num_codeword,
