@@ -45,8 +45,8 @@ if __name__ == '__main__':
     model.eval()
     with torch.no_grad():
         if EMBEDDING_TYPE == 'normal':
-            vocabs = model.embedding.weight.detach().cpu()
-            codes = torch.ones(sentence_encoder.vocab_size, 1, 1)
+            vocabs = model.embedding.weight.detach().cpu().numpy()
+            codes = torch.ones(sentence_encoder.vocab_size, 1, 1).numpy()
         else:
             embedding = model.embedding
             embedding.return_code = True
@@ -55,7 +55,7 @@ if __name__ == '__main__':
                 data = data.to('cuda')
             out, code = embedding(data)
             # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1, 1])
-            vocabs, codes = out.squeeze(dim=0).detach().cpu(), code.squeeze(dim=0).detach().cpu()
+            vocabs, codes = out.squeeze(dim=0).detach().cpu().numpy(), code.squeeze(dim=0).detach().cpu().numpy()
 
         tsne = TSNE(n_components=2, init='pca', random_state=0)
         result = tsne.fit_transform(vocabs)
