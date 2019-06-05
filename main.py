@@ -53,7 +53,6 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
-    parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
     opt = parser.parse_args()
     DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
@@ -61,7 +60,7 @@ if __name__ == '__main__':
     CLASSIFIER_TYPE, EMBEDDING_SIZE, NUM_CODEBOOK = opt.classifier_type, opt.embedding_size, opt.num_codebook
     NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH = opt.num_codeword, opt.hidden_size, opt.in_length
     OUT_LENGTH, NUM_ITERATIONS, DROP_OUT, BATCH_SIZE = opt.out_length, opt.num_iterations, opt.drop_out, opt.batch_size
-    NUM_EPOCHS, NUM_STEPS, MODEL_WEIGHT = opt.num_epochs, opt.num_steps, opt.load_model_weight
+    NUM_EPOCHS, NUM_STEPS = opt.num_epochs, opt.num_steps
 
     # prepare dataset
     sentence_encoder, label_encoder, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
@@ -74,11 +73,8 @@ if __name__ == '__main__':
     test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
-    if MODEL_WEIGHT is not None:
-        model = torch.load('epochs/' + MODEL_WEIGHT)
-    else:
-        model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH,
-                      NUM_CLASS, ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, DROP_OUT)
+    model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH,
+                  NUM_CLASS, ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, DROP_OUT)
     if LOSS_TYPE == 'margin':
         loss_criterion = [MarginLoss(NUM_CLASS)]
     elif LOSS_TYPE == 'focal':
@@ -176,10 +172,11 @@ if __name__ == '__main__':
                 if meter_accuracy.value()[0] > best_acc:
                     best_acc = meter_accuracy.value()[0]
                     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                        torch.save(model, 'epochs/{}_{}_{}.pth'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
-                                                                       CLASSIFIER_TYPE))
+                        torch.save(model, 'epochs/{}_{}_{}_{}.pth'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
+                                                                          CLASSIFIER_TYPE, str(TEXT_LENGTH)))
                     else:
-                        torch.save(model, 'epochs/{}_{}_{}.pth'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE))
+                        torch.save(model, 'epochs/{}_{}_{}_{}.pth'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE,
+                                                                          str(TEXT_LENGTH)))
                 print('[Step %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
                     current_step // NUM_STEPS, meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
                 reset_meters()

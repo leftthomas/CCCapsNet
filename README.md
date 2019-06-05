@@ -73,7 +73,6 @@ optional arguments:
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 10]
 --num_steps              test steps number [default value is 100]
---load_model_weight      saved model weight to load [default value is None]
 ```
 Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
 type which you are training.
