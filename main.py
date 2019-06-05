@@ -172,7 +172,7 @@ if __name__ == '__main__':
                 if meter_accuracy.value()[0] > best_acc:
                     best_acc = meter_accuracy.value()[0]
                     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                        torch.save(model, 'epochs/{}_{}_{}_{}.pth'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
+                        torch.save(model, 'epochs/{}_{}_{}_{}.pth'.format(DATA_TYPE + '_fine-grained', EMBEDDING_TYPE,
                                                                           CLASSIFIER_TYPE, str(TEXT_LENGTH)))
                     else:
                         torch.save(model, 'epochs/{}_{}_{}_{}.pth'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE,
@@ -188,7 +188,7 @@ if __name__ == '__main__':
                     index=range(1, current_step // NUM_STEPS + 1))
                 if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
                     data_frame.to_csv(
-                        'statistics/{}_{}_{}_results.csv'.format(DATA_TYPE + '_fine_grained', EMBEDDING_TYPE,
+                        'statistics/{}_{}_{}_results.csv'.format(DATA_TYPE + '_fine-grained', EMBEDDING_TYPE,
                                                                  CLASSIFIER_TYPE), index_label='step')
                 else:
                     data_frame.to_csv(

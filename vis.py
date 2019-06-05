@@ -10,8 +10,12 @@ if __name__ == '__main__':
     parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
     opt = parser.parse_args()
-    DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
     MODEL_WEIGHT = opt.load_model_weight
+    configs = MODEL_WEIGHT.split('_')
+    if len(configs) == 3:
+        DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = configs
+    else:
+        DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = configs
     # prepare dataset
     sentence_encoder, label_encoder, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
                                                                              fine_grained=FINE_GRAINED, verbose=True,
