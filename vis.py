@@ -35,6 +35,10 @@ if __name__ == '__main__':
     else:
         DATA_TYPE, _, EMBEDDING_TYPE, CLASSIFIER_TYPE, TEXT_LENGTH = configs
         FINE_GRAINED, TEXT_LENGTH = True, int(TEXT_LENGTH.split('.')[0])
+
+    data_name = '{}_fine-grained'.format(DATA_TYPE) if FINE_GRAINED else DATA_TYPE
+
+    print('Load {} dataset'.format(data_name))
     # get sentence encoder
     sentence_encoder, _, _, _ = load_data(DATA_TYPE, preprocessing=True, fine_grained=FINE_GRAINED, verbose=True,
                                           text_length=TEXT_LENGTH)
@@ -43,6 +47,7 @@ if __name__ == '__main__':
         model, cudnn.benchmark = model.to('cuda'), True
 
     model.eval()
+    print('Generate t-SNE embedding for {} dataset'.format(data_name))
     with torch.no_grad():
         if EMBEDDING_TYPE == 'normal':
             vocabs = model.embedding.weight.detach().cpu().numpy()
@@ -59,6 +64,6 @@ if __name__ == '__main__':
 
         tsne = TSNE(n_components=2, init='pca', random_state=0)
         result = tsne.fit_transform(vocabs)
-        fig = plot_embedding(result, sentence_encoder.vocab, 't-SNE embedding of {}'.format(DATA_TYPE))
-        plt.savefig('results/{}_{}_tsne.jpg'.format(DATA_TYPE, EMBEDDING_TYPE))
+        fig = plot_embedding(result, sentence_encoder.vocab, 't-SNE embedding of {}'.format(data_name))
+        plt.savefig('results/{}_{}_tsne.jpg'.format(data_name, EMBEDDING_TYPE))
         # plt.show(fig)
