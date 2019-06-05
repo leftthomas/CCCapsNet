@@ -62,8 +62,8 @@ if __name__ == '__main__':
             # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1, 1])
             vocabs, codes = out.squeeze(dim=0).detach().cpu().numpy(), code.squeeze(dim=0).detach().cpu().numpy()
 
-        tsne = TSNE(n_components=2, init='pca', random_state=0)
-        result = tsne.fit_transform(vocabs)
+        result = TSNE(n_components=2, init='pca', random_state=0).fit_transform(vocabs)
         fig = plot_embedding(result, sentence_encoder.vocab, 't-SNE embedding of {}'.format(data_name))
+        print('Plotting t-SNE embedding for {} dataset'.format(data_name))
         plt.savefig('results/{}_{}_tsne.jpg'.format(data_name, EMBEDDING_TYPE))
         # plt.show(fig)
