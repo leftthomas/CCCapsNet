@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     data_name = '{}_fine-grained'.format(DATA_TYPE) if FINE_GRAINED else DATA_TYPE
 
-    print('Load {} dataset'.format(data_name))
+    print('Loading {} dataset'.format(data_name))
     # get sentence encoder
     sentence_encoder, _, _, _ = load_data(DATA_TYPE, preprocessing=True, fine_grained=FINE_GRAINED, verbose=True,
                                           text_length=TEXT_LENGTH)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         model, cudnn.benchmark = model.to('cuda'), True
 
     model.eval()
-    print('Generate t-SNE embedding for {} dataset'.format(data_name))
+    print('Generating t-SNE embedding for {} dataset'.format(data_name))
     with torch.no_grad():
         if EMBEDDING_TYPE == 'normal':
             vocabs = model.embedding.weight.detach().cpu().numpy()
