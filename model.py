@@ -29,7 +29,7 @@ class CompositionalEmbedding(nn.Module):
               (num_codebook, num_codeword, embedding_dim)
 
      Examples::
-         >>> m = CompositionalEmbedding(200, 64, 16, 32)
+         >>> m = CompositionalEmbedding(200, 64, 16, 32, weighted=False)
          >>> a = torch.randperm(128).view(16, -1)
          >>> output = m(a)
          >>> print(output.size())
@@ -47,6 +47,7 @@ class CompositionalEmbedding(nn.Module):
 
         if num_codeword is None:
             num_codeword = math.ceil(math.pow(num_embeddings, 1 / num_codebook))
+        self.num_codeword = num_codeword
         self.code = Parameter(torch.Tensor(num_embeddings, num_codebook, num_codeword))
         self.codebook = Parameter(torch.Tensor(num_codebook, num_codeword, embedding_dim))
 
@@ -67,11 +68,12 @@ class CompositionalEmbedding(nn.Module):
             code = (torch.sum(torch.stack([F.gumbel_softmax(code) for _ in range(iteration)]), dim=0)).argmax(dim=-1)
             out = []
             for index in range(self.num_codebook):
-                out.append(self.codebook[index, :, :].index_select(dim=0, index=code[:, index].view(-1)))
+                out.append(self.codebook[index, :, :].index_select(dim=0, index=code[:, index]))
             out = torch.sum(torch.stack(out), dim=0)
+            code = F.one_hot(code, num_classes=self.num_codeword)
 
         out = out.view(batch_size, -1, self.embedding_dim)
-        code = code.view(batch_size, -1)
+        code = code.view(batch_size, -1, self.num_codebook, self.num_codeword)
         if self.return_code:
             return out, code
         else:
