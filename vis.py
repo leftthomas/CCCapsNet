@@ -1,9 +1,26 @@
 import argparse
 
+import matplotlib.pyplot as plt
 import torch
 import torch.backends.cudnn as cudnn
+from sklearn.manifold import TSNE
 
 from utils import load_data
+
+
+def plot_embedding(data, label, title):
+    # x_min, x_max = np.min(data, 0), np.max(data, 0)
+    # data = (data - x_min) / (x_max - x_min)
+
+    fig = plt.figure()
+    for i in range(data.shape[0]):
+        plt.text(data[i, 0], data[i, 1], label[i][0], color=plt.cm.Set1(label[i][0] / len(label)),
+                 fontdict={'weight': 'bold', 'size': 9})
+    plt.xticks([])
+    plt.yticks([])
+    plt.title(title)
+    return fig
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Vis Embedding')
@@ -27,11 +44,12 @@ if __name__ == '__main__':
 
     model.eval()
     with torch.no_grad():
-        vocabs, codes = {}, {}
+        vocabs, codes = [], []
         if EMBEDDING_TYPE == 'normal':
             embedding = model.embedding.weight
             for index, vocab in enumerate(sentence_encoder.vocab):
-                vocabs[vocab] = embedding[index]
+                vocabs.append(embedding[index].detach().cpu())
+                codes.append(torch.tensor([1]))
         else:
             embedding = model.embedding
             embedding.return_code = True
@@ -40,4 +58,15 @@ if __name__ == '__main__':
                 if torch.cuda.is_available():
                     data = data.to('cuda')
                 out, code = embedding(data)
-                vocabs[vocab], codes[vocab] = out.squeeze(dim=0).squeeze(dim=0), code.squeeze(dim=0)
+                # [embedding_dim]
+                vocabs.append(out.squeeze(dim=0).squeeze(dim=0).detach().cpu())
+                # [num_codebook, num_codeword]
+                codes.append(code.squeeze(dim=0).squeeze(dim=0).detach().cpu())
+        # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1])
+        vocabs, codes = torch.stack(vocabs).numpy(), torch.stack(codes).numpy()
+
+        tsne = TSNE(n_components=2, init='pca', random_state=0)
+        result = tsne.fit_transform(vocabs)
+        fig = plot_embedding(result, sentence_encoder.vocab, 't-SNE embedding of {}'.format(DATA_TYPE))
+        plt.savefig('results/{}_{}_tsne.jpg'.format(DATA_TYPE, EMBEDDING_TYPE))
+        # plt.show(fig)
