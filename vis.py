@@ -14,7 +14,7 @@ def plot_embedding(data, label, title):
 
     fig = plt.figure()
     for i in range(data.shape[0]):
-        plt.text(data[i, 0], data[i, 1], label[i][0], color=plt.cm.Set1(label[i][0] / len(label)),
+        plt.text(data[i, 0], data[i, 1], label[i][0], color=plt.cm.Set1(i / len(label)),
                  fontdict={'weight': 'bold', 'size': 9})
     plt.xticks([])
     plt.yticks([])
@@ -44,26 +44,18 @@ if __name__ == '__main__':
 
     model.eval()
     with torch.no_grad():
-        vocabs, codes = [], []
         if EMBEDDING_TYPE == 'normal':
-            embedding = model.embedding.weight
-            for index, vocab in enumerate(sentence_encoder.vocab):
-                vocabs.append(embedding[index].detach().cpu())
-                codes.append(torch.tensor([1]))
+            vocabs = model.embedding.weight.detach().cpu()
+            codes = torch.ones(sentence_encoder.vocab_size, 1, 1)
         else:
             embedding = model.embedding
             embedding.return_code = True
-            for index, vocab in enumerate(sentence_encoder.vocab):
-                data = torch.tensor([[index]])
-                if torch.cuda.is_available():
-                    data = data.to('cuda')
-                out, code = embedding(data)
-                # [embedding_dim]
-                vocabs.append(out.squeeze(dim=0).squeeze(dim=0).detach().cpu())
-                # [num_codebook, num_codeword]
-                codes.append(code.squeeze(dim=0).squeeze(dim=0).detach().cpu())
-        # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1])
-        vocabs, codes = torch.stack(vocabs).numpy(), torch.stack(codes).numpy()
+            data = torch.arange(sentence_encoder.vocab_size).view(1, -1)
+            if torch.cuda.is_available():
+                data = data.to('cuda')
+            out, code = embedding(data)
+            # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1, 1])
+            vocabs, codes = out.squeeze(dim=0).detach().cpu(), code.squeeze(dim=0).detach().cpu()
 
         tsne = TSNE(n_components=2, init='pca', random_state=0)
         result = tsne.fit_transform(vocabs)
