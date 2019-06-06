@@ -1,6 +1,7 @@
 import argparse
 
 import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 from sklearn.manifold import TSNE
@@ -9,8 +10,8 @@ from utils import load_data
 
 
 def plot_embedding(data, label, title):
-    # x_min, x_max = np.min(data, 0), np.max(data, 0)
-    # data = (data - x_min) / (x_max - x_min)
+    x_min, x_max = np.min(data, 0), np.max(data, 0)
+    data = (data - x_min) / (x_max - x_min)
 
     fig = plt.figure()
     for i in range(data.shape[0]):
