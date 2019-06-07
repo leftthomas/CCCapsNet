@@ -63,8 +63,17 @@ if __name__ == '__main__':
             # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1, 1])
             vocabs, codes = out.squeeze(dim=0).detach().cpu().numpy(), code.squeeze(dim=0).detach().cpu().numpy()
 
-        result = TSNE(n_components=2, init='pca', random_state=0).fit_transform(vocabs)
-        fig = plot_embedding(result, sentence_encoder.vocab, 't-SNE embedding of {}'.format(data_name))
+        indexes = []
+        for word in ['dog', 'dogs', 'cat', 'cats', 'penguin', 'penguins', 'man', 'woman', 'men', 'women', 'king',
+                     'queen', 'go', 'went', 'gone', 'homes', 'cruises', 'motel', 'basketball', 'softball', 'enough',
+                     'hardly', 'unfortunately', 'fortunately', 'obviously', 'toronto', 'oakland']:
+            if word in sentence_encoder.vocab:
+                indexes.append(sentence_encoder.vocab.index(word))
+        if len(indexes) == 0:
+            raise IndexError('Make sure the vocabs contain these words')
+        reduced_vocabs, reduced_codes = vocabs[indexes], codes[indexes]
+        result = TSNE(n_components=2, init='pca', random_state=0).fit_transform(reduced_vocabs)
+        fig = plot_embedding(result, sentence_encoder.index(indexes), 't-SNE embedding of {}'.format(data_name))
         print('Plotting t-SNE embedding for {} dataset'.format(data_name))
         plt.savefig('results/{}_{}_tsne.jpg'.format(data_name, EMBEDDING_TYPE))
         # plt.show(fig)
