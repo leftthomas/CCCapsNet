@@ -73,7 +73,7 @@ if __name__ == '__main__':
             raise IndexError('Make sure the vocabs contain these words')
         reduced_vocabs, reduced_codes = vocabs[indexes], codes[indexes]
         result = TSNE(n_components=2, init='pca', random_state=0).fit_transform(reduced_vocabs)
-        fig = plot_embedding(result, sentence_encoder.index(indexes), 't-SNE embedding of {}'.format(data_name))
+        fig = plot_embedding(result, sentence_encoder.vocab.index(indexes), 't-SNE embedding of {}'.format(data_name))
         print('Plotting t-SNE embedding for {} dataset'.format(data_name))
         plt.savefig('results/{}_{}_tsne.jpg'.format(data_name, EMBEDDING_TYPE))
         # plt.show(fig)
