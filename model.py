@@ -60,7 +60,7 @@ class CompositionalEmbedding(nn.Module):
         code = self.code.index_select(dim=0, index=index)
         if self.weighted:
             # reweight, do softmax, make sure the sum of weight about each book to 1
-            code = F.softmax(code, dim=-2)
+            code = F.softmax(code, dim=-1)
             out = (code[:, :, None, :] @ self.codebook[None, :, :, :]).squeeze(dim=-2).sum(dim=1)
         else:
             # because Gumbel SoftMax works in a stochastic manner, needs to run several times to
@@ -105,11 +105,13 @@ class Model(nn.Module):
         if classifier_type == 'capsule' and routing_type == 'k_means':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
                                             out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
-                                            share_weight=False, routing_type='k_means', num_iterations=num_iterations)
+                                            share_weight=False, routing_type='k_means', num_iterations=num_iterations,
+                                            bias=False)
         elif classifier_type == 'capsule' and routing_type == 'dynamic':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
                                             out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
-                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations)
+                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations,
+                                            bias=False)
         else:
             self.classifier = nn.Linear(in_features=self.hidden_size, out_features=num_class, bias=False)
 
