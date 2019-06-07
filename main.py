@@ -70,7 +70,7 @@ if __name__ == '__main__':
     print("[!] vocab_size: {}, num_class: {}".format(VOCAB_SIZE, NUM_CLASS))
     train_sampler = BucketBatchSampler(train_dataset, BATCH_SIZE, False, sort_key=lambda row: len(row['text']))
     train_iterator = DataLoader(train_dataset, batch_sampler=train_sampler, collate_fn=collate_fn)
-    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE * 4, False, sort_key=lambda row: len(row['text']))
+    test_sampler = BucketBatchSampler(test_dataset, BATCH_SIZE * 2, False, sort_key=lambda row: len(row['text']))
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH,
