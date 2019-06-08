@@ -1,6 +1,7 @@
 import argparse
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 import torch
 import torch.backends.cudnn as cudnn
 
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     with torch.no_grad():
         if EMBEDDING_TYPE == 'normal':
             vocabs = model.embedding.weight.detach().cpu().numpy()
-            codes = torch.ones(sentence_encoder.vocab_size, 1, 1).numpy()
+            codes = torch.ones(sentence_encoder.vocab_size, 1, 1)
         else:
             embedding = model.embedding
             embedding.return_code = True
@@ -44,8 +45,10 @@ if __name__ == '__main__':
                 data = data.to('cuda')
             out, code = embedding(data)
             # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1, 1])
-            vocabs, codes = out.squeeze(dim=0).detach().cpu().numpy(), code.squeeze(dim=0).detach().cpu().numpy()
+            vocabs, codes = out.squeeze(dim=0).detach().cpu().numpy(), code.squeeze(dim=0).detach().cpu()
 
         print('Plotting code usage for {} dataset'.format(data_name))
-        plt.savefig('results/{}_{}_code.jpg'.format(data_name, EMBEDDING_TYPE))
-        # plt.show(fig)
+        reduced_codes = codes.sum(dim=0).numpy()
+        f, ax = plt.subplots(figsize=(10, 5))
+        heat_map = sns.heatmap(reduced_codes, ax=ax)
+        f.savefig('results/{}_{}_code.jpg'.format(data_name, EMBEDDING_TYPE))
