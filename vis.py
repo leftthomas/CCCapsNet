@@ -36,7 +36,7 @@ if __name__ == '__main__':
     with torch.no_grad():
         if EMBEDDING_TYPE == 'normal':
             vocabs = model.embedding.weight.detach().cpu().numpy()
-            codes = torch.ones(sentence_encoder.vocab_size, 1, 1)
+            codes = torch.ones(1, 1, sentence_encoder.vocab_size)
         else:
             embedding = model.embedding
             embedding.return_code = True
@@ -44,11 +44,15 @@ if __name__ == '__main__':
             if torch.cuda.is_available():
                 data = data.to('cuda')
             out, code = embedding(data)
-            # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1, 1])
+            # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [1, 1, num_embeddings])
             vocabs, codes = out.squeeze(dim=0).detach().cpu().numpy(), code.squeeze(dim=0).detach().cpu()
 
-        print('Plotting code usage for {} dataset'.format(data_name))
-        reduced_codes = codes.sum(dim=0).numpy()
-        f, ax = plt.subplots(figsize=(10, 5))
-        heat_map = sns.heatmap(reduced_codes, ax=ax)
-        f.savefig('results/{}_{}_code.jpg'.format(data_name, EMBEDDING_TYPE))
+    print('Plotting code usage for {} dataset'.format(data_name))
+    reduced_codes = codes.sum(dim=0).float()
+    c_max, c_min = reduced_codes.max().item(), reduced_codes.min().item()
+    f, ax = plt.subplots(figsize=(10, 5))
+    heat_map = sns.heatmap(reduced_codes.numpy(), vmin=c_min, vmax=c_max, annot=True, fmt='.2f', ax=ax)
+    ax.set_title('Code usage of {} embedding for {} dataset'.format(EMBEDDING_TYPE, data_name))
+    ax.set_xlabel('codeword')
+    ax.set_ylabel('codebook')
+    f.savefig('results/{}_{}_code.jpg'.format(data_name, EMBEDDING_TYPE))
