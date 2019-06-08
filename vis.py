@@ -1,30 +1,13 @@
 import argparse
 
 import matplotlib.pyplot as plt
-import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-from sklearn.manifold import TSNE
 
 from utils import load_data
 
-
-def plot_embedding(data, label, title):
-    x_min, x_max = np.min(data, 0), np.max(data, 0)
-    data = (data - x_min) / (x_max - x_min)
-
-    fig = plt.figure()
-    for i in range(data.shape[0]):
-        plt.text(data[i, 0], data[i, 1], label[i], color=plt.cm.Set1(i / len(label)),
-                 fontdict={'weight': 'bold', 'size': 9})
-    plt.xticks([])
-    plt.yticks([])
-    plt.title(title)
-    return fig
-
-
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Vis Embedding')
+    parser = argparse.ArgumentParser(description='Vis Embedding and Code')
     parser.add_argument('--load_model_weight', default=None, type=str, help='saved model weight to load')
 
     opt = parser.parse_args()
@@ -48,7 +31,7 @@ if __name__ == '__main__':
         model, cudnn.benchmark = model.to('cuda'), True
 
     model.eval()
-    print('Generating t-SNE embedding for {} dataset'.format(data_name))
+    print('Generating embedding and code for {} dataset'.format(data_name))
     with torch.no_grad():
         if EMBEDDING_TYPE == 'normal':
             vocabs = model.embedding.weight.detach().cpu().numpy()
@@ -63,18 +46,6 @@ if __name__ == '__main__':
             # [num_embeddings, embedding_dim], ([num_embeddings, num_codebook, num_codeword], [num_embeddings, 1, 1])
             vocabs, codes = out.squeeze(dim=0).detach().cpu().numpy(), code.squeeze(dim=0).detach().cpu().numpy()
 
-        words, indexes = [], []
-        for word in ['dog', 'dogs', 'cat', 'cats', 'penguin', 'penguins', 'man', 'woman', 'men', 'women', 'king',
-                     'queen', 'go', 'went', 'gone', 'homes', 'cruises', 'motel', 'basketball', 'softball', 'enough',
-                     'hardly', 'unfortunately', 'fortunately', 'obviously', 'toronto', 'oakland']:
-            if word in sentence_encoder.vocab:
-                words.append(word)
-                indexes.append(sentence_encoder.vocab.index(word))
-        if len(indexes) == 0:
-            raise IndexError('Make sure the vocabs contain these words')
-        reduced_vocabs, reduced_codes = vocabs[indexes], codes[indexes]
-        result = TSNE(n_components=2, init='pca', random_state=0).fit_transform(reduced_vocabs)
-        fig = plot_embedding(result, words, 't-SNE embedding of {}'.format(data_name))
-        print('Plotting t-SNE embedding for {} dataset'.format(data_name))
-        plt.savefig('results/{}_{}_tsne.jpg'.format(data_name, EMBEDDING_TYPE))
+        print('Plotting code usage for {} dataset'.format(data_name))
+        plt.savefig('results/{}_{}_code.jpg'.format(data_name, EMBEDDING_TYPE))
         # plt.show(fig)
