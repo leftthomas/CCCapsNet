@@ -59,7 +59,7 @@ optional arguments:
 --fine_grained           use fine grained class or not, it only works for reuters, yelp and amazon [default value is False]
 --text_length            the number of words about the text to load [default value is 5000]
 --routing_type           routing type, it only works for capsule classifier [default value is 'k_means'](choices:['k_means', 'dynamic'])
---loss_type              loss type [default value is 'mf'](choices:['margin', 'focal', 'cross', 'mf', 'mc', 'fc', 'mfc'])
+--loss_type              loss type [default value is 'cross'](choices:['margin', 'focal', 'cross', 'mf', 'mc', 'fc', 'mfc'])
 --embedding_type         embedding type [default value is 'cwc'](choices:['cwc', 'cc', 'normal'])
 --classifier_type        classifier type [default value is 'capsule'](choices:['capsule', 'linear'])
 --embedding_size         embedding size [default value is 64]
@@ -71,7 +71,7 @@ optional arguments:
 --num_iterations         routing iterations number, it only works for capsule classifier [default value is 3]
 --drop_out               drop_out rate of GRU layer [default value is 0.5]
 --batch_size             train batch size [default value is 30]
---num_epochs             train epochs number [default value is 10]
+--num_epochs             train epochs number [default value is 30]
 --num_steps              test steps number [default value is 100]
 ```
 Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
