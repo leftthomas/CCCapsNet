@@ -36,12 +36,13 @@ class CompositionalEmbedding(nn.Module):
          torch.Size([16, 8, 64])
      """
 
-    def __init__(self, num_embeddings, embedding_dim, num_codebook, num_codeword=None, weighted=True,
+    def __init__(self, num_embeddings, embedding_dim, num_codebook, num_codeword=None, num_repeat=10, weighted=True,
                  return_code=False):
         super(CompositionalEmbedding, self).__init__()
         self.num_embeddings = num_embeddings
         self.embedding_dim = embedding_dim
         self.num_codebook = num_codebook
+        self.num_repeat = num_repeat
         self.weighted = weighted
         self.return_code = return_code
 
@@ -54,7 +55,7 @@ class CompositionalEmbedding(nn.Module):
         nn.init.normal_(self.code)
         nn.init.normal_(self.codebook)
 
-    def forward(self, input, iteration=10):
+    def forward(self, input):
         batch_size = input.size(0)
         index = input.view(-1)
         code = self.code.index_select(dim=0, index=index)
@@ -65,7 +66,8 @@ class CompositionalEmbedding(nn.Module):
         else:
             # because Gumbel SoftMax works in a stochastic manner, needs to run several times to
             # get more accurate embedding
-            code = (torch.sum(torch.stack([F.gumbel_softmax(code) for _ in range(iteration)]), dim=0)).argmax(dim=-1)
+            code = (torch.sum(torch.stack([F.gumbel_softmax(code) for _ in range(self.num_repeat)]), dim=0)).argmax(
+                dim=-1)
             out = []
             for index in range(self.num_codebook):
                 out.append(self.codebook[index, :, :].index_select(dim=0, index=code[:, index]))
@@ -85,7 +87,7 @@ class CompositionalEmbedding(nn.Module):
 
 class Model(nn.Module):
     def __init__(self, vocab_size, embedding_size, num_codebook, num_codeword, hidden_size, in_length, out_length,
-                 num_class, routing_type, embedding_type, classifier_type, num_iterations, dropout):
+                 num_class, routing_type, embedding_type, classifier_type, num_iterations, num_repeat, dropout):
         super().__init__()
 
         self.in_length, self.out_length = in_length, out_length
@@ -96,7 +98,7 @@ class Model(nn.Module):
             self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook, num_codeword,
                                                     weighted=True)
         elif embedding_type == 'cc':
-            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook, num_codeword,
+            self.embedding = CompositionalEmbedding(vocab_size, embedding_size, num_codebook, num_codeword, num_repeat,
                                                     weighted=False)
         else:
             self.embedding = nn.Embedding(vocab_size, embedding_size)

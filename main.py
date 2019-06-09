@@ -49,6 +49,8 @@ if __name__ == '__main__':
                         help='out capsule length, it only works for capsule classifier')
     parser.add_argument('--num_iterations', default=3, type=int,
                         help='routing iterations number, it only works for capsule classifier')
+    parser.add_argument('--num_repeat', default=10, type=int,
+                        help='gumbel softmax repeat number, it only works for cc embedding')
     parser.add_argument('--drop_out', default=0.5, type=float, help='drop_out rate of GRU layer')
     parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=30, type=int, help='train epochs number')
@@ -60,7 +62,7 @@ if __name__ == '__main__':
     CLASSIFIER_TYPE, EMBEDDING_SIZE, NUM_CODEBOOK = opt.classifier_type, opt.embedding_size, opt.num_codebook
     NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH = opt.num_codeword, opt.hidden_size, opt.in_length
     OUT_LENGTH, NUM_ITERATIONS, DROP_OUT, BATCH_SIZE = opt.out_length, opt.num_iterations, opt.drop_out, opt.batch_size
-    NUM_EPOCHS, NUM_STEPS = opt.num_epochs, opt.num_steps
+    NUM_REPEAT, NUM_EPOCHS, NUM_STEPS = opt.num_repeat, opt.num_epochs, opt.num_steps
 
     # prepare dataset
     sentence_encoder, label_encoder, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
@@ -74,7 +76,7 @@ if __name__ == '__main__':
     test_iterator = DataLoader(test_dataset, batch_sampler=test_sampler, collate_fn=collate_fn)
 
     model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH,
-                  NUM_CLASS, ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, DROP_OUT)
+                  NUM_CLASS, ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, NUM_REPEAT, DROP_OUT)
     if LOSS_TYPE == 'margin':
         loss_criterion = [MarginLoss(NUM_CLASS)]
     elif LOSS_TYPE == 'focal':

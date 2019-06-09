@@ -69,6 +69,7 @@ optional arguments:
 --in_length              in capsule length, it only works for capsule classifier [default value is 8]
 --out_length             out capsule length, it only works for capsule classifier [default value is 16]
 --num_iterations         routing iterations number, it only works for capsule classifier [default value is 3]
+--num_repeat             gumbel softmax repeat number, it only works for cc embedding [default value is 10]
 --drop_out               drop_out rate of GRU layer [default value is 0.5]
 --batch_size             train batch size [default value is 30]
 --num_epochs             train epochs number [default value is 30]
