@@ -78,6 +78,248 @@ optional arguments:
 Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
 type which you are training.
 
+## Benchmarks
+Adam optimizer (lr=0.0001, weight_decay=5e-4) is used without learning rate scheduling. 
+The models are trained with 30 epochs and batch size of 30 on one NVIDIA Tesla V100 (32G) GPU. 
+
+The texts are preprocessed as only number and English words, max length is 5000.
+
+Here is the dataset details:
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>agnews</th>
+      <th>dbpedia</th>
+      <th>yahoo</th>
+      <th>sogou</th>
+      <th>yelp</th>
+      <th>yelp fine grained</th>
+      <th>amazon</th>
+      <th>amazon fine grained</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">Num. of Train Texts</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+    </tr>
+    <tr>
+      <td align="center">Num. of Test Texts</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+    <tr>
+      <td align="center">Num. of Vocabulary</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+    <tr>
+      <td align="center">Num. of Classes</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+      <td align="center">600</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+      <td align="center">600</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+    </tr>
+  </tbody>
+</table>
+
+Here is the model parameter details:
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>agnews</th>
+      <th>dbpedia</th>
+      <th>yahoo</th>
+      <th>sogou</th>
+      <th>yelp</th>
+      <th>yelp fine grained</th>
+      <th>amazon</th>
+      <th>amazon fine grained</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">Normal-Linear</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Linear</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+    <tr>
+      <td align="center">CWC-Linear</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+    <tr>
+      <td align="center">Normal-Capsule</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+      <td align="center">600</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+      <td align="center">600</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Capsule</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+    </tr>
+    <tr>
+      <td align="center">CWC-Capsule</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+  </tbody>
+</table>
+
+Here is the accuracy details:
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>agnews</th>
+      <th>dbpedia</th>
+      <th>yahoo</th>
+      <th>sogou</th>
+      <th>yelp</th>
+      <th>yelp fine grained</th>
+      <th>amazon</th>
+      <th>amazon fine grained</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">Normal-Linear</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Linear</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+    <tr>
+      <td align="center">CWC-Linear</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+    <tr>
+      <td align="center">Normal-Capsule</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+      <td align="center">600</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+      <td align="center">600</td>
+      <td align="center">101</td>
+      <td align="center">51</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Capsule</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+      <td align="center">4,110</td>
+      <td align="center">9,537</td>
+      <td align="center">3,570</td>
+    </tr>
+    <tr>
+      <td align="center">CWC-Capsule</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+      <td align="center">4,110</td>
+      <td align="center">3,783</td>
+      <td align="center">1,530</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Results
 The train/test loss、accuracy and confusion matrix are showed with visdom. The pretrained models and more results can be 
 found in [BaiduYun](https://pan.baidu.com/s/1mpIXTfuECiSFVxJcLR1j3A)(access code:xer4) and 
