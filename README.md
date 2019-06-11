@@ -103,47 +103,47 @@ Here is the dataset details:
   <tbody>
     <tr>
       <td align="center">Num. of Train Texts</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
+      <td align="center">120,000</td>
+      <td align="center">560,000</td>
+      <td align="center">1,400,000</td>
+      <td align="center">450,000</td>
+      <td align="center">560,000</td>
+      <td align="center">650,000</td>
+      <td align="center">3,600,000</td>
+      <td align="center">3,000,000</td>
     </tr>
     <tr>
       <td align="center">Num. of Test Texts</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
+      <td align="center">7,600</td>
+      <td align="center">70,000</td>
+      <td align="center">60,000</td>
+      <td align="center">60,000</td>
+      <td align="center">38,000</td>
+      <td align="center">50,000</td>
+      <td align="center">400,000</td>
+      <td align="center">650,000</td>
     </tr>
     <tr>
       <td align="center">Num. of Vocabulary</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
+      <td align="center">62,535</td>
+      <td align="center">548,338</td>
+      <td align="center">771,820</td>
+      <td align="center">106,385</td>
+      <td align="center">200,790</td>
+      <td align="center">216,985</td>
+      <td align="center">931,271</td>
+      <td align="center">835,818</td>
     </tr>
     <tr>
       <td align="center">Num. of Classes</td>
-      <td align="center">101</td>
-      <td align="center">51</td>
-      <td align="center">600</td>
-      <td align="center">101</td>
-      <td align="center">51</td>
-      <td align="center">600</td>
-      <td align="center">101</td>
-      <td align="center">51</td>
+      <td align="center">4</td>
+      <td align="center">14</td>
+      <td align="center">10</td>
+      <td align="center">5</td>
+      <td align="center">2</td>
+      <td align="center">5</td>
+      <td align="center">2</td>
+      <td align="center">5</td>
     </tr>
   </tbody>
 </table>
@@ -167,14 +167,14 @@ Here is the model parameter details:
   <tbody>
     <tr>
       <td align="center">Normal-Linear</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
+      <td align="center">4,448,192</td>
+      <td align="center">35,540,864</td>
+      <td align="center">49,843,200</td>
+      <td align="center">7,254,720</td>
+      <td align="center">13,296,256</td>
+      <td align="center">14,333,120</td>
+      <td align="center">60,047,040</td>
+      <td align="center">53,938,432</td>
     </tr>
     <tr>
       <td align="center">CC-Linear</td>
