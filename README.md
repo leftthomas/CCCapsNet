@@ -189,14 +189,14 @@ Here is the model parameter details:
     </tr>
     <tr>
       <td align="center">CWC-Linear</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
+      <td align="center">2,449,120</td>
+      <td align="center">26,770,528</td>
+      <td align="center">37,497,152</td>
+      <td align="center">4,704,040</td>
+      <td align="center">8,479,856</td>
+      <td align="center">9,128,040</td>
+      <td align="center">45,149,776</td>
+      <td align="center">40,568,416</td>
     </tr>
     <tr>
       <td align="center">Normal-Capsule</td>
