@@ -253,14 +253,14 @@ Here is the accuracy details:
   <tbody>
     <tr>
       <td align="center">Normal-Linear</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
+      <td align="center">92.03%</td>
+      <td align="center">98.54%</td>
+      <td align="center">72.28%</td>
+      <td align="center">95.00%</td>
+      <td align="center">95.85%</td>
+      <td align="center">63.95%</td>
+      <td align="center">93.44%</td>
+      <td align="center">56.91%</td>
     </tr>
     <tr>
       <td align="center">CC-Linear</td>
