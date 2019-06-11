@@ -264,7 +264,7 @@ Here is the accuracy details:
     </tr>
     <tr>
       <td align="center">CC-Linear</td>
-      <td align="center">3,783</td>
+      <td align="center">72.22%</td>
       <td align="center">1,530</td>
       <td align="center">4,110</td>
       <td align="center">3,783</td>
@@ -275,7 +275,7 @@ Here is the accuracy details:
     </tr>
     <tr>
       <td align="center">CWC-Linear</td>
-      <td align="center">3,783</td>
+      <td align="center">92.21%</td>
       <td align="center">1,530</td>
       <td align="center">4,110</td>
       <td align="center">3,783</td>
