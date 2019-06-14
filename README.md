@@ -265,7 +265,7 @@ Here is the accuracy details:
     <tr>
       <td align="center">CC-Linear</td>
       <td align="center">72.22%</td>
-      <td align="center">93.39%</td>
+      <td align="center">93.77%</td>
       <td align="center">4,110</td>
       <td align="center">3,783</td>
       <td align="center">1,530</td>
