@@ -276,7 +276,7 @@ Here is the accuracy details:
     <tr>
       <td align="center">CWC-Linear</td>
       <td align="center">92.21%</td>
-      <td align="center">98.60%</td>
+      <td align="center">98.90%</td>
       <td align="center">4,110</td>
       <td align="center">3,783</td>
       <td align="center">1,530</td>
