@@ -266,10 +266,10 @@ Here is the accuracy details:
       <td align="center">CC-Linear</td>
       <td align="center">72.22%</td>
       <td align="center">93.77%</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
+      <td align="center">52.31%</td>
+      <td align="center">94.10%</td>
+      <td align="center">88.31%</td>
+      <td align="center">52.65%</td>
       <td align="center">3,783</td>
       <td align="center">1,530</td>
     </tr>
@@ -277,10 +277,10 @@ Here is the accuracy details:
       <td align="center">CWC-Linear</td>
       <td align="center">92.21%</td>
       <td align="center">98.90%</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
-      <td align="center">4,110</td>
+      <td align="center">72.65%</td>
+      <td align="center">96.08%</td>
+      <td align="center">95.72%</td>
+      <td align="center">64.29%</td>
       <td align="center">3,783</td>
       <td align="center">1,530</td>
     </tr>
