@@ -200,10 +200,10 @@ Here is the model parameter details:
     </tr>
     <tr>
       <td align="center">Normal-Capsule</td>
-      <td align="center">101</td>
-      <td align="center">51</td>
-      <td align="center">600</td>
-      <td align="center">101</td>
+      <td align="center">4,455,872</td>
+      <td align="center">35,567,744</td>
+      <td align="center">49,862,400</td>
+      <td align="center">7,264,320</td>
       <td align="center">51</td>
       <td align="center">600</td>
       <td align="center">101</td>
