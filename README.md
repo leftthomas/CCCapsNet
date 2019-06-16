@@ -204,10 +204,10 @@ Here is the model parameter details:
       <td align="center">35,567,744</td>
       <td align="center">49,862,400</td>
       <td align="center">7,264,320</td>
-      <td align="center">51</td>
-      <td align="center">600</td>
-      <td align="center">101</td>
-      <td align="center">51</td>
+      <td align="center">13,300,096</td>
+      <td align="center">14,342,720</td>
+      <td align="center">60,050,880</td>
+      <td align="center">53,948,032</td>
     </tr>
     <tr>
       <td align="center">CC-Capsule</td>
