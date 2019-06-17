@@ -71,7 +71,7 @@ optional arguments:
 --num_iterations         routing iterations number, it only works for capsule classifier [default value is 3]
 --num_repeat             gumbel softmax repeat number, it only works for cc embedding [default value is 10]
 --drop_out               drop_out rate of GRU layer [default value is 0.5]
---batch_size             train batch size [default value is 30]
+--batch_size             train batch size [default value is 32]
 --num_epochs             train epochs number [default value is 30]
 --num_steps              test steps number [default value is 100]
 ```
@@ -79,8 +79,8 @@ Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your b
 type which you are training.
 
 ## Benchmarks
-Adam optimizer (lr=0.0001, weight_decay=5e-4) is used without learning rate scheduling. 
-The models are trained with 30 epochs and batch size of 30 on one NVIDIA Tesla V100 (32G) GPU. 
+Adam optimizer (lr=0.001) is used without learning rate scheduling. 
+The models are trained with 10 epochs and batch size of 32 on one NVIDIA Tesla V100 (32G) GPU. 
 
 The texts are preprocessed as only number and English words, max length is 5000.
 

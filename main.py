@@ -52,8 +52,8 @@ if __name__ == '__main__':
     parser.add_argument('--num_repeat', default=10, type=int,
                         help='gumbel softmax repeat number, it only works for cc embedding')
     parser.add_argument('--drop_out', default=0.5, type=float, help='drop_out rate of GRU layer')
-    parser.add_argument('--batch_size', default=30, type=int, help='train batch size')
-    parser.add_argument('--num_epochs', default=30, type=int, help='train epochs number')
+    parser.add_argument('--batch_size', default=32, type=int, help='train batch size')
+    parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
 
     opt = parser.parse_args()
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     if torch.cuda.is_available():
         model, cudnn.benchmark = model.to('cuda'), True
 
-    optimizer = Adam(model.parameters(), lr=1e-4, weight_decay=5e-4)
+    optimizer = Adam(model.parameters())
 
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
