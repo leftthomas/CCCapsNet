@@ -43,9 +43,9 @@ if __name__ == '__main__':
     parser.add_argument('--num_codeword', default=None, type=int,
                         help='codeword number, it only works for cwc and cc embedding')
     parser.add_argument('--hidden_size', default=128, type=int, help='hidden size')
-    parser.add_argument('--in_length', default=8, type=int,
+    parser.add_argument('--in_length', default=4, type=int,
                         help='in capsule length, it only works for capsule classifier')
-    parser.add_argument('--out_length', default=16, type=int,
+    parser.add_argument('--out_length', default=4, type=int,
                         help='out capsule length, it only works for capsule classifier')
     parser.add_argument('--num_iterations', default=3, type=int,
                         help='routing iterations number, it only works for capsule classifier')
