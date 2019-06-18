@@ -6,6 +6,7 @@ import torch.backends.cudnn as cudnn
 import torchnet as tnt
 from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
+from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.data import DataLoader
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from torchnlp.samplers import BucketBatchSampler
@@ -43,9 +44,9 @@ if __name__ == '__main__':
     parser.add_argument('--num_codeword', default=None, type=int,
                         help='codeword number, it only works for cwc and cc embedding')
     parser.add_argument('--hidden_size', default=128, type=int, help='hidden size')
-    parser.add_argument('--in_length', default=8, type=int,
+    parser.add_argument('--in_length', default=4, type=int,
                         help='in capsule length, it only works for capsule classifier')
-    parser.add_argument('--out_length', default=16, type=int,
+    parser.add_argument('--out_length', default=8, type=int,
                         help='out capsule length, it only works for capsule classifier')
     parser.add_argument('--num_iterations', default=3, type=int,
                         help='routing iterations number, it only works for capsule classifier')
@@ -94,7 +95,11 @@ if __name__ == '__main__':
     if torch.cuda.is_available():
         model, cudnn.benchmark = model.to('cuda'), True
 
-    optimizer = Adam(model.parameters())
+    optim_configs = [{'params': model.embedding.parameters(), 'lr': 1e-4 * 10},
+                     {'params': model.features.parameters(), 'lr': 1e-4 * 10},
+                     {'params': model.classifier.parameters(), 'lr': 1e-4}]
+    optimizer = Adam(optim_configs, lr=1e-4)
+    lr_scheduler = MultiStepLR(optimizer, milestones=[int(NUM_EPOCHS * 0.5), int(NUM_EPOCHS * 0.7)], gamma=0.1)
 
     print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
     # record statistics
@@ -193,3 +198,4 @@ if __name__ == '__main__':
                     data_frame.to_csv(
                         'statistics/{}_{}_{}_results.csv'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE),
                         index_label='step')
+        lr_scheduler.step()
