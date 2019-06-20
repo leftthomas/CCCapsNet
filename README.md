@@ -256,14 +256,14 @@ Here is the loss function details, we use `AGNews` dataset to test different los
       <td align="center">92.13%</td>
       <td align="center">92.05%</td>
       <td align="center">92.64%</td>
-      <td align="center">95.85%</td>
-      <td align="center">63.95%</td>
-      <td align="center">93.44%</td>
+      <td align="center">91.95%</td>
+      <td align="center">92.09%</td>
+      <td align="center">92.38%</td>
     </tr>
   </tbody>
 </table>
 
-Here is the accuracy details:
+Here is the accuracy details, we use `margin+focal` as our loss function:
 
 <table>
   <thead>
