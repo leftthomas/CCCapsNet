@@ -79,8 +79,8 @@ Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your b
 type which you are training.
 
 ## Benchmarks
-Adam optimizer (lr=0.001) is used without learning rate scheduling. 
-The models are trained with 10 epochs and batch size of 32 on one NVIDIA Tesla V100 (32G) GPU. 
+Adam optimizer is used with learning rate scheduling. The models are trained with 10 epochs and batch size of 32 on one 
+NVIDIA Tesla V100 (32G) GPU.
 
 The texts are preprocessed as only number and English words, max length is 5000.
 
@@ -230,6 +230,35 @@ Here is the model parameter details:
       <td align="center">4,110</td>
       <td align="center">3,783</td>
       <td align="center">1,530</td>
+    </tr>
+  </tbody>
+</table>
+
+Here is the loss function details, we use `AGNews` dataset to test different loss functions:
+
+<table>
+  <thead>
+    <tr>
+      <th>Loss Function</th>
+      <th>margin</th>
+      <th>focal</th>
+      <th>cross</th>
+      <th>margin+focal</th>
+      <th>margin+cross</th>
+      <th>focal+cross</th>
+      <th>margin+focal+cross</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">Accuracy</td>
+      <td align="center">92.37%</td>
+      <td align="center">92.13%</td>
+      <td align="center">92.05%</td>
+      <td align="center">92.64%</td>
+      <td align="center">95.85%</td>
+      <td align="center">63.95%</td>
+      <td align="center">93.44%</td>
     </tr>
   </tbody>
 </table>
