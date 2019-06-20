@@ -282,7 +282,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
   <tbody>
     <tr>
       <td align="center">Normal-Linear</td>
-      <td align="center">92.03%</td>
+      <td align="center">92.64%</td>
       <td align="center">98.54%</td>
       <td align="center">72.28%</td>
       <td align="center">95.00%</td>
