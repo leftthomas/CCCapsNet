@@ -284,12 +284,12 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">Normal-Linear</td>
       <td align="center">92.64%</td>
       <td align="center">98.84%</td>
-      <td align="center">72.28%</td>
-      <td align="center">95.00%</td>
-      <td align="center">95.85%</td>
-      <td align="center">63.95%</td>
-      <td align="center">93.44%</td>
-      <td align="center">56.91%</td>
+      <td align="center">74.13%</td>
+      <td align="center">97.37%</td>
+      <td align="center">96.69%</td>
+      <td align="center">66.23%</td>
+      <td align="center">95.09%</td>
+      <td align="center">60.78%</td>
     </tr>
     <tr>
       <td align="center">CC-Linear</td>
