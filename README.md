@@ -202,8 +202,8 @@ Here is the model parameter details:
       <td align="center">Normal-Capsule</td>
       <td align="center">4,455,872</td>
       <td align="center">35,567,744</td>
-      <td align="center">49,852,160</td>
-      <td align="center">7,259,200</td>
+      <td align="center">49,862,400</td>
+      <td align="center">7,264,320</td>
       <td align="center">13,300,096</td>
       <td align="center">14,342,720</td>
       <td align="center">60,050,880</td>
@@ -213,9 +213,9 @@ Here is the model parameter details:
       <td align="center">CC-Capsule</td>
       <td align="center">2,456,800</td>
       <td align="center">26,797,408</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
+      <td align="center">37,516,352</td>
+      <td align="center">4,713,640</td>
+      <td align="center">8,483,696</td>
       <td align="center">4,110</td>
       <td align="center">9,537</td>
       <td align="center">3,570</td>
@@ -224,9 +224,9 @@ Here is the model parameter details:
       <td align="center">CWC-Capsule</td>
       <td align="center">2,456,800</td>
       <td align="center">26,797,408</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
+      <td align="center">37,516,352</td>
+      <td align="center">4,713,640</td>
+      <td align="center">8,483,696</td>
       <td align="center">4,110</td>
       <td align="center">3,783</td>
       <td align="center">1,530</td>
