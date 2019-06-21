@@ -115,11 +115,9 @@ if __name__ == '__main__':
         env_name = DATA_TYPE + '_fine_grained'
     else:
         env_name = DATA_TYPE
-    train_loss_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Train Loss'})
-    train_accuracy_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Train Accuracy'})
+    loss_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Loss'})
+    accuracy_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Accuracy'})
     train_confusion_logger = VisdomLogger('heatmap', env=env_name, opts={'title': 'Train Confusion Matrix'})
-    test_loss_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Test Loss'})
-    test_accuracy_logger = VisdomPlotLogger('line', env=env_name, opts={'title': 'Test Accuracy'})
     test_confusion_logger = VisdomLogger('heatmap', env=env_name, opts={'title': 'Test Confusion Matrix'})
 
     current_step = 0
@@ -143,8 +141,8 @@ if __name__ == '__main__':
 
             if current_step % NUM_STEPS == 0:
                 # print the information about train
-                train_loss_logger.log(current_step // NUM_STEPS, meter_loss.value()[0])
-                train_accuracy_logger.log(current_step // NUM_STEPS, meter_accuracy.value()[0])
+                loss_logger.log(current_step // NUM_STEPS, meter_loss.value()[0], name='train')
+                accuracy_logger.log(current_step // NUM_STEPS, meter_accuracy.value()[0], name='train')
                 train_confusion_logger.log(meter_confusion.value())
                 results['train_loss'].append(meter_loss.value()[0])
                 results['train_accuracy'].append(meter_accuracy.value()[0])
@@ -166,8 +164,8 @@ if __name__ == '__main__':
                         meter_accuracy.add(classes.detach().cpu(), target)
                         meter_confusion.add(classes.detach().cpu(), target)
                     # print the information about test
-                    test_loss_logger.log(current_step // NUM_STEPS, meter_loss.value()[0])
-                    test_accuracy_logger.log(current_step // NUM_STEPS, meter_accuracy.value()[0])
+                    loss_logger.log(current_step // NUM_STEPS, meter_loss.value()[0], name='test')
+                    accuracy_logger.log(current_step // NUM_STEPS, meter_accuracy.value()[0], name='test')
                     test_confusion_logger.log(meter_confusion.value())
                     results['test_loss'].append(meter_loss.value()[0])
                     results['test_accuracy'].append(meter_accuracy.value()[0])
@@ -186,16 +184,11 @@ if __name__ == '__main__':
                 reset_meters()
 
                 # save statistics
-                data_frame = pd.DataFrame(
-                    data={'train_loss': results['train_loss'], 'train_accuracy': results['train_accuracy'],
-                          'test_loss': results['test_loss'], 'test_accuracy': results['test_accuracy']},
-                    index=range(1, current_step // NUM_STEPS + 1))
+                data_frame = pd.DataFrame(data=results, index=range(1, current_step // NUM_STEPS + 1))
                 if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                    data_frame.to_csv(
-                        'statistics/{}_{}_{}_results.csv'.format(DATA_TYPE + '_fine-grained', EMBEDDING_TYPE,
-                                                                 CLASSIFIER_TYPE), index_label='step')
+                    data_frame.to_csv('statistics/{}_{}_{}_results.csv'.format(
+                        DATA_TYPE + '_fine-grained', EMBEDDING_TYPE, CLASSIFIER_TYPE), index_label='step')
                 else:
-                    data_frame.to_csv(
-                        'statistics/{}_{}_{}_results.csv'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE),
-                        index_label='step')
+                    data_frame.to_csv('statistics/{}_{}_{}_results.csv'.format(
+                        DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE), index_label='step')
         lr_scheduler.step()
