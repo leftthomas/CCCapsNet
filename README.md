@@ -216,8 +216,8 @@ Here is the model parameter details:
       <td align="center">37,516,352</td>
       <td align="center">4,713,640</td>
       <td align="center">8,483,696</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
+      <td align="center">9,137,640</td>
+      <td align="center">45,153,616</td>
       <td align="center">3,570</td>
     </tr>
     <tr>
@@ -227,8 +227,8 @@ Here is the model parameter details:
       <td align="center">37,516,352</td>
       <td align="center">4,713,640</td>
       <td align="center">8,483,696</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
+      <td align="center">9,137,640</td>
+      <td align="center">45,153,616</td>
       <td align="center">1,530</td>
     </tr>
   </tbody>
@@ -351,7 +351,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
 
 ## Results
 The train/test loss、accuracy and confusion matrix are showed with visdom. The pretrained models and more results can be 
-found in [BaiduYun](https://pan.baidu.com/s/1mpIXTfuECiSFVxJcLR1j3A)(access code:xer4) and 
+found in [BaiduYun](https://pan.baidu.com/s/1mpIXTfuECiSFVxJcLR1j3A) (access code:xer4) and 
 [GoogleDrive](https://drive.google.com/drive/folders/1AsP9irE1tQisK2H_nLHJERqxMro_mRUb?usp=sharing).
 
 **agnews**
