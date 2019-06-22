@@ -338,7 +338,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
     <tr>
       <td align="center">CWC-Capsule</td>
       <td align="center">92.12%</td>
-      <td align="center">1,530</td>
+      <td align="center">98.81%</td>
       <td align="center">4,110</td>
       <td align="center">3,783</td>
       <td align="center">1,530</td>
