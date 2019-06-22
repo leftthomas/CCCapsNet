@@ -218,7 +218,7 @@ Here is the model parameter details:
       <td align="center">8,483,696</td>
       <td align="center">9,137,640</td>
       <td align="center">45,153,616</td>
-      <td align="center">3,570</td>
+      <td align="center">40,578,016</td>
     </tr>
     <tr>
       <td align="center">CWC-Capsule</td>
@@ -229,7 +229,7 @@ Here is the model parameter details:
       <td align="center">8,483,696</td>
       <td align="center">9,137,640</td>
       <td align="center">45,153,616</td>
-      <td align="center">1,530</td>
+      <td align="center">40,578,016</td>
     </tr>
   </tbody>
 </table>
