@@ -296,55 +296,55 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">73.11%</td>
       <td align="center">92.66%</td>
       <td align="center">48.01%</td>
-      <td align="center">94.10%</td>
+      <td align="center">93.50%</td>
       <td align="center">87.81%</td>
-      <td align="center">52.65%</td>
-      <td align="center">82.25%</td>
-      <td align="center">45.08%</td>
+      <td align="center">50.33%</td>
+      <td align="center">83.20%</td>
+      <td align="center">45.77%</td>
     </tr>
     <tr>
       <td align="center">CWC-Linear</td>
       <td align="center">91.93%</td>
       <td align="center">98.83%</td>
       <td align="center">73.58%</td>
-      <td align="center">96.08%</td>
+      <td align="center">97.37%</td>
       <td align="center">96.35%</td>
-      <td align="center">64.29%</td>
-      <td align="center">93.65%</td>
-      <td align="center">57.21%</td>
+      <td align="center">65.11%</td>
+      <td align="center">94.90%</td>
+      <td align="center">/</td>
     </tr>
     <tr>
       <td align="center">Normal-Capsule</td>
       <td align="center">92.18%</td>
       <td align="center">98.86%</td>
       <td align="center">74.12%</td>
-      <td align="center">101</td>
+      <td align="center">97.52%</td>
       <td align="center">96.56%</td>
-      <td align="center">600</td>
-      <td align="center">101</td>
-      <td align="center">51</td>
+      <td align="center">66.23%</td>
+      <td align="center">95.18%</td>
+      <td align="center">/</td>
     </tr>
     <tr>
       <td align="center">CC-Capsule</td>
       <td align="center">73.53%</td>
       <td align="center">93.04%</td>
       <td align="center">50.52%</td>
-      <td align="center">9,537</td>
+      <td align="center">94.44%</td>
       <td align="center">87.98%</td>
-      <td align="center">4,110</td>
-      <td align="center">9,537</td>
-      <td align="center">3,570</td>
+      <td align="center">54.14%</td>
+      <td align="center">83.64%</td>
+      <td align="center">/</td>
     </tr>
     <tr>
       <td align="center">CWC-Capsule</td>
       <td align="center">92.12%</td>
       <td align="center">98.81%</td>
       <td align="center">73.78%</td>
-      <td align="center">3,783</td>
+      <td align="center">97.42%</td>
       <td align="center">96.28%</td>
-      <td align="center">4,110</td>
-      <td align="center">3,783</td>
-      <td align="center">1,530</td>
+      <td align="center">65.38%</td>
+      <td align="center">94.98%</td>
+      <td align="center">/</td>
     </tr>
   </tbody>
 </table>
