@@ -72,7 +72,7 @@ optional arguments:
 --num_repeat             gumbel softmax repeat number, it only works for cc embedding [default value is 10]
 --drop_out               drop_out rate of GRU layer [default value is 0.5]
 --batch_size             train batch size [default value is 32]
---num_epochs             train epochs number [default value is 30]
+--num_epochs             train epochs number [default value is 10]
 --num_steps              test steps number [default value is 100]
 ```
 Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
@@ -148,7 +148,8 @@ Here is the dataset details:
   </tbody>
 </table>
 
-Here is the model parameter details:
+Here is the model parameter details, the model name are formalized as `embedding_type-classifier_type`, 
+if `embedding_type` is `CC`, then plus `num_repeat`, if `classifier_type` is `Capsule`, then plus `num_iterations`:
 
 <table>
   <thead>
@@ -177,7 +178,29 @@ Here is the model parameter details:
       <td align="center">53,938,432</td>
     </tr>
     <tr>
-      <td align="center">CC-Linear</td>
+      <td align="center">CC-Linear-10</td>
+      <td align="center">2,449,120</td>
+      <td align="center">26,770,528</td>
+      <td align="center">37,497,152</td>
+      <td align="center">4,704,040</td>
+      <td align="center">8,479,856</td>
+      <td align="center">9,128,040</td>
+      <td align="center">45,149,776</td>
+      <td align="center">40,568,416</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Linear-30</td>
+      <td align="center">2,449,120</td>
+      <td align="center">26,770,528</td>
+      <td align="center">37,497,152</td>
+      <td align="center">4,704,040</td>
+      <td align="center">8,479,856</td>
+      <td align="center">9,128,040</td>
+      <td align="center">45,149,776</td>
+      <td align="center">40,568,416</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Linear-50</td>
       <td align="center">2,449,120</td>
       <td align="center">26,770,528</td>
       <td align="center">37,497,152</td>
@@ -234,7 +257,7 @@ Here is the model parameter details:
   </tbody>
 </table>
 
-Here is the loss function details, we use `AGNews` dataset to test different loss functions:
+Here is the loss function details, we use `AGNews` dataset and `Normal-Linear` model to test different loss functions:
 
 <table>
   <thead>
@@ -292,7 +315,29 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">60.78%</td>
     </tr>
     <tr>
-      <td align="center">CC-Linear</td>
+      <td align="center">CC-Linear-10</td>
+      <td align="center">73.11%</td>
+      <td align="center">92.66%</td>
+      <td align="center">48.01%</td>
+      <td align="center">93.50%</td>
+      <td align="center">87.81%</td>
+      <td align="center">50.33%</td>
+      <td align="center">83.20%</td>
+      <td align="center">45.77%</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Linear-30</td>
+      <td align="center">73.11%</td>
+      <td align="center">92.66%</td>
+      <td align="center">48.01%</td>
+      <td align="center">93.50%</td>
+      <td align="center">87.81%</td>
+      <td align="center">50.33%</td>
+      <td align="center">83.20%</td>
+      <td align="center">45.77%</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Linear-50</td>
       <td align="center">73.11%</td>
       <td align="center">92.66%</td>
       <td align="center">48.01%</td>
