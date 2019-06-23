@@ -233,7 +233,29 @@ if `embedding_type` is `CC`, then plus `num_repeat`, if `classifier_type` is `Ca
       <td align="center">53,948,032</td>
     </tr>
     <tr>
-      <td align="center">CC-Capsule</td>
+      <td align="center">CC-Capsule-10</td>
+      <td align="center">2,456,800</td>
+      <td align="center">26,797,408</td>
+      <td align="center">37,516,352</td>
+      <td align="center">4,713,640</td>
+      <td align="center">8,483,696</td>
+      <td align="center">9,137,640</td>
+      <td align="center">45,153,616</td>
+      <td align="center">40,578,016</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Capsule-30</td>
+      <td align="center">2,456,800</td>
+      <td align="center">26,797,408</td>
+      <td align="center">37,516,352</td>
+      <td align="center">4,713,640</td>
+      <td align="center">8,483,696</td>
+      <td align="center">9,137,640</td>
+      <td align="center">45,153,616</td>
+      <td align="center">40,578,016</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Capsule-50</td>
       <td align="center">2,456,800</td>
       <td align="center">26,797,408</td>
       <td align="center">37,516,352</td>
@@ -370,7 +392,29 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">/</td>
     </tr>
     <tr>
-      <td align="center">CC-Capsule</td>
+      <td align="center">CC-Capsule-10</td>
+      <td align="center">73.53%</td>
+      <td align="center">93.04%</td>
+      <td align="center">50.52%</td>
+      <td align="center">94.44%</td>
+      <td align="center">87.98%</td>
+      <td align="center">54.14%</td>
+      <td align="center">83.64%</td>
+      <td align="center">/</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Capsule-30</td>
+      <td align="center">73.53%</td>
+      <td align="center">93.04%</td>
+      <td align="center">50.52%</td>
+      <td align="center">94.44%</td>
+      <td align="center">87.98%</td>
+      <td align="center">54.14%</td>
+      <td align="center">83.64%</td>
+      <td align="center">/</td>
+    </tr>
+    <tr>
+      <td align="center">CC-Capsule-50</td>
       <td align="center">73.53%</td>
       <td align="center">93.04%</td>
       <td align="center">50.52%</td>
