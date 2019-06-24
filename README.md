@@ -378,7 +378,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">96.35%</td>
       <td align="center">65.11%</td>
       <td align="center">94.90%</td>
-      <td align="center">/</td>
+      <td align="center">60.29%</td>
     </tr>
     <tr>
       <td align="center">Normal-Capsule</td>
@@ -389,7 +389,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">96.56%</td>
       <td align="center">66.23%</td>
       <td align="center">95.18%</td>
-      <td align="center">/</td>
+      <td align="center">61.36%</td>
     </tr>
     <tr>
       <td align="center">CC-Capsule-10</td>
@@ -400,7 +400,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">87.98%</td>
       <td align="center">54.14%</td>
       <td align="center">83.64%</td>
-      <td align="center">/</td>
+      <td align="center">47.44%</td>
     </tr>
     <tr>
       <td align="center">CC-Capsule-30</td>
@@ -411,7 +411,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">87.98%</td>
       <td align="center">54.14%</td>
       <td align="center">83.64%</td>
-      <td align="center">/</td>
+      <td align="center">47.44%</td>
     </tr>
     <tr>
       <td align="center">CC-Capsule-50</td>
@@ -422,7 +422,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">87.98%</td>
       <td align="center">54.14%</td>
       <td align="center">83.64%</td>
-      <td align="center">/</td>
+      <td align="center">47.44%</td>
     </tr>
     <tr>
       <td align="center">CWC-Capsule</td>
@@ -433,7 +433,7 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
       <td align="center">96.28%</td>
       <td align="center">65.38%</td>
       <td align="center">94.98%</td>
-      <td align="center">/</td>
+      <td align="center">60.94%</td>
     </tr>
   </tbody>
 </table>
