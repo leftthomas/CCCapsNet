@@ -349,25 +349,25 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
     </tr>
     <tr>
       <td align="center">CC-Linear-30</td>
-      <td align="center">73.11%</td>
-      <td align="center">92.66%</td>
-      <td align="center">48.01%</td>
-      <td align="center">93.50%</td>
-      <td align="center">87.81%</td>
-      <td align="center">50.33%</td>
-      <td align="center">83.20%</td>
-      <td align="center">45.77%</td>
+      <td align="center">81.05%</td>
+      <td align="center">95.29%</td>
+      <td align="center">53.50%</td>
+      <td align="center">94.65%</td>
+      <td align="center">91.33%</td>
+      <td align="center">55.22%</td>
+      <td align="center">87.37%</td>
+      <td align="center">50.00%</td>
     </tr>
     <tr>
       <td align="center">CC-Linear-50</td>
-      <td align="center">73.11%</td>
-      <td align="center">92.66%</td>
-      <td align="center">48.01%</td>
-      <td align="center">93.50%</td>
-      <td align="center">87.81%</td>
-      <td align="center">50.33%</td>
-      <td align="center">83.20%</td>
-      <td align="center">45.77%</td>
+      <td align="center">83.13%</td>
+      <td align="center">96.06%</td>
+      <td align="center">57.87%</td>
+      <td align="center">95.20%</td>
+      <td align="center">92.37%</td>
+      <td align="center">56.66%</td>
+      <td align="center">89.04%</td>
+      <td align="center">51.30%</td>
     </tr>
     <tr>
       <td align="center">CWC-Linear</td>
