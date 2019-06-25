@@ -415,14 +415,14 @@ Here is the accuracy details, we use `margin+focal` as our loss function:
     </tr>
     <tr>
       <td align="center">CC-Capsule-50</td>
-      <td align="center">73.53%</td>
-      <td align="center">93.04%</td>
-      <td align="center">50.52%</td>
-      <td align="center">94.44%</td>
-      <td align="center">87.98%</td>
-      <td align="center">54.14%</td>
-      <td align="center">83.64%</td>
-      <td align="center">47.44%</td>
+      <td align="center">84.05%</td>
+      <td align="center">96.27%</td>
+      <td align="center">60.31%</td>
+      <td align="center">96.00%</td>
+      <td align="center">92.82%</td>
+      <td align="center">59.48%</td>
+      <td align="center">89.07%</td>
+      <td align="center">52.06%</td>
     </tr>
     <tr>
       <td align="center">CWC-Capsule</td>
