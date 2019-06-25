@@ -438,6 +438,91 @@ Here is the accuracy details, we use `margin+focal` as our loss function, for `c
   </tbody>
 </table>
 
+Here is the model parameter details, we use `CWC-Capsule` as our model, the model name are formalized as `num_codewords` 
+for each dataset:
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>agnews</th>
+      <th>dbpedia</th>
+      <th>yahoo</th>
+      <th>sogou</th>
+      <th>yelp</th>
+      <th>yelp fine grained</th>
+      <th>amazon</th>
+      <th>amazon fine grained</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">57766677</td>
+      <td align="center">2,957,592</td>
+      <td align="center">31,184,624</td>
+      <td align="center">43,691,424</td>
+      <td align="center">5,565,232</td>
+      <td align="center">10,090,528</td>
+      <td align="center">10,874,032</td>
+      <td align="center">52,604,296</td>
+      <td align="center">47,265,072</td>
+    </tr>
+    <tr>
+      <td align="center">68877788</td>
+      <td align="center">3,458,384</td>
+      <td align="center">35,571,840</td>
+      <td align="center">49,866,496</td>
+      <td align="center">6,416,824</td>
+      <td align="center">11,697,360</td>
+      <td align="center">12,610,424</td>
+      <td align="center">60,054,976</td>
+      <td align="center">53,952,128</td>
+    </tr>
+  </tbody>
+</table>
+
+Here is the accuracy details:
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>agnews</th>
+      <th>dbpedia</th>
+      <th>yahoo</th>
+      <th>sogou</th>
+      <th>yelp</th>
+      <th>yelp fine grained</th>
+      <th>amazon</th>
+      <th>amazon fine grained</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">57766677</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+    </tr>
+    <tr>
+      <td align="center">68877788</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+      <td align="center">/</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Results
 The train/test loss、accuracy and confusion matrix are showed with visdom. The pretrained models and more results can be 
 found in [BaiduYun](https://pan.baidu.com/s/1mpIXTfuECiSFVxJcLR1j3A) (access code:xer4) and 
