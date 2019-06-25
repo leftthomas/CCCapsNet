@@ -149,7 +149,7 @@ Here is the dataset details:
 </table>
 
 Here is the model parameter details, the model name are formalized as `embedding_type-classifier_type`, 
-if `embedding_type` is `CC`, then plus `num_repeat`, if `classifier_type` is `Capsule`, then plus `num_iterations`:
+if `embedding_type` is `CC`, then plus `num_repeat`:
 
 <table>
   <thead>
@@ -308,7 +308,7 @@ Here is the loss function details, we use `AGNews` dataset and `Normal-Linear` m
   </tbody>
 </table>
 
-Here is the accuracy details, we use `margin+focal` as our loss function:
+Here is the accuracy details, we use `margin+focal` as our loss function, for `capsule` model, `3 iters` is used:
 
 <table>
   <thead>
