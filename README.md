@@ -500,25 +500,25 @@ Here is the accuracy details:
   <tbody>
     <tr>
       <td align="center">57766677</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
+      <td align="center">92.54%</td>
+      <td align="center">98.85%</td>
+      <td align="center">73.96%</td>
+      <td align="center">97.41%</td>
+      <td align="center">96.38%</td>
+      <td align="center">65.86%</td>
+      <td align="center">94.98%</td>
+      <td align="center">60.98%</td>
     </tr>
     <tr>
       <td align="center">68877788</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
+      <td align="center">92.05%</td>
+      <td align="center">98.82%</td>
+      <td align="center">73.93%</td>
+      <td align="center">97.52%</td>
+      <td align="center">96.44%</td>
+      <td align="center">65.63%</td>
+      <td align="center">95.05%</td>
+      <td align="center">61.02%</td>
     </tr>
   </tbody>
 </table>
