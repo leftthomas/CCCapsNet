@@ -542,14 +542,14 @@ Here is the accuracy details, we use `57766677` config, the model name are forma
   <tbody>
     <tr>
       <td align="center">1</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
+      <td align="center">92.28%</td>
+      <td align="center">98.82%</td>
+      <td align="center">73.93%</td>
+      <td align="center">97.25%</td>
+      <td align="center">96.58%</td>
+      <td align="center">65.60%</td>
+      <td align="center">95.00%</td>
+      <td align="center">61.08%</td>
     </tr>
     <tr>
       <td align="center">3</td>
@@ -564,14 +564,14 @@ Here is the accuracy details, we use `57766677` config, the model name are forma
     </tr>
     <tr>
       <td align="center">5</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
-      <td align="center">/</td>
+      <td align="center">92.21%</td>
+      <td align="center">98.88%</td>
+      <td align="center">73.85%</td>
+      <td align="center">97.38%</td>
+      <td align="center">96.38%</td>
+      <td align="center">65.36%</td>
+      <td align="center">95.05%</td>
+      <td align="center">61.23%</td>
     </tr>
   </tbody>
 </table>
