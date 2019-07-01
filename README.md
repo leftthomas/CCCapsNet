@@ -74,6 +74,7 @@ optional arguments:
 --batch_size             train batch size [default value is 32]
 --num_epochs             train epochs number [default value is 10]
 --num_steps              test steps number [default value is 100]
+--pre_model              pre-trained model weight, it only works for routing_type experiment [default value is None]
 ```
 Visdom now can be accessed by going to `127.0.0.1:8097/env/$data_type` in your browser, `$data_type` means the dataset 
 type which you are training.

@@ -56,6 +56,8 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', default=32, type=int, help='train batch size')
     parser.add_argument('--num_epochs', default=10, type=int, help='train epochs number')
     parser.add_argument('--num_steps', default=100, type=int, help='test steps number')
+    parser.add_argument('--pre_model', default=None, type=str,
+                        help='pre-trained model weight, it only works for routing_type experiment')
 
     opt = parser.parse_args()
     DATA_TYPE, FINE_GRAINED, TEXT_LENGTH = opt.data_type, opt.fine_grained, opt.text_length
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     CLASSIFIER_TYPE, EMBEDDING_SIZE, NUM_CODEBOOK = opt.classifier_type, opt.embedding_size, opt.num_codebook
     NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH = opt.num_codeword, opt.hidden_size, opt.in_length
     OUT_LENGTH, NUM_ITERATIONS, DROP_OUT, BATCH_SIZE = opt.out_length, opt.num_iterations, opt.drop_out, opt.batch_size
-    NUM_REPEAT, NUM_EPOCHS, NUM_STEPS = opt.num_repeat, opt.num_epochs, opt.num_steps
+    NUM_REPEAT, NUM_EPOCHS, NUM_STEPS, PRE_MODEL = opt.num_repeat, opt.num_epochs, opt.num_steps, opt.pre_model
 
     # prepare dataset
     sentence_encoder, label_encoder, train_dataset, test_dataset = load_data(DATA_TYPE, preprocessing=True,
@@ -78,6 +80,11 @@ if __name__ == '__main__':
 
     model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH,
                   NUM_CLASS, ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, NUM_REPEAT, DROP_OUT)
+    if PRE_MODEL is not None:
+        model_weight = torch.load('epochs/{}'.format(PRE_MODEL)).state_dict()
+        model_weight.pop('classifier.weight')
+        model.load_state_dict(model_weight, strict=False)
+
     if LOSS_TYPE == 'margin':
         loss_criterion = [MarginLoss(NUM_CLASS)]
     elif LOSS_TYPE == 'focal':
@@ -95,13 +102,20 @@ if __name__ == '__main__':
     if torch.cuda.is_available():
         model, cudnn.benchmark = model.to('cuda'), True
 
-    optim_configs = [{'params': model.embedding.parameters(), 'lr': 1e-4 * 10},
-                     {'params': model.features.parameters(), 'lr': 1e-4 * 10},
-                     {'params': model.classifier.parameters(), 'lr': 1e-4}]
+    if PRE_MODEL is None:
+        optim_configs = [{'params': model.embedding.parameters(), 'lr': 1e-4 * 10},
+                         {'params': model.features.parameters(), 'lr': 1e-4 * 10},
+                         {'params': model.classifier.parameters(), 'lr': 1e-4}]
+    else:
+        for param in model.embedding.parameters():
+            param.requires_grad = False
+        for param in model.features.parameters():
+            param.requires_grad = False
+        optim_configs = [{'params': model.classifier.parameters(), 'lr': 1e-4}]
     optimizer = Adam(optim_configs, lr=1e-4)
     lr_scheduler = MultiStepLR(optimizer, milestones=[int(NUM_EPOCHS * 0.5), int(NUM_EPOCHS * 0.7)], gamma=0.1)
 
-    print("# trainable parameters:", sum(param.numel() for param in model.parameters()))
+    print("# trainable parameters:", sum(param.numel() if param.requires_grad else 0 for param in model.parameters()))
     # record statistics
     results = {'train_loss': [], 'train_accuracy': [], 'test_loss': [], 'test_accuracy': []}
     # record current best test accuracy
