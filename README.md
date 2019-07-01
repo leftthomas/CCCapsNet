@@ -148,8 +148,7 @@ Here is the dataset details:
   </tbody>
 </table>
 
-Here is the model parameter details, the model name are formalized as `embedding_type-classifier_type`, 
-if `embedding_type` is `CC`, then plus `num_repeat`:
+Here is the model parameter details, the model name are formalized as `embedding_type-classifier_type`:
 
 <table>
   <thead>
@@ -178,29 +177,7 @@ if `embedding_type` is `CC`, then plus `num_repeat`:
       <td align="center">53,938,432</td>
     </tr>
     <tr>
-      <td align="center">CC-Linear-10</td>
-      <td align="center">2,449,120</td>
-      <td align="center">26,770,528</td>
-      <td align="center">37,497,152</td>
-      <td align="center">4,704,040</td>
-      <td align="center">8,479,856</td>
-      <td align="center">9,128,040</td>
-      <td align="center">45,149,776</td>
-      <td align="center">40,568,416</td>
-    </tr>
-    <tr>
-      <td align="center">CC-Linear-30</td>
-      <td align="center">2,449,120</td>
-      <td align="center">26,770,528</td>
-      <td align="center">37,497,152</td>
-      <td align="center">4,704,040</td>
-      <td align="center">8,479,856</td>
-      <td align="center">9,128,040</td>
-      <td align="center">45,149,776</td>
-      <td align="center">40,568,416</td>
-    </tr>
-    <tr>
-      <td align="center">CC-Linear-50</td>
+      <td align="center">CC-Linear</td>
       <td align="center">2,449,120</td>
       <td align="center">26,770,528</td>
       <td align="center">37,497,152</td>
@@ -233,29 +210,7 @@ if `embedding_type` is `CC`, then plus `num_repeat`:
       <td align="center">53,948,032</td>
     </tr>
     <tr>
-      <td align="center">CC-Capsule-10</td>
-      <td align="center">2,456,800</td>
-      <td align="center">26,797,408</td>
-      <td align="center">37,516,352</td>
-      <td align="center">4,713,640</td>
-      <td align="center">8,483,696</td>
-      <td align="center">9,137,640</td>
-      <td align="center">45,153,616</td>
-      <td align="center">40,578,016</td>
-    </tr>
-    <tr>
-      <td align="center">CC-Capsule-30</td>
-      <td align="center">2,456,800</td>
-      <td align="center">26,797,408</td>
-      <td align="center">37,516,352</td>
-      <td align="center">4,713,640</td>
-      <td align="center">8,483,696</td>
-      <td align="center">9,137,640</td>
-      <td align="center">45,153,616</td>
-      <td align="center">40,578,016</td>
-    </tr>
-    <tr>
-      <td align="center">CC-Capsule-50</td>
+      <td align="center">CC-Capsule</td>
       <td align="center">2,456,800</td>
       <td align="center">26,797,408</td>
       <td align="center">37,516,352</td>
@@ -308,7 +263,8 @@ Here is the loss function details, we use `AGNews` dataset and `Normal-Linear` m
   </tbody>
 </table>
 
-Here is the accuracy details, we use `margin+focal` as our loss function, for `capsule` model, `3 iters` is used:
+Here is the accuracy details, we use `margin+focal` as our loss function, for `capsule` model, `3 iters` is used, 
+if `embedding_type` is `CC`, then plus `num_repeat`:
 
 <table>
   <thead>
