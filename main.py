@@ -81,7 +81,7 @@ if __name__ == '__main__':
     model = Model(VOCAB_SIZE, EMBEDDING_SIZE, NUM_CODEBOOK, NUM_CODEWORD, HIDDEN_SIZE, IN_LENGTH, OUT_LENGTH,
                   NUM_CLASS, ROUTING_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, NUM_ITERATIONS, NUM_REPEAT, DROP_OUT)
     if PRE_MODEL is not None:
-        model_weight = torch.load('epochs/{}'.format(PRE_MODEL)).state_dict()
+        model_weight = torch.load('epochs/{}'.format(PRE_MODEL), map_location='cpu')
         model_weight.pop('classifier.weight')
         model.load_state_dict(model_weight, strict=False)
 
@@ -188,11 +188,12 @@ if __name__ == '__main__':
                 if meter_accuracy.value()[0] > best_acc:
                     best_acc = meter_accuracy.value()[0]
                     if FINE_GRAINED and DATA_TYPE in ['reuters', 'yelp', 'amazon']:
-                        torch.save(model, 'epochs/{}_{}_{}_{}.pth'.format(DATA_TYPE + '_fine-grained', EMBEDDING_TYPE,
-                                                                          CLASSIFIER_TYPE, str(TEXT_LENGTH)))
+                        torch.save(model.state_dict(), 'epochs/{}_{}_{}_{}.pth'
+                                   .format(DATA_TYPE + '_fine-grained', EMBEDDING_TYPE, CLASSIFIER_TYPE,
+                                           str(TEXT_LENGTH)))
                     else:
-                        torch.save(model, 'epochs/{}_{}_{}_{}.pth'.format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE,
-                                                                          str(TEXT_LENGTH)))
+                        torch.save(model.state_dict(), 'epochs/{}_{}_{}_{}.pth'
+                                   .format(DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE, str(TEXT_LENGTH)))
                 print('[Step %d] Testing Loss: %.4f Accuracy: %.2f%% Best Accuracy: %.2f%%' % (
                     current_step // NUM_STEPS, meter_loss.value()[0], meter_accuracy.value()[0], best_acc))
                 reset_meters()
@@ -205,4 +206,4 @@ if __name__ == '__main__':
                 else:
                     data_frame.to_csv('statistics/{}_{}_{}_results.csv'.format(
                         DATA_TYPE, EMBEDDING_TYPE, CLASSIFIER_TYPE), index_label='step')
-        lr_scheduler.step()
+        lr_scheduler.step(epoch)

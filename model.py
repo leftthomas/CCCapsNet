@@ -106,14 +106,12 @@ class Model(nn.Module):
                                bidirectional=True)
         if classifier_type == 'capsule' and routing_type == 'k_means':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
-                                            out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
-                                            share_weight=False, routing_type='k_means', num_iterations=num_iterations,
-                                            bias=False)
+                                            out_length=self.out_length, in_capsules=None, share_weight=True,
+                                            routing_type='k_means', num_iterations=num_iterations, bias=False)
         elif classifier_type == 'capsule' and routing_type == 'dynamic':
             self.classifier = CapsuleLinear(out_capsules=num_class, in_length=self.in_length,
-                                            out_length=self.out_length, in_capsules=self.hidden_size // self.in_length,
-                                            share_weight=False, routing_type='dynamic', num_iterations=num_iterations,
-                                            bias=False)
+                                            out_length=self.out_length, in_capsules=None, share_weight=True,
+                                            routing_type='dynamic', num_iterations=num_iterations, bias=False)
         else:
             self.classifier = nn.Linear(in_features=self.hidden_size, out_features=num_class, bias=False)
 
