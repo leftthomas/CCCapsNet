@@ -1,5 +1,5 @@
 # CCCapsNet
-A PyTorch implementation of Compositional Coding Capsule Network based on PRL 2022 paper [Compositional Coding Capsule Network with K-Means Routing for Text Classification](https://arxiv.org/abs/1810.09177).
+A PyTorch implementation of Compositional Coding Capsule Network based on PRL 2022 paper [Compositional Coding Capsule Network with K-Means Routing for Text Classification](https://www.sciencedirect.com/science/article/pii/S016786552200188X).
 
 ## Requirements
 * [Anaconda](https://www.anaconda.com/download/)
